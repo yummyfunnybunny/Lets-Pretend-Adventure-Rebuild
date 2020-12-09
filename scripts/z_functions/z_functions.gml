@@ -4,9 +4,9 @@ function initialize_z_solid(_zSolid,_zHeight){
 	zSolid = _zSolid;			// dictates if the object is indeed a solid object
 	zBottom = 0;				// z coordinate of the bottom of the object
 	zHeight = _zHeight			// how tall the object is
-	zTop = zBottom+zHeight;	// z coordinates of the top of the object
-	zFloor = 0;						// z coordinate of the current floor position below the object
-	zRoof = -room_height;			// z coordinate of the current cieling aabove the target
+	zTop = zBottom-zHeight;		// z coordinates of the top of the object
+	zFloor = 0;					// z coordinate of the current floor position below the object
+	zRoof = -room_height;		// z coordinate of the current cieling aabove the target
 }
 
 function initialize_z_movement(_zGravity,_maxFallSpeed,_zStepUp,_zJumpSpeed,_zBounce,_zWeight){

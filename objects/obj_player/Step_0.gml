@@ -45,27 +45,32 @@ if (ySpeed != 0) {
 }
 
 // == Z AXIS FUNCTIONS == 
+// check for z collision
+/*
+if (place_meeting(x+xSpeed,y+ySpeed,parent_Solid)){
+	//set_z_limits();
+	//check_z_collision();
+}
+*/
+
 // apply jump
 if (_jump == true && zBottom == zFloor){
-	//show_message("applying jump");
 	zSpeed = -zJumpSpeed;
 }
 
-// update z_prev before doing anything else
-if (zSpeed != 0) {
+// update z_prev and zTop
+if (zPrevious != zBottom) {
 	zPrevious = zBottom;
+	zTop = zBottom - zHeight;
 }
 // Apply zSpeed
 if (zSpeed != 0){
-	//zSpeed = set_z_limits(zSpeed);
 	zBottom += zSpeed;
 }
 
 // Apply Gravity
 if (zBottom < zFloor){
-	show_debug_message("apply gravity 1");
 	if (zSpeed < maxFallSpeed || zSpeed > maxFallSpeed*(-1)){
-		show_debug_message("apply gravity 2");
 		zSpeed += zGravity;
 	}
 }
