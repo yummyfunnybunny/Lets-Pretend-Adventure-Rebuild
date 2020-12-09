@@ -13,6 +13,7 @@ moveLeft = ord("A");
 moveUp = ord("W");
 moveDown = ord("S");
 jump = vk_space;
+restart = vk_escape;
 
 // z physics
 initialize_z_solid(true,32);

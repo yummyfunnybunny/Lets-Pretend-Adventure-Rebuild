@@ -5,12 +5,12 @@ var _moveLeft = keyboard_check(moveLeft);
 var _moveDown = keyboard_check(moveDown);
 var _moveUp = keyboard_check(moveUp);
 var _jump = keyboard_check_pressed(jump);
+var _restart = keyboard_check_pressed(restart);
 
-/*
-if (keyboard_check_pressed(_jump)) {
-	//show_debug_message("jump key pressed");
+// == Restart Game ==
+if (_restart){
+	game_restart();
 }
-*/
 
 // == Apply Acceleration ==
 // horizontal
@@ -26,13 +26,15 @@ if (_moveDown || _moveUp){
 // horizontal
  if (xSpeed != 0){
 	 xSpeed = xy_collision_check(xSpeed,0);
+	 //show_debug_message("xSpeed: " +string(xSpeed));
 	 x += xSpeed;
  }
 // vertical
- if (ySpeed != 0){
-	 ySpeed = xy_collision_check(0,ySpeed);
-	 y += ySpeed;
- }
+if (ySpeed != 0){
+	ySpeed = xy_collision_check(0,ySpeed);
+	//show_debug_message("ySpeed: " +string(ySpeed));
+	y += ySpeed;
+}
 
 // == Apply Friction ==
 // horizontal
@@ -45,14 +47,6 @@ if (ySpeed != 0) {
 }
 
 // == Z AXIS FUNCTIONS == 
-// check for z collision
-/*
-if (place_meeting(x+xSpeed,y+ySpeed,parent_Solid)){
-	//set_z_limits();
-	//check_z_collision();
-}
-*/
-
 // apply jump
 if (_jump == true && zBottom == zFloor){
 	zSpeed = -zJumpSpeed;
@@ -82,12 +76,11 @@ if (zSpeed > maxFallSpeed){
 
 // Apply Bounce
 if (zBottom >= zFloor){
-	
 	// checks if its reasonable to have no bounce
 	if (zSpeed > 0 && abs(zSpeed) > 1){
 		zSpeed = -zSpeed*zBounce;
 	}else{
-		// dont have a bounce
+		// dont have a bounce, stay on ground
 		zSpeed = 0;
 		zBottom = zFloor;	// the extra pixel prevents little move bugs
 	}
@@ -97,4 +90,11 @@ if (zBottom >= zFloor){
 if (zTop < zRoof){
 	zSpeed = 0;
 	zBottom = zRoof+zHeight;
+}
+
+// update onGround
+if (zBottom = zFloor){
+	onGround = true;
+}else if (zBottom < zFloor){
+	onGround = false;
 }

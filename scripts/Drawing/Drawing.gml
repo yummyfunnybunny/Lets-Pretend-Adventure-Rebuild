@@ -12,5 +12,5 @@ function draw_self_z(){
 
 
 function draw_shadow(_spriteIndex){
-	draw_sprite_ext(spr_shadow,_spriteIndex,x,y,1,1,0,c_white,1);
+	draw_sprite_ext(spr_shadow,_spriteIndex,x,y+zFloor,1,1,0,c_white,1);
 }
