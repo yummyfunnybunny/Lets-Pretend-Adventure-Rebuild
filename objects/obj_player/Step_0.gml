@@ -101,44 +101,6 @@ if (zBottom = zFloor){
 
 // set z limits
 if (x != xprevious || y != yprevious) {
-	if (place_meeting(x,y,obj_solid)){
-		var _instance = instance_place(x,y,obj_solid);
-		
-		if (_instance.zBottom < zTop){
-			var _bbox_right = _instance.bbox_right;
-			var _bbox_left = _instance.bbox_left;
-			var _bbox_bottom = _instance.bbox_bottom;
-			var _bbox_top = _instance.bbox_top;
-		
-		if (bbox_left < _bbox_right && bbox_left > _bbox_left ||
-			bbox_right > _bbox_left && bbox_right < _bbox_right ||
-			bbox_bottom < _bbox_bottom && bbox_bottom > _bbox_top ||
-			bbox_top > _bbox_top && bbox_top < _bbox_bottom) {
-			zRoof = _instance.zTop+1;
-					
-			}else {
-				zRoof = -room_height;
-			}
-		}else if (_instance.zTop > zBottom) {
-			show_debug_message("INSTANCE IS BELOW YOU");
-			var _bbox_right = _instance.bbox_right;
-			var _bbox_left = _instance.bbox_left;
-			var _bbox_bottom = _instance.bbox_bottom;
-			var _bbox_top = _instance.bbox_top;
-			
-			if (bbox_left < _bbox_right && bbox_left > _bbox_left ||
-				bbox_right > _bbox_left && bbox_right < _bbox_right ||
-				bbox_bottom < _bbox_bottom && bbox_bottom > _bbox_top ||
-				bbox_top > _bbox_top && bbox_top < _bbox_bottom) {
-				zFloor = _instance.zTop-1;
-			}else {
-				// water collision stuff will probably go here... for now
-				show_debug_message("NO MORE COLLISION");
-				zFloor = -1;
-			}
-		}
-	}else{
-		show_debug_message("NO COLLISIONS!!!");	
-		zFloor = -1;
-	}
+	set_z_limits();
+	
 }

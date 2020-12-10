@@ -1,1 +1,1 @@
-initialize_z_solid(true,32);
+initialize_z_solid(true,16);

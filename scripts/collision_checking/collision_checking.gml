@@ -4,20 +4,20 @@ function xy_collision_check(_xSpeed,_ySpeed){
 	
 	// check for solid object at destination coordinate
 	if (place_meeting(x+_xSpeed,y+_ySpeed,obj_solid)){
-		show_debug_message("step 1: if place meeting");
+		//show_debug_message("step 1: if place meeting");
 		// save the object in question
 		var _instance = instance_place(x+_xSpeed,y+_ySpeed,obj_solid);
 		
 		// check if object is solid
 		if (check_z_solid(_instance) == true){
-			show_debug_message("step 2: if zSolid");	
+			//show_debug_message("step 2: if zSolid");	
 			// check for z overlap with object in question
 			if (check_z_overlap(_instance) == true){
-				show_debug_message("step 3: if z overlap");
+				//show_debug_message("step 3: if z overlap");
 				// check for collision 1 pixel away
 				if (place_meeting(x+sign(_xSpeed),y+sign(_ySpeed),obj_solid)){
 					// there is a collision, return 0 so there is no movement
-					show_debug_message("step 4: if sign(place meeting)");
+					//show_debug_message("step 4: if sign(place meeting)");
 					return 0;
 				}else {
 					// no collision, return the sign of either xSpeed or ySpeed
@@ -25,8 +25,7 @@ function xy_collision_check(_xSpeed,_ySpeed){
 					 return _speed;
 				}
 			}else{
-				// no z overlap, set z limits, return speed
-				//set_z_limits2();
+				// no z overlap return speed
 				var _speed = return_speed(_xSpeed,_ySpeed);
 			return _speed;
 			}
@@ -67,6 +66,140 @@ function check_z_solid(_instance){
 	}
 }
 
+// == Return Correct Speed ==
+function return_speed(_xSpeed,_ySpeed){
+	if (_xSpeed == 0) {
+		//show_debug_message("returning ySpeed: " + string(_ySpeed));
+		return _ySpeed;
+	}else{
+		//show_debug_message("returning xSpeed: " + string(_xSpeed));
+		return _xSpeed;
+	}
+}
+
+function set_z_limits() {
+	// check if there is a collision
+	if (place_meeting(x,y,obj_solid)){
+		
+		// save the ID of the colliding instance
+		var _instance = instance_place(x,y,obj_solid);
+		
+		// check if instance is above you
+		if (_instance.zBottom < zTop){
+			if (bounding_box_check(_instance) == true) {
+			// set zRoof to bottom of colliding instance above you
+			zRoof = _instance.zTop+1;
+		}else {
+			// set zRoof to ceiling
+			zRoof = -room_height;
+		}
+		
+		// check if instance is below you
+		}else if (_instance.zTop > zBottom) {
+			if (bounding_box_check(_instance) == true) {
+				show_debug_message("SET z limit to top of colliding instance");
+				zFloor = _instance.zTop-1;
+			}else {
+				// water collision stuff will probably go here... for now
+				show_debug_message("There is no more collision");
+				zFloor = -1;
+			}
+		}
+	}else{
+		zFloor = -1;
+	}	
+}
+
+// == Bounding Box Check ==
+function bounding_box_check(_instance) {
+	
+	// save bounding boxes of colliding instance
+	var _bbox_right = _instance.bbox_right;
+	var _bbox_left = _instance.bbox_left;
+	var _bbox_bottom = _instance.bbox_bottom;
+	var _bbox_top = _instance.bbox_top;
+	
+	// perform the check
+	if (bbox_left < _bbox_right && bbox_left > _bbox_left ||
+		bbox_right > _bbox_left && bbox_right < _bbox_right ||
+		bbox_bottom < _bbox_bottom && bbox_bottom > _bbox_top ||
+		bbox_top > _bbox_top  && bbox_top < _bbox_bottom) {
+		// there is overlap, so return true
+		return true;
+	}else {
+		// there is NO overlap, so return false
+		return false;	
+	}
+}
+//=================================
+/*
+// check for z collision
+function check_z_collision(_xSpeed,_ySpeed){
+	
+	// create list of all objects in collision on the x/y-axis
+	var _collisionList = ds_list_create();
+	instance_position_list(x+_xSpeed, y+_ySpeed,obj_solid,_collisionList,false);
+	
+	// break the list into two lists, the above-you list, and below-you list
+	var zTopList = ds_list_create();
+	var zBottomList = ds_list_create();
+	
+	// loop through the list to find an object that opverlaps you on the z-axis
+	for (var i = 0; i < ds_list_size(_collisionList); i++){
+		
+		// save the id of each object
+		var _object = ds_list_find_value(_collisionList,i);
+		
+		
+		// check if object is solid
+		if (_object.zSolid == true){
+			
+			// save the object's zBottom and zTop
+			var _zBottom = _object.zBottom;
+			var _zTop = _object.zTop;
+			
+			// check for z overlap
+			if (_zBottom <= zBottom && _zBottom >= zTop ||
+				_zTop >= zTop && _zTop <= zBottom){
+				// there is a collision
+				return true;
+			// place the object in either the zTopList or the zBottomList
+			}else if (_zBottom < zTop){
+				ds_list_add(zTopList,_object.zBottom);
+			}else if (_zTop > zBottom){
+				ds_list_add(zBottomList,_object.zTop);
+			}
+		}
+		// no collision with solid objects
+	}
+	// finished looping through all objects
+	// destroy the collision list, we are done with it
+	ds_list_destroy(_collisionList);
+	
+	// sort the completed lists in descending order (the z-axis is backwards)
+	ds_list_sort(zTopList,lb_sort_descending);
+	ds_list_sort(zBottomList,lb_sort_descending);
+	
+	// set the zFloor as needed
+	if (ds_list_find_value(zBottomList,0) != noone){
+		zFloor = ds_list_find_value(zBottomList,0);
+		ds_list_destroy(zBottomList);
+	}else {
+		// something will probably go here for water once we handle going below 0
+		zFloor = 0;
+	}
+	
+	// set the zRoof as needed
+	if (ds_list_find_value(zTopList,0) != noone){
+		zRoof = ds_list_find_value(zTopList,0);
+		ds_list_destroy(zTopList);
+	}else {
+		zRoof =-room_height;
+	}
+}
+*/
+
+/*
 function set_z_limits2() {
 	var _instance = instance_place(x,y,obj_solid);
 	show_debug_message("INSTANCE: " + string(_instance));
@@ -103,6 +236,7 @@ function set_z_limits2() {
 		}
 	}
 }
+*/
 
 // == Update zFloor and zRoof ==
 /*
@@ -181,7 +315,7 @@ function set_z_limits(_xSpeed,_ySpeed){
 	}
 		
 		
-		/*
+		
 		// check bounding boxes for collision
 		zFloor = ds_map_find_value(_belowYouZMap,0);
 		zFloor -= 1;
@@ -190,8 +324,8 @@ function set_z_limits(_xSpeed,_ySpeed){
 		// something will probably go here for water once we handle going below 0
 		zFloor = -1;
 	}
-	*/
-	/*
+	
+	
 	// set the zRoof as needed
 	if (ds_map_find_value(_aboveYouZMap,0) != undefined){
 		var _bbox_right = _bottomID.bbox_right;
@@ -207,95 +341,13 @@ function set_z_limits(_xSpeed,_ySpeed){
 			zRoof = -room_height;
 		}
 	}
-	*/
+	
 		
-		/*
+		
 		zRoof = ds_map_find_value(_aboveYouZMap,0);
 		ds_map_destroy(_aboveYouZMap);
 	}else {
 		// nothing above you, set zRoof to -roomHeight
-		zRoof =-room_height;
-	}
-	*/
-/*
-}
-*/
-
-
-// == Return Correct Speed ==
-function return_speed(_xSpeed,_ySpeed){
-	if (_xSpeed == 0) {
-		//show_debug_message("returning ySpeed: " + string(_ySpeed));
-		return _ySpeed;
-	}else{
-		//show_debug_message("returning xSpeed: " + string(_xSpeed));
-		return _xSpeed;
-	}
-}
-
-//=================================
-/*
-// check for z collision
-function check_z_collision(_xSpeed,_ySpeed){
-	
-	// create list of all objects in collision on the x/y-axis
-	var _collisionList = ds_list_create();
-	instance_position_list(x+_xSpeed, y+_ySpeed,obj_solid,_collisionList,false);
-	
-	// break the list into two lists, the above-you list, and below-you list
-	var zTopList = ds_list_create();
-	var zBottomList = ds_list_create();
-	
-	// loop through the list to find an object that opverlaps you on the z-axis
-	for (var i = 0; i < ds_list_size(_collisionList); i++){
-		
-		// save the id of each object
-		var _object = ds_list_find_value(_collisionList,i);
-		
-		
-		// check if object is solid
-		if (_object.zSolid == true){
-			
-			// save the object's zBottom and zTop
-			var _zBottom = _object.zBottom;
-			var _zTop = _object.zTop;
-			
-			// check for z overlap
-			if (_zBottom <= zBottom && _zBottom >= zTop ||
-				_zTop >= zTop && _zTop <= zBottom){
-				// there is a collision
-				return true;
-			// place the object in either the zTopList or the zBottomList
-			}else if (_zBottom < zTop){
-				ds_list_add(zTopList,_object.zBottom);
-			}else if (_zTop > zBottom){
-				ds_list_add(zBottomList,_object.zTop);
-			}
-		}
-		// no collision with solid objects
-	}
-	// finished looping through all objects
-	// destroy the collision list, we are done with it
-	ds_list_destroy(_collisionList);
-	
-	// sort the completed lists in descending order (the z-axis is backwards)
-	ds_list_sort(zTopList,lb_sort_descending);
-	ds_list_sort(zBottomList,lb_sort_descending);
-	
-	// set the zFloor as needed
-	if (ds_list_find_value(zBottomList,0) != noone){
-		zFloor = ds_list_find_value(zBottomList,0);
-		ds_list_destroy(zBottomList);
-	}else {
-		// something will probably go here for water once we handle going below 0
-		zFloor = 0;
-	}
-	
-	// set the zRoof as needed
-	if (ds_list_find_value(zTopList,0) != noone){
-		zRoof = ds_list_find_value(zTopList,0);
-		ds_list_destroy(zTopList);
-	}else {
 		zRoof =-room_height;
 	}
 }

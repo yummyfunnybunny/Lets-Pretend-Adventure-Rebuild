@@ -9,7 +9,7 @@ ds_grid_resize(_depthGrid,2,_objNumber);
 var yy = 0;
 with(parent_Solid){
 	_depthGrid[# 0,yy] = id;
-	_depthGrid[# 1,yy] = y-zBottom;
+	_depthGrid[# 1,yy] = y-zBottom+zHeight;
 	yy ++;
 }
 
