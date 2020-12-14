@@ -3,31 +3,44 @@
 function xy_collision_check(_xSpeed,_ySpeed){
 	
 	// check for solid object at destination coordinate
-	if (place_meeting(x+_xSpeed,y+_ySpeed,obj_solid)){
-		//show_debug_message("step 1: if place meeting");
+	if (place_meeting(x+_xSpeed,y+_ySpeed,parent_solid)){
+		show_debug_message("step 1: if place meeting");
+		
 		// save the object in question
-		var _instance = instance_place(x+_xSpeed,y+_ySpeed,obj_solid);
+		var _instance = instance_place(x+_xSpeed,y+_ySpeed,parent_solid);
 		
 		// check if object is solid
 		if (check_z_solid(_instance) == true){
-			//show_debug_message("step 2: if zSolid");	
+			show_debug_message("step 2: if zSolid");	
+			
 			// check for z overlap with object in question
 			if (check_z_overlap(_instance) == true){
-				//show_debug_message("step 3: if z overlap");
-				// check for collision 1 pixel away
-				if (place_meeting(x+sign(_xSpeed),y+sign(_ySpeed),obj_solid)){
-					// there is a collision, return 0 so there is no movement
-					//show_debug_message("step 4: if sign(place meeting)");
-					return 0;
-				}else {
-					// no collision, return the sign of either xSpeed or ySpeed
-					 var _speed = return_speed(sign(_xSpeed),sign(_ySpeed));
-					 return _speed;
+				show_debug_message("step 3: if z overlap");
+				
+				// perform step-up check
+				if (stepup_check(_instance) == false){
+					show_debug_message("stepup was UNSUCCESSFUL");
+					
+					// check for collision 1 pixel away
+					if (place_meeting(x+sign(_xSpeed),y+sign(_ySpeed),parent_solid)){
+						// there is a collision, return 0 so there is no movement
+						show_debug_message("step 4: if sign(place meeting)");
+						return 0;
+					}else {
+						// no collision, return the sign of either xSpeed or ySpeed
+						 var _speed = return_speed(sign(_xSpeed),sign(_ySpeed));
+						 return _speed;
+					}
+				}else{
+					// was able to step up onto instance
+					show_debug_message("stepup was sucessful");
+					var _speed = return_speed(_xSpeed,_ySpeed);
+					return _speed;
 				}
 			}else{
 				// no z overlap return speed
 				var _speed = return_speed(_xSpeed,_ySpeed);
-			return _speed;
+				return _speed;
 			}
 		}else{
 			// object is not solid, no collision, return speed
@@ -45,14 +58,18 @@ function xy_collision_check(_xSpeed,_ySpeed){
 function check_z_overlap(_instance) {
 	var _zBottom = _instance.zBottom;
 	var _zTop = _instance.zTop;
+	show_debug_message("_zBottom: " + string(_zBottom));
+	show_debug_message("zBottom: " + string(zBottom));
+	show_debug_message("_zTop: " + string(_zTop));
+	show_debug_message("zTop: " + string(zTop));
 	if (_zBottom <= zBottom && _zBottom >= zTop ||
 		_zTop >= zTop && _zTop <= zBottom){
 		// there is z overlap
-		//show_debug_message("there IS z overlap");
+		show_debug_message("there IS z overlap");
 		return true;
 	}else {
 		// there is no z overlap
-		//show_debug_message("there is NO z overlap");
+		show_debug_message("there is NO z overlap");
 		return false;
 	}
 }
@@ -62,6 +79,19 @@ function check_z_solid(_instance){
 	if (_instance.zSolid == true){
 		return true;
 	}else{
+		return false;
+	}
+}
+
+// == Stepup Check ==
+function stepup_check(_instance) {
+	//show_message();
+	if (_instance.zTop >= zBottom-zStepUp){
+		show_debug_message("performing the stepup check: TRUE");
+		zBottom = _instance.zTop-1;
+		return true;
+	}else {
+		show_debug_message("performing the stepup check: FALSE");
 		return false;
 	}
 }
@@ -79,19 +109,21 @@ function return_speed(_xSpeed,_ySpeed){
 
 function set_z_limits() {
 	// check if there is a collision
-	if (place_meeting(x,y,obj_solid)){
+	if (place_meeting(x,y,parent_solid)){
 		
 		// save the ID of the colliding instance
-		var _instance = instance_place(x,y,obj_solid);
+		var _instance = instance_place(x,y,parent_solid);
 		
 		// check if instance is above you
 		if (_instance.zBottom < zTop){
 			if (bounding_box_check(_instance) == true) {
 			// set zRoof to bottom of colliding instance above you
 			zRoof = _instance.zTop+1;
+			belowOf = _instance;
 		}else {
 			// set zRoof to ceiling
 			zRoof = -room_height;
+			belowOf = noone;
 		}
 		
 		// check if instance is below you
@@ -99,14 +131,18 @@ function set_z_limits() {
 			if (bounding_box_check(_instance) == true) {
 				show_debug_message("SET z limit to top of colliding instance");
 				zFloor = _instance.zTop-1;
+				onTopOf = _instance;
 			}else {
 				// water collision stuff will probably go here... for now
 				show_debug_message("There is no more collision");
 				zFloor = -1;
+				onTopOf = noone;
 			}
 		}
 	}else{
 		zFloor = -1;
+		onTopOf = noone;
+		belowOf = noone;
 	}	
 }
 

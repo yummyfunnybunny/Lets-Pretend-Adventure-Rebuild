@@ -2,12 +2,12 @@
 // == Draw All Depth Objects ==
 // Resize The Grid
 var _depthGrid = depthGrid;
-var _objNumber = instance_number(parent_Solid);
+var _objNumber = instance_number(parent_solid);
 ds_grid_resize(_depthGrid,2,_objNumber);
 
 // Add Instance Info To Grid
 var yy = 0;
-with(parent_Solid){
+with(parent_solid){
 	_depthGrid[# 0,yy] = id;
 	_depthGrid[# 1,yy] = y-zBottom+zHeight;
 	yy ++;
