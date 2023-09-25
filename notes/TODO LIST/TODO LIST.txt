@@ -1,0 +1,7 @@
+TO DO LIST:
+- remove mouse controls
+- have 8 directional movement, but only 4 directional attacking (link to the past)
+- add enemy
+    - add basic state machine
+- add damaging and killing enemy
+add taking damage and dying to enemy

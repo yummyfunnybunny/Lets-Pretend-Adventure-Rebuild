@@ -1,1 +1,0 @@
-initialize_z_solid(true,16);

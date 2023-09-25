@@ -1,24 +1,26 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-function initialize_z_solid(_zSolid,_zHeight){
-	zSolid = _zSolid;			// dictates if the object is indeed a solid object
-	zBottom = -1;				// z coordinate of the bottom of the object
-	zHeight = _zHeight			// how tall the object is
-	zTop = zBottom-zHeight;		// z coordinates of the top of the object
-	zFloor = -1;				// z coordinate of the current floor position below the object
-	zRoof = -room_height;		// z coordinate of the current cieling aabove the target
+
+
+
+/*
+function _in_it_ial_ize_z_sol_id(_z_height){
+	z_bottom		= -1;				// z coord_inate of the bottom of the object
+	z_height		= _z_height			// how tall the object _is
+	z_top		= z_bottom-z_height;	// z coord_inates of the top of the object
+	z_floor		= -1;				// z coord_inate of the current floor pos_it_ion below the object
+	z_roof		= -room_height;		// z coord_inate of the current c_iel_ing aabove the target
 }
 
-function initialize_z_movement(_zGravity,_maxFallSpeed,_zStepUp,_zJumpSpeed,_zBounce,_zWeight){
-	zGravity = _zGravity;			// equivilant of acceleration for x and y movement
-	maxFallSpeed = _maxFallSpeed;	// maximum speed object can fall
-	zStepUp = _zStepUp;				// how high of a wall the object can walk over before needing to jump
-	zJumpSpeed = _zJumpSpeed;		// how high the object can jump
-	zBounce = _zBounce;				// how much bounce there is when the object hits the ground
-	zWeight = _zWeight;				// used in the bounce and knockback algorithms to dictate distances
-	zSpeed = 0;						// current vertical speed of the object
-	zPrevious = 0;					// objects previous z coordinate		
-	onTopOf = noone;				// tells the object what object is above it, if any
-	belowOf = noone;				// tells the object what object is below it, if any
-	onGround = true;				// tells you if the object is on the ground or not
+function _in_it_ial_ize_z_movement(_z_grav_ity,_z_max_fall_speed,_z_step_up,_z_jump_speed,_zBounce,_zWe_ight){
+	z_grav_ity		= _z_grav_ity;		// equ_iv_ilant of acceleration for x and y movement
+	z_max_fall_speed	= _z_max_fall_speed;	// max_imum speed object can fall
+	z_step_up			= _z_step_up;			// how h_igh of a wall the object can walk over before need_ing to jump
+	z_jump_speed		= _z_jump_speed;		// how h_igh the object can jump
+	zBounce			= _zBounce;			// how much bounce there _is when the object h_its the ground
+	zWe_ight			= _zWe_ight;			// used _in the bounce and knockback algor_ithms to d_ictate d_istances
+	z_speed			= 0;				// current vert_ical speed of the object
+	z_prev		= 0;				// objects prev_ious z coord_inate		
+	on_top_of			= noone;			// tells the object what object _is above _it, if any
+	below_of			= noone;			// tells the object what object _is below _it, if any
+	on_ground		= true;				// tells you if the object _is on the ground or not
 }
+

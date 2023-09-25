@@ -1,16 +1,24 @@
 
-// == Draw Self With Delpth == 
+// == Draw Self with Delpth == 
 function draw_self_z(){
-	// check if self exists (safety)
+	// check if self ex_ists (safety)
 	if(instance_exists(id)){
-		// add 	zFloor to y-coord before drawing self, than resetting it
-		y+=zBottom;
+		// add 	z_floor to y-coord before draw_ing self, than resett_ing _it
+		y+=z_bottom;
 		draw_self();
-		y-=zBottom;
+		y-=z_bottom;
 	}
 }
 
 
-function draw_shadow(_spriteIndex){
-	draw_sprite_ext(spr_shadow,_spriteIndex,x,y+zFloor,1,1,0,c_white,1);
+function draw_shadow(_sprite_index){
+	draw_sprite_stretched(spr_shadow, _sprite_index, bbox_left, bbox_top, (bbox_right-bbox_left), (bbox_bottom-bbox_top));
+}
+
+function set_depth() {
+	if (on_top_of != noone) {
+		depth = (on_top_of.y*-1)+z_bottom;	
+	} else {
+		depth = -y+z_bottom;
+	}
 }

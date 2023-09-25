@@ -1,106 +1,141 @@
+event_inherited();
 
-// == Update Inputs ==
-var _moveRight = keyboard_check(moveRight);
-var _moveLeft = keyboard_check(moveLeft);
-var _moveDown = keyboard_check(moveDown);
-var _moveUp = keyboard_check(moveUp);
-var _jump = keyboard_check_pressed(jump);
-var _restart = keyboard_check_pressed(restart);
+// Update All _input
+player_update_input();
+player_reset();
 
-// == Restart Game ==
-if (_restart){
-	game_restart();
-}
+// update face direction
+face_direction = point_direction(x,y,mouse_x,mouse_y);
 
-// == Apply Acceleration ==
-// horizontal
-if (_moveRight || _moveLeft){
-	xSpeed = apply_acceleration(_moveRight,_moveLeft, xSpeed);
-}
-// vertical
-if (_moveDown || _moveUp){
-	ySpeed = apply_acceleration(_moveDown,_moveUp, ySpeed);
-}
 
-// == Apply Speed ==
-// horizontal
- if (xSpeed != 0){
-	 xSpeed = xy_collision_check(xSpeed,0);
-	 //show_debug_message("xSpeed: " +string(xSpeed));
-	 x += xSpeed;
- }
-// vertical
-if (ySpeed != 0){
-	ySpeed = xy_collision_check(0,ySpeed);
-	//show_debug_message("ySpeed: " +string(ySpeed));
-	y += ySpeed;
+
+player_apply_friction();
+
+
+
+// Update Player max_speed
+// do th_is before updat_ing x_speed/y_speed
+player_update_max_speed();
+
+
+
+// Run Current State
+if (global.game_paused == false) { 
+	script_execute(state);
+	//_invulnerable = max(_invulnerable-1,0);
+	//flash = max(flash-0.05,0);
 }
 
-// == Apply Friction ==
-// horizontal
-if (xSpeed != 0) {
-	xSpeed -= apply_friction(_moveRight,_moveLeft,xSpeed);
-}
-// vertical
-if (ySpeed != 0) {
-	ySpeed -= apply_friction(_moveDown,_moveUp,ySpeed);
-}
+// Ladder
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 4 && on_ground == true) {
+	state = player_state_climb;
+} else if (state = player_state_climb) { state = player_state_free; }	
 
-// == Z AXIS FUNCTIONS == 
-// apply jump
-if (_jump == true && zBottom == zFloor){
-	zSpeed = -zJumpSpeed;
-}
 
-// update z_prev and zTop
-if (zPrevious != zBottom) {
-	zPrevious = zBottom;
-	zTop = zBottom - zHeight;
-}
-// Apply zSpeed
-if (zSpeed != 0){
-	zBottom += zSpeed;
-}
 
-// Apply Gravity
-if (zBottom < zFloor){
-	if (zSpeed < maxFallSpeed || zSpeed > maxFallSpeed*(-1)){
-		zSpeed += zGravity;
+// PitFall
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 6) {
+	if (z_bottom == -1) {
+		if (state != player_state_death && state != player_state_p_itfall) {
+			show_debug_message("enter_ing P_iTFALLs");
+			on_ground = true;
+			hp -= 1;
+			x_speed = 0;
+			y_speed = 0;
+			z_speed = 0;
+			image_speed = 1;
+			image_index = 0;
+			state = player_state_p_itfall;
+		}
 	}
 }
 
-// Prevent Exceeding maxFallSpeed
-if (zSpeed > maxFallSpeed){
-	zSpeed = maxFallSpeed;
+// Pitfall edges
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 12) {
+	x_speed += .1;
+}
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 13) {
+	x_speed -= .1;
+}
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 14) {
+	y_speed += .1;
+}
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 15) {
+	y_speed -= .1;
+}
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 16) {
+	x_speed -= .1;
+	y_speed -= .1;
+}
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 17) {
+	x_speed -= .1;
+	y_speed += .1;
+}
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 18) {
+	x_speed += .1;
+	y_speed += .1;
+}
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 19) {
+	x_speed += .1;
+	y_speed -= .1;
 }
 
-// Apply Bounce
-if (zBottom >= zFloor){
-	// checks if its reasonable to have no bounce
-	if (zSpeed > 0 && abs(zSpeed) > 1){
-		zSpeed = -zSpeed*zBounce;
-	}else{
-		// dont have a bounce, stay on ground
-		zSpeed = 0;
-		zBottom = zFloor;	// the extra pixel prevents little move bugs
+// Deep Water
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 3) {
+	if (on_ground == true && z_bottom == -1) {
+		if (state != player_state_death && state != player_state_drown) {
+			hp -= 1;
+			x_speed = 0;
+			y_speed = 0;
+			image_speed = 1;
+			image_index = 0;
+			state = player_state_drown;
+		}
 	}
 }
 
-// Prevent Exceeding zRoof
-if (zTop < zRoof){
-	zSpeed = 0;
-	zBottom = zRoof+zHeight;
+// Set Last Safe Coord_inates
+if (on_ground == true && 
+	z_bottom == -1 &&
+	tilemap_get_at_pixel(global.collision_map,x,y) == 0) {
+		last_safe_x = x_prev;
+		last_safe_y = y_prev;
 }
 
-// update onGround
-if (zBottom = zFloor){
-	onGround = true;
-}else if (zBottom < zFloor){
-	onGround = false;
-}
 
-// set z limits
-if (x != xprevious || y != yprevious) {
-	set_z_limits();
-	
+// Wade (Shallow Water)
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 2 && z_bottom == -1) {
+	if (state != player_state_wade) { 
+		
+		state = player_state_wade; 
+	}
+} else if (state == player_state_wade) { state = player_state_free; }
+
+
+
+// Jump & Fall
+if (on_ground == false) {
+	if (z_speed < 0) {
+		if (state != player_state_jump) { state = player_state_jump; }
+	} else {
+		if (state != player_state_fall) { show_debug_message("entering FALL"); state = player_state_fall; }
+	}
+} else if (state == player_state_fall) { show_debug_message("entering FREE"); state = player_state_free; }
+
+
+
+// Coll_is_ion Check_ing
+player_collision();
+
+tile = tilemap_get_at_pixel(global.collision_map,x,y);
+
+
+// Death Check
+if (hp <= 0) {
+	/*
+	if (alarm[0] ==-1) { 
+		alarm[0] = FPS*2;	
+	}
+	*/
+	state = player_state_death;
 }

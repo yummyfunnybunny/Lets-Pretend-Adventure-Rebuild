@@ -1,3 +1,4 @@
 // == DEPTH SORTER ==
-the game_manager object must be placed at the end of the of the object creation list
+the game_manager object must be placed at the end of the of the object creat_ion l_ist
 objects created after the game manager wont be properly sorted
+
