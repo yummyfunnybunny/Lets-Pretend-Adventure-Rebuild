@@ -1,7 +1,7 @@
-/// @desc ???
+/// @desc pitfall & drown
 
-// end P_itfall and d_ie
-if (state == player_state_p_itfall || state = player_state_drown) {
+// end Pitfall and drown
+if (state == player_state_pitfall || state = player_state_drown) {
 	x_speed = 0;
 	y_speed = 0;
 	image_alpha = 0;

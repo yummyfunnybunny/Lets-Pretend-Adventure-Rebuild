@@ -49,6 +49,40 @@ function player_update_move_direction() {
 	if (_x_spd == 0 && _y_spd = 0) { move_direction = -1; }
 }
 
+// set face_direction
+function player_update_face_direction() {
+	// whichever input is first is whats used and whichever unput is last is than used
+	
+	// first move input
+	if (move_direction == -1) {
+		var _move_dir_prev = 0;
+		switch(move_direction) {
+			case 0: face_direction = 0; _move_dir_prev = 0; break;
+			case 45: if (_move_dir_prev == 0) face_direction = 0 else face_direction = 90; break;
+			case 90: face_direction = 90; _move_dir_prev = 90; break;
+			case 135: if(_move_dir_prev == 180) face_direction = 180 else face_direction = 90; break;
+			case 180: face_direction = 180; _move_dir_prev = 180; break;
+			case 225: if(_move_dir_prev == 270) face_direction = 270 else face_direction = 180; break;
+			case 270: face_direction = 270; _move_dir_prev = 270; break;
+			case 315: if(_move_dir_prev == 0) face_direction = 0 else face_direction = 270; break;
+		}
+	}
+	// last move input
+	if (move_direction != -1) {
+		var _move_dir_prev = 0;
+		switch(move_direction) {
+			case 0: face_direction = 0; _move_dir_prev = 0; break;
+			case 45: if (_move_dir_prev == 0) face_direction = 0 else face_direction = 90; break;
+			case 90: face_direction = 90; _move_dir_prev = 90; break;
+			case 135: if(_move_dir_prev == 180) face_direction = 180 else face_direction = 90; break;
+			case 180: face_direction = 180; _move_dir_prev = 180; break;
+			case 225: if(_move_dir_prev == 270) face_direction = 270 else face_direction = 180; break;
+			case 270: face_direction = 270; _move_dir_prev = 270; break;
+			case 315: if(_move_dir_prev == 0) face_direction = 0 else face_direction = 270; break;
+		}
+	}
+}
+
 function player_update_x_speed() {
 	// Set _in_it_ial x_speed based on user _input
 	if (move_direction != -1) {
@@ -109,11 +143,9 @@ function player_apply_friction() {
 
 // Update Pace Backwards
 function player_update_pace_backwards() {
-	//show_debug_message("player_update_pace_backwards");
 	if (x_speed != 0 || y_speed != 0) {
 		var _move_dir = move_direction div 45;
 		var _face_dir = round(face_direction) div 45;
-		//show_debug_message(_face_dir);
 		switch (_move_dir) {
 			case 0: if (_face_dir == 3 || _face_dir == 4) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;
 			case 1: if (_face_dir == 4 || _face_dir == 5) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;

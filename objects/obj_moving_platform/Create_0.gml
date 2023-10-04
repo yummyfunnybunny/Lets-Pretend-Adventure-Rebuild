@@ -1,11 +1,6 @@
 
 event_inherited();
-//_in_it_ial_ize_z_sol_id(8);
-//_in_it_ial_ize_z_movement(0,0,0,0,0,0);
-//_in_it_ial_ize_movement(1);
 
-origin_x = x;
-origin_y = y;
 returning = 0
 
 destination_x = 784;

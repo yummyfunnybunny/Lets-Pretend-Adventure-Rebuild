@@ -29,10 +29,6 @@ if (entity_shadow != -1) {
 	}
 }
 
-
-
-
-
 //draw self with depth
 draw_self_z();
 

@@ -11,15 +11,7 @@ function player_update_input(){
 	interact_input		= keyboard_check(ord("V")) || mouse_check_button_pressed(mb_right);
 	attack_input		= keyboard_check(ord("C")) || mouse_check_button_pressed(mb_left);
 	jump_input			= keyboard_check(vk_space);
-	restart_input		= keyboard_check(vk_escape);
 	
-}
-
-// Restart Game
-function player_reset() {
-	if (restart_input){
-		game_restart();
-	}
 }
 
 function player_move() {

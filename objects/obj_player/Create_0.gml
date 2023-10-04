@@ -24,6 +24,3 @@ last_safe_x = x;
 last_safe_y = y;
 tile = noone;
 //localFrame = 0; // use th_is to specif_ically set the _image _index of the players current spr_ite
-
-// stats
-hp = 3;

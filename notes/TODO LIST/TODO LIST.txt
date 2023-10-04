@@ -1,7 +1,35 @@
 TO DO LIST:
-- remove mouse controls
-- have 8 directional movement, but only 4 directional attacking (link to the past)
-- add enemy
-    - add basic state machine
-- add damaging and killing enemy
-add taking damage and dying to enemy
+
+- make ranged unit that aligns and attacks
+- make enemy that cant be damaged with swords
+- make shield for blocking
+
+- item drops
+
+- make enemies able to wade drown and fall in pitfalls
+
+- make item system
+ - item drops
+ - inventory
+ - item database
+ - crafting?
+	- maybe just collecting a few mats and turning them into a vendor.
+	- basically adding one additional layer to purchase certain products.
+
+ 
+- NPCs
+ - talking
+ - aiding player in battle
+ - following player
+ - quests
+ - shopping
+ 
+
+- GUI
+ - HP
+ - MP
+ - equipped weapons
+ -
+ 
+- new rooms
+ - room transitions
