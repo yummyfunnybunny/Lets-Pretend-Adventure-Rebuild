@@ -2,6 +2,8 @@
 // Draw Shadow
 
 function draw_shadow() {
+	draw_sprite(spr_shadow,entity_shadow,x,y+z_floor);
+	/*
 	draw_sprite_stretched(
 		spr_shadow, 
 		entity_shadow, 
@@ -10,17 +12,18 @@ function draw_shadow() {
 		(bbox_right-bbox_left), 
 		(bbox_bottom-bbox_top)
 	);
+	*/
 }
 
-// make sure entity_shadow _is turned on
+// make sure entity_shadow is turned on
 if (entity_shadow != -1) {
-	// make sure ent_ity _is off the ground OR has PermaShadow on
+	// make sure entity is off the ground OR has PermaShadow on
 	if (z_bottom < z_floor || entity_permashadow){
-		// make sure ent_ity _is not on a p_itfall
+		// make sure entity is not on a pitfall
 		if (tilemap_get_at_pixel(global.collision_map,x,y) != 6) {
-			// make sure ent_ity _is not wad_ing _in water
+			// make sure entity is not wading in water
 			if (tilemap_get_at_pixel(global.collision_map,x,y) != 2) {
-				// Make sure ent_ity _is not _in deep water
+				// Make sure entity is not in deep water
 				if (tilemap_get_at_pixel(global.collision_map,x,y) != 3) {
 					draw_shadow();
 				} else if (z_floor != -1) { draw_shadow(); } else if (!on_ground) { draw_shadow(); }

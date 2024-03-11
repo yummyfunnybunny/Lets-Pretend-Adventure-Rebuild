@@ -1,1 +1,1 @@
-/// @description attack followthrough alarm
+/// @description attack end alarm

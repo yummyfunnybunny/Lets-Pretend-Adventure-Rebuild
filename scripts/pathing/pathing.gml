@@ -1,5 +1,5 @@
 
-function pather_create() {
+function pather_create(_x_coord,_y_coord) {
 	
 	// clear the grid cell below entity in case its occupied with a temporary path grid
 	var _temporary_path_grid = global.path_grid;
@@ -13,17 +13,27 @@ function pather_create() {
 	// Create Pather Object
 	if (pather_object == noone){
 		var _path = path_add();
-		mp_grid_path(_temporary_path_grid,_path, x,y,origin_x,origin_y,true);
+		mp_grid_path(_temporary_path_grid,_path, x,y,_x_coord,_y_coord,true);
 		
-		pather_object = instance_create_layer(x,y,"Instances",obj_con_pather);
+		pather_object = instance_create_layer(x,y,"Instances",obj_con_pather, {
+			creator: other.id,
+			move_speed: other.move_speed,
+			path: _path,
+			target_x: _x_coord,
+			target_y: _y_coord,
+			path_end_action: path_action_stop
+		});
 		with (pather_object) {
-			creator			= other.id;
-			move_speed		= other.move_speed;
-			path			= _path;
-			target_x		= other.origin_x;
-			target_y		= other.origin_y;
-			path_end_action = path_action_stop;
 			path_start(path,move_speed,path_end_action,false);
 		}
+	}
+}
+
+function pather_delete(_obj) {
+	if (pather_object != noone) {
+		path_delete(_obj.path);
+		instance_destroy(_obj);
+		pather_object = noone;
+		if (alarm[1] == -2) alarm[1] = -1;
 	}
 }

@@ -1,11 +1,12 @@
-/// @description Insert description here
-// You can write your code in this editor
-
+/// @descr update enemy
 event_inherited();
 
+enemy_set_target();
+
 // Run Current State
-if (global.game_paused == false) { 
-	script_execute(state);
+if (global.game_paused == -1) { 
+	script_execute(main_state);
+	script_execute(nest_state);
 }
 
 // update image
@@ -13,18 +14,51 @@ enemy_flip_image();
 enemy_image_speed();
 enemy_update_sprite();
 
+// update collision
+entity_collision();
+
 // update knockback
 entity_update_knockback();
 
 // update movement
 if (move_speed != 0) {
-	x_speed = lengthdir_x(move_speed, direction);
-	y_speed = lengthdir_y(move_speed, direction);
+	if (check_knockback_is_0() == true) {
+		x_speed = lengthdir_x(move_speed, direction);
+		y_speed = lengthdir_y(move_speed, direction);
+	}
 }
 
+// apply damage
+if (apply_damage != 0) {
+	enemy_start_damage(damage_script);
+}
 
-entity_collision();
-
+// check death by 0 HP
 if (hp <= 0) {
-	state = enemy_state_death;	
+	nest_state = enemy_state_death;	
 }
+
+// die when touching shallow water, deep water, and pitfalls
+if (tilemap_get_at_pixel(global.collision_map,x,y) == 2 ||
+	tilemap_get_at_pixel(global.collision_map,x,y) == 3 ||
+	tilemap_get_at_pixel(global.collision_map,x,y) == 6) {
+	if (z_bottom == -1) {
+		var _tile = tilemap_get_at_pixel(global.collision_map,x,y);
+		var _death_sprite;
+		switch (_tile) {
+			case 2: _death_sprite = spr_splash;
+			case 3: _death_sprite = spr_splash; break;
+			case 6: _death_sprite = spr_pitfall; break;
+		}
+		pather_delete(pather_object);
+		instance_destroy();	
+		instance_create_layer(x,y,global.main_layer,obj_object_death, {
+			sprite_index: _death_sprite
+		});
+	}
+}
+
+
+// 2 = shallow water
+// 3 = deep water
+// 6 = pitfall

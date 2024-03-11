@@ -19,42 +19,34 @@ function entity_collision(){
 	if (tilemap_get_at_pixel(global.collision_map, x+_xx+x_speed, y) == 1 ||
 		tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y-_bbox_height_half) == 1 ||
 		tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y+_bbox_height_half) == 1) {
-		if (tilemap_get_at_pixel(global.collision_map, x+_xx+sign(x_speed), y) == 1 ||
-		tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y-_bbox_height_half) == 1 ||
-		tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y+_bbox_height_half) == 1) {
-			x_speed = 0;
-		} else {
-			x_speed = sign(x_speed);
-		}
+			if (tilemap_get_at_pixel(global.collision_map, x+_xx+sign(x_speed), y) == 1 ||
+			tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y-_bbox_height_half) == 1 ||
+			tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y+_bbox_height_half) == 1) {
+				x_speed = 0;
+			} else {
+				x_speed = sign(x_speed);
+			}
 	}
 	
 	// -- Horizontal entities --
 	if (place_meeting(x+x_speed,y,obj_parent_entity)){
-		//show_debug_message("ent_ity coll_is_ion 1");
 		
 		// save the object _in quest_ion
 		var _entity_collided = instance_place(x+x_speed,y,obj_parent_entity);
 		
 		// check if ent_ity _is sol_id
 		if (_entity_collided.entity_solid) {
-			//show_debug_message("ent_ity coll_is_ion 2");
 			// check for z overlap with object _in quest_ion
 			if (check_z_overlap(_entity_collided) == true){
-				//show_debug_message("ent_ity coll_is_ion 3");
 				// perform step-up check
 				if (stepup_check(_entity_collided) == false){
-					//show_debug_message("coll_id_ing");
-					//show_debug_message("ent_ity coll_is_ion 4");
 					// check for coll_is_ion 1 p_ixel away
 					if (place_meeting(x+sign(x_speed),y,_entity_collided)){
-						//show_debug_message("x_speed set to 0");
 						// there _is a coll_is_ion, return 0 so there _is no movement
 						x_speed = 0;
-						//show_debug_message("ent_ity coll_is_ion 5");
 					}else {
 						// no coll_is_ion, return the sign of e_ither x_speed or y_speed
 						x_speed = sign(x_speed);
-						//show_debug_message("ent_ity coll_is_ion 6");
 					}
 				}
 			}
@@ -70,11 +62,9 @@ function entity_collision(){
 			if (tilemap_get_at_pixel(global.collision_map, x+_xx+sign(x_speed), y) == 10 ||
 			tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y-_bbox_height_half) == 10 ||
 			tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y+_bbox_height_half) == 10) {
-				//show_debug_message("x_speed = 0");
 				x_speed = 0;
 			} else {
 				x_speed = sign(x_speed);
-				//show_debug_message("x_speed = sign(x_speed)");
 			}
 		}
 	}
@@ -157,7 +147,6 @@ function entity_collision(){
 			}
 		}
 	}
-	//show_debug_message("y_speed: " + string(y_speed));
 	// Vertical Move Commit
 	y += y_speed;
 	
@@ -167,7 +156,7 @@ function entity_collision(){
 	// but never when a player is about to move onto an entity.
 	// that should all be pre-handled above before the move commit
 	if (place_meeting(x,y,obj_moving_platform)){
-		// save the object _in question
+		// save the object in question
 		var _entity_collided = instance_place(x,y,obj_parent_entity);
 		// check if entity is solid
 		if (_entity_collided.entity_solid) {
@@ -176,10 +165,11 @@ function entity_collision(){
 					var _dir = point_direction(_entity_collided.x,_entity_collided.y,x,y);
 					var _cardinal_dir = round(_dir/90);
 					switch(_cardinal_dir) {
-						case 0: x += (_entity_collided.bbox_right-bbox_left)+1; break;		// r_ight
-						case 1: y -= (bbox_bottom-_entity_collided.bbox_top)+1;  break;	// up
-						case 2: x -= (bbox_right-_entity_collided.bbox_left)+1;  break;	// left
-						case 3: y += (_entity_collided.bbox_bottom-bbox_top)+1;  break;	// down
+						case 0: x += (_entity_collided.bbox_right-bbox_left)+1;		break;	// right
+						case 4: x += (_entity_collided.bbox_right-bbox_left)+1;		break;	// right
+						case 1: y -= (bbox_bottom-_entity_collided.bbox_top)+1;		break;	// up
+						case 2: x -= (bbox_right-_entity_collided.bbox_left)+1;		break;	// left
+						case 3: y += (_entity_collided.bbox_bottom-bbox_top)+1;		break;	// down
 					}
 			}
 		}
@@ -195,11 +185,9 @@ function check_z_overlap(_entity_collided) {
 	if (_z_bottom <= z_bottom && _z_bottom >= z_top ||
 		_z_top >= z_top && _z_top <= z_bottom){
 		// there _is z overlap
-		//show_debug_message("there _iS z overlap");
 		return true;
 	}else {
 		// there _is no z overlap
-		//show_debug_message("there _is NO z overlap");
 		return false;
 	}
 }
@@ -210,11 +198,9 @@ function check_z_overlap(_entity_collided) {
 function stepup_check(_entity_collided) {
 	if (state != player_state_wade) {
 		if (_entity_collided.z_top >= z_bottom-z_step_up){
-			//show_debug_message("perform_ing the stepup check: TRUE");
 			z_bottom = _entity_collided.z_top-1;
 			return true;
 		}else {
-			//show_debug_message("perform_ing the stepup check: FALSE");
 			return false;
 		}
 	}
@@ -236,20 +222,18 @@ function set_z_limits() {
 			z_roof = _entity_collided.z_bottom+1;
 			below_of = _entity_collided;
 		}else {
-			// set z_roof to ce_il_ing
+			// set z_roof to ceiling
 			z_roof = -room_height;
 			below_of = noone;
 		}
 		
-		// check if _instance _is below you
+		// check if instance is below you
 		}else if (_entity_collided.z_top > z_bottom) {
 			if (bounding_box_check(_entity_collided) == true) {
-				//show_debug_message("SET z l_im_it to top of coll_id_ing _instance");
 				z_floor = _entity_collided.z_top-1;
 				on_top_of = _entity_collided;
 			}else {
-				// water coll_is_ion stuff w_ill probably go here... for now
-				//show_debug_message("There _is no more coll_is_ion");
+				// water collision stuff will probably go here... for now
 				z_floor = -1;
 				on_top_of = noone;
 			}

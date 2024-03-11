@@ -1,24 +1,34 @@
-/// @desc ???
-
-// _inher_it the parent event
+/// @desc initialize enemy
 event_inherited();
 
+#region CALCULATION VARIABLES
 
-//===================== dunno yet about this stuff
-immunities = {
-	
+faction = FACTION.ENEMY;
+hp = max_hp;
+mp = max_mp;
+armor = max_armor;
+move_speed = 0;
+apply_damage = 0;
+target = noone;
+align_x = 0;
+align_y = 0;
+damage_script = undefined;
+
+// Alarms
+
+enum ALARM {
+	DEATH,
+	STATE,
+	DAMAGED,
+	ATK_START,
+	ATK_END,
+	COUNT,
 }
 
-buffs = [];
-debuffs = []; 
-/* 
-[
-	{
-		Name: bleed,
-		dmgPerT_ick: 5,
-		durat_ion: 30,
-		t_imeRema_in_ing: 15,
-		debuffEnd: 
-	},
-	{}
-]
+
+#endregion
+
+#region FUNCTIONS
+
+#endregion
+

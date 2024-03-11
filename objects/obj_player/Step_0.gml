@@ -5,15 +5,19 @@ player_update_input();
 player_apply_friction();
 
 // Update Player max_speed
-// do this before updat_ing x_speed/y_speed
+// *do this before updating x_speed/y_speed*
 player_update_max_speed();
 
-
+// Collision Checking
+// *must do this AFTER updating max_speed*
+entity_collision();
 
 // Run Current State
-if (global.game_paused == false) { 
+if (global.game_paused == -1) { 
 	script_execute(state);
 }
+
+#region COLLISION MAP CHECKS
 
 // Ladder
 if (tilemap_get_at_pixel(global.collision_map,x,y) == 4 && on_ground == true) {
@@ -73,7 +77,6 @@ if (tilemap_get_at_pixel(global.collision_map,x,y) == 19) {
 if (tilemap_get_at_pixel(global.collision_map,x,y) == 3) {
 	if (on_ground == true && z_bottom == -1) {
 		if (state = player_state_free) {
-			show_debug_message("setting state to drown");
 			just_got_damaged = true;
 			hp -= 1;
 			x_speed = 0;
@@ -89,20 +92,19 @@ if (tilemap_get_at_pixel(global.collision_map,x,y) == 3) {
 if (on_ground == true && 
 	z_bottom == -1 &&
 	tilemap_get_at_pixel(global.collision_map,x,y) == 0) {
-		last_safe_x = x_prev;
-		last_safe_y = y_prev;
+		last_safe_x = xprevious;
+		last_safe_y = yprevious;
 }
 
 
 // Wade (Shallow Water)
 if (tilemap_get_at_pixel(global.collision_map,x,y) == 2 && z_bottom == -1) {
 	if (state != player_state_wade) { 
-		
 		state = player_state_wade; 
 	}
 } else if (state == player_state_wade) { state = player_state_free; }
 
-
+#endregion
 
 // Jump & Fall
 if (on_ground == false) {
@@ -112,14 +114,6 @@ if (on_ground == false) {
 		if (state != player_state_fall) { state = player_state_fall; }
 	}
 } else if (state == player_state_fall) { state = player_state_free; }
-
-
-
-// Collision Checking
-entity_collision();
-
-tile = tilemap_get_at_pixel(global.collision_map,x,y);
-
 
 
 

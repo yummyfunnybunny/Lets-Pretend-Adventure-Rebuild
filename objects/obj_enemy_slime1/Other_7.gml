@@ -2,7 +2,7 @@
 // You can write your code in this editor
 
 
-if (state = enemy_state_death) {
+if (nest_state = enemy_state_death) {
 	instance_destroy();	
 }
 

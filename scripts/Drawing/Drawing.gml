@@ -17,7 +17,11 @@ function draw_shadow(_sprite_index){
 
 function set_depth() {
 	if (on_top_of != noone) {
-		depth = (on_top_of.y*-1)+z_bottom;	
+		if (instance_exists(on_top_of)) {
+		depth = (on_top_of.y*-1)+z_bottom;
+		} else {
+			on_top_of = noone;	
+		}
 	} else {
 		depth = -y+z_bottom;
 	}

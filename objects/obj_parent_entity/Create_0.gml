@@ -1,34 +1,31 @@
-/*
-if (entity_solid) {
-	z_top = z_bottom-z_height;
-}
-*/
-/*
-on_ground = true;
-z_speed = 0;
-z_bottom = 0;
-z_height = spr_ite_he_ight;
-z_prev = 0;
-z_floor = 0;
-z_roof = 0;
-z_max_fall_speed = 4;
+
+
+#region CALCULATION VARIABLES
+
 z_top = z_bottom - z_height;
-z_gravity = .2;
+z_floor = -1;
+z_roof = -room_height;
+z_speed = 0;
+z_prev = -1;
 on_top_of = noone;
 below_of = noone;
-*/
-
-/*
+on_ground = true;
 x_speed = 0;
 y_speed = 0;
-max_speed = 1;
-x_prev = x;
-y_prev = y;
-last_safe_x = x;
-last_safe_y = y;
-*/
+knockback_x = 0;
+knockback_y = 0;
+knockback_z = 0;
+origin_x = x;
+origin_y = y;
+pather_object = noone;
+just_got_damaged = 0;
 
 
-wade_in_water = false;
+#endregion
+
+#region FUNCTIONS
 
 set_depth();
+
+#endregion
+

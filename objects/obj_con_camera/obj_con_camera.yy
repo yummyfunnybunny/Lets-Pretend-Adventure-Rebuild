@@ -29,8 +29,8 @@
   "properties": [],
   "solid": false,
   "spriteId": {
-    "name": "spr_camera",
-    "path": "sprites/spr_camera/spr_camera.yy",
+    "name": "spr_con_camera",
+    "path": "sprites/spr_con_camera/spr_con_camera.yy",
   },
   "spriteMaskId": null,
   "visible": false,

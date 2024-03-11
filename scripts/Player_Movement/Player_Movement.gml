@@ -2,35 +2,9 @@
 
 function player_update_max_speed() {
 	switch (state) {
-		case player_state_free:
-			if (pace_backwards) { 
-				if (max_speed != reverse_speed) { 
-					max_speed = reverse_speed; 
-				} 
-			} else { 
-				if (max_speed != run_speed) { 
-					max_speed = run_speed; 
-				} 
-			}
-		break;
-		
-		case player_state_wade:
-			if (pace_backwards) { 
-				if (max_speed != reverse_speed) { 
-					max_speed = reverse_speed; 
-				} 
-			} else { 
-				if (max_speed != wade_speed) { 
-					max_speed = wade_speed; 
-				} 
-			}
-		break;
-		
-		case player_state_climb:
-			if (max_speed != climb_speed) { 
-				max_speed = climb_speed; 
-			}
-		break;
+		case player_state_free:		if (max_speed != run_speed) max_speed = run_speed;		break;
+		case player_state_wade:		if (max_speed != wade_speed) max_speed = wade_speed;	break;
+		case player_state_climb:	if (max_speed != climb_speed) max_speed = climb_speed;	break;
 	}
 }
 
@@ -84,12 +58,12 @@ function player_update_face_direction() {
 }
 
 function player_update_x_speed() {
-	// Set _in_it_ial x_speed based on user _input
+	// Set initial x_speed based on user input
 	if (move_direction != -1) {
 			x_speed += lengthdir_x(acceleration, move_direction);
 	}
 	
-	// Prevent x_speed from exceed_ing max_speed
+	// Prevent x_speed from exceeding max_speed
 	if (sign(lengthdir_x(max_speed,move_direction)) == -1) {
 		if (x_speed < lengthdir_x(max_speed,move_direction)) {
 			x_speed = lengthdir_x(max_speed,move_direction);	
@@ -106,12 +80,12 @@ function player_update_x_speed() {
 }
 
 function player_update_y_speed() {
-	// Set _in_it_ial y_speed based on user _input
+	// Set initial y_speed based on user input
 	if (move_direction != -1) {
 			y_speed += lengthdir_y(acceleration, move_direction);
 	}
 	
-	// Prevent y_speed from exceed_ing max_speed
+	// Prevent y_speed from exceeding max_speed
 	if (sign(lengthdir_y(max_speed,move_direction)) == -1) {
 		if (y_speed < lengthdir_y(max_speed,move_direction)) {
 			y_speed = lengthdir_y(max_speed,move_direction);	
@@ -141,22 +115,3 @@ function player_apply_friction() {
 }
 
 
-// Update Pace Backwards
-function player_update_pace_backwards() {
-	if (x_speed != 0 || y_speed != 0) {
-		var _move_dir = move_direction div 45;
-		var _face_dir = round(face_direction) div 45;
-		switch (_move_dir) {
-			case 0: if (_face_dir == 3 || _face_dir == 4) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;
-			case 1: if (_face_dir == 4 || _face_dir == 5) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;
-			case 2: if (_face_dir == 5 || _face_dir == 6) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;
-			case 3: if (_face_dir == 6 || _face_dir == 7) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;
-			case 4: if (_face_dir == 7 || _face_dir == 0) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;
-			case 5: if (_face_dir == 0 || _face_dir == 1) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;
-			case 6: if (_face_dir == 1 || _face_dir == 2) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;
-			case 7: if (_face_dir == 2 || _face_dir == 3) { if (!pace_backwards) { pace_backwards = true; } } else { if (pace_backwards) { pace_backwards = false; } } break;
-		}
-	} else {
-		if (sprite_index != sprite_idle) { sprite_index = sprite_idle; }
-	}
-}

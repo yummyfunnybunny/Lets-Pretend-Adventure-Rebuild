@@ -1,0 +1,108 @@
+/// @desc update enemy
+
+// Inherit the parent event
+event_inherited();
+
+#region FUNCTIONS
+
+#endregion
+
+#region MAIN STATE
+
+// MAIN STATE
+if (main_state == enemy_state_unaware) {
+	
+}
+
+if (main_state == enemy_state_aware) {
+
+}
+
+#endregion
+
+#region NEST STATE
+
+if (nest_state = enemy_choose_state) {
+	// Select State
+	var _chosen_state = weighted_chance(enemy_state_idle, idle_weight, enemy_state_wander, wander_weight);
+	// Run selected state
+	main_state = enemy_state_unaware;
+	nest_state = _chosen_state;
+}
+
+if (nest_state = enemy_state_idle) {
+	// set image
+	if (image_speed != 1) image_speed = 1;
+	// begin idle
+	if (alarm[1] == -1) alarm[1] = FPS*1;
+	// end idle
+	if (alarm[1] == 0) nest_state = enemy_choose_state;
+}
+
+if (nest_state = enemy_state_wait) {
+	// set image
+	if (image_speed != 1) image_speed = 1;
+	// begin wait
+	if (alarm[1] == -1) {
+		alarm[1] = FPS*1;
+		x_speed = 0;
+		y_speed = 0;
+		move_speed = 0;
+	}
+	// end wait
+	if (alarm[1] == 0) nest_state = enemy_choose_state;
+}
+
+if (nest_state = enemy_state_wander) {
+	// set image
+	if (image_speed != 1) image_speed = 1;
+	// begin wander
+	if (alarm[1] == -1) {
+		direction = choose (45,135,225,315);
+		move_speed = walk_speed;
+		x_speed = lengthdir_x(move_speed, direction);
+		y_speed = lengthdir_y(move_speed, direction);
+		alarm[1] = FPS*1;
+	}
+	// end wander
+	if (alarm[1] == 0) {
+		move_speed = 0;
+		x_speed = 0;
+		y_speed = 0;
+		nest_state = enemy_choose_state;
+	}	
+}
+
+if (nest_state = enemy_state_flee) {
+	// set image
+	if (image_speed != 1) image_speed = 1;
+	// begin flee
+	if (alarm[1] == -1) {
+	direction = point_direction(target.x,target.y,x,y);
+	if (move_speed != run_speed) move_speed = run_speed;
+	x_speed = lengthdir_x(move_speed, direction);
+	y_speed = lengthdir_y(move_speed, direction);
+	alarm[1] = FPS*2;
+	}
+	// end flee
+	if (alarm[1] == 0) {
+		x_speed = 0;
+		y_speed = 0;
+		move_speed = 0;
+		nest_state = enemy_state_wait;
+		main_state = enemy_state_unaware;
+	}
+}
+
+if (nest_state == enemy_state_hurt) {
+	//begin hurt
+	
+	// end hurt
+	if (check_knockback_is_0() == true) {
+		nest_state = enemy_choose_state;	
+	}
+}
+
+#endregion
+
+

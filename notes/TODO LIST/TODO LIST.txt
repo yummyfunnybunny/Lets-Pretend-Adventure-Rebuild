@@ -1,6 +1,5 @@
 TO DO LIST:
 
-- make ranged unit that aligns and attacks
 - make enemy that cant be damaged with swords
 - make shield for blocking
 

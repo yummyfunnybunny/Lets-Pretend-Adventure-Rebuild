@@ -19,9 +19,6 @@ target_y = ystart;
 
 v_iew_w = camera_get_view_width(main_camera);
 v_iew_h = camera_get_view_height(main_camera);
-
-mouse_x_prev = -1;
-mouse_y_prev = -1;
 */
 
 
@@ -32,6 +29,7 @@ following = obj_player;
 
 view_width_half = camera_get_view_width(main_camera)*.5;
 view_height_half = camera_get_view_height(main_camera)*.5;
+camera_set_view_size(main_camera,640,360);
 
 x_to = xstart; 
 y_to = ystart;

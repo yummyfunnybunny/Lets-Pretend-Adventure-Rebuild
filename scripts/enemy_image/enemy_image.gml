@@ -14,15 +14,17 @@ function enemy_image_speed() {
 
 function enemy_update_sprite() {
 	var _sprite;
-	switch(state) {
-		case enemy_state_idle:			_sprite = sprite_idle; break;
-		case enemy_state_wander:		_sprite = sprite_walk; break;
-		case enemy_state_chase:			_sprite = sprite_run; break;
-		case enemy_state_return_origin: _sprite = sprite_walk; break;
-		case enemy_state_wait:			_sprite = sprite_idle; break;
-		case enemy_state_death:			_sprite = sprite_death; break;
-		case enemy_state_attack:		_sprite = sprite_attack; break;
-		default: _sprite = sprite_idle; break;
+	switch(nest_state) {
+		case enemy_state_idle:			_sprite = sprite_idle;		break;
+		case enemy_state_wait:			_sprite = sprite_idle;		break;
+		case enemy_state_wander:		_sprite = sprite_move;		break;
+		case enemy_state_chase:			_sprite = sprite_move;		break;
+		case enemy_state_align:			_sprite = sprite_move;		break;
+		case enemy_state_return_origin: _sprite = sprite_move;		break;
+		case enemy_state_flee:			_sprite = sprite_move;		break;
+		case enemy_state_attack:		_sprite = sprite_attack;	break;
+		case enemy_state_death:			_sprite = sprite_death;		break;
+		default:						_sprite = sprite_idle;		break;
 	}
 	
 	sprite_index = _sprite;
