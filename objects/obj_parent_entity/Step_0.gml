@@ -2,9 +2,11 @@
 
 
 // update Depth if necessary
+/*
 if (y != yprevious || z_bottom != z_prev) {
 	set_depth();
 }
+*/
 
 // update z_prev and z_top
 if (z_prev != z_bottom) {

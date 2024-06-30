@@ -2,11 +2,14 @@
 
 /// Set the collision map
 global.collision_map = layer_tilemap_get_id(layer_get_id("CollisionMap"));
+show_debug_message(global.collision_map);
 
 
 ///  Resizes the grid for every room
 
 //sets the grid size
+show_debug_message("room_height: " + string(room_height));
+show_debug_message("cell size: " +string(global.path_grid_cell_size));
 global.path_grid_width = room_width div global.path_grid_cell_size;
 global.path_grid_height = room_height div global.path_grid_cell_size;
 
@@ -14,9 +17,13 @@ global.path_grid_height = room_height div global.path_grid_cell_size;
 global.path_grid = mp_grid_create(0,0,global.path_grid_width,global.path_grid_height,global.path_grid_cell_size,global.path_grid_cell_size);
 
 // add collision map to the path_grid
-var _w = tilemap_get_width(global.collision_map)-1;
+var _w = tilemap_get_width(global.collision_map);
 var _h = tilemap_get_height(global.collision_map);
 var _collision_map_grid = ds_grid_create(_w,_h);
+show_debug_message(global.path_grid_height);
+show_debug_message(global.path_grid_width);
+show_debug_message(_w);
+show_debug_message(_h);
 
 for (var _i = 1; _i < _w; _i++) {
 	for (var _j = 1; _j < _h; _j++) {

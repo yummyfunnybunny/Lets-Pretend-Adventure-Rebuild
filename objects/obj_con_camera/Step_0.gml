@@ -81,13 +81,13 @@ camera_set_view_pos(main_camera, cx, cy);
 
 // -- Camera 2 Update --
 
-// update camera dest_inat_ion coord_inates
+// update camera destination coordinates
 if (instance_exists(following)) {
 	x_to = following.x;
 	y_to = following.y;
 }
 
-// update object pos_it_ion
+// update object position
 x += (x_to - x) / 15; // move towards the dest_inat_ion by 15% each step
 y += (y_to - y) / 15;
 

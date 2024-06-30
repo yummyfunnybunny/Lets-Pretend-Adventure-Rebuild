@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "knockback",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "General",
-    "path": "folders/Scripts/General.yy",
+  "$GMScript":"",
+  "%Name":"knockback",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"knockback",
+  "parent":{
+    "name":"General",
+    "path":"folders/Scripts/General.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

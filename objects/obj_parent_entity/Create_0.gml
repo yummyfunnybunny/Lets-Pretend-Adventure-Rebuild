@@ -25,7 +25,7 @@ just_got_damaged = 0;
 
 #region FUNCTIONS
 
-set_depth();
+//set_depth();
 
 #endregion
 

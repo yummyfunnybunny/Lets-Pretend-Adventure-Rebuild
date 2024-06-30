@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "Entity_Collision",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "General",
-    "path": "folders/Scripts/General.yy",
+  "$GMScript":"",
+  "%Name":"Entity_Collision",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Entity_Collision",
+  "parent":{
+    "name":"General",
+    "path":"folders/Scripts/General.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

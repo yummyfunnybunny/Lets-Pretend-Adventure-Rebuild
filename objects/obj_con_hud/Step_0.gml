@@ -1,3 +1,3 @@
-if (room == rm_test) {
+if (room == rm_overworld_test) {
 	
 }

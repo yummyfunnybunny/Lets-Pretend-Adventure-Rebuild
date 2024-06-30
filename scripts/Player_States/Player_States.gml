@@ -240,10 +240,10 @@ function player_state_climb() {
 function player_state_wade() {
 	
 	// set sprites
-	if (sprite_idle				!= spr_player2_wade_idle)			{ sprite_idle			= spr_player2_wade_idle;				}
-	if (sprite_walk				!= spr_player2_wade_walk)			{ sprite_walk			= spr_player2_wade_walk;				}
-	if (sprite_run				!= spr_player2_wade_walk)			{ sprite_run			= spr_player2_wade_walk;				}
-	if (sprite_death			!= spr_player2_drown)				{ sprite_death			= spr_player2_drown;					}
+	if (sprite_idle	!= spr_player2_wade_idle)			{ sprite_idle = spr_player2_wade_idle;		}
+	if (sprite_walk	!= spr_player2_wade_walk)			{ sprite_walk = spr_player2_wade_walk;		}
+	if (sprite_run	!= spr_player2_wade_walk)			{ sprite_run = spr_player2_wade_walk;		}
+	if (sprite_death != spr_player2_drown)				{ sprite_death = spr_player2_drown;			}
 	
 	// update sprites
 	if (x_speed != 0 || y_speed != 0) {
