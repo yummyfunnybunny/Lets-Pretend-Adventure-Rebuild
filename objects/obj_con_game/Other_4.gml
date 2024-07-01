@@ -1,5 +1,6 @@
 /// @desc Collision Map
 
+
 /// Set the collision map
 global.collision_map = layer_tilemap_get_id(layer_get_id("CollisionMap"));
 show_debug_message(global.collision_map);
@@ -46,3 +47,61 @@ for (var _i = 0; _i < instance_number(obj_parent_entity); _i++){
 		mp_grid_add_instances(global.path_grid,_entity,1);
 	}
 }
+
+// create player at the start
+if (!instance_exists(obj_player)) {
+	instance_create_depth(global.transfer_x, global.transfer_y, global.instance_depth, obj_player);
+}
+
+// create the camera event
+if (!instance_exists(obj_con_camera)) {
+	//global.camera = view_camera[0];
+	//global.camera_width_half = camera_get_view_width(global.camera)*.5;
+	//global.camera_height_half = camera_get_view_height(global.camera)*.5;
+	//show_debug_message("setting camera x,y to create it right over player");
+	//show_debug_message(global.camera_width_half);
+	//show_debug_message(global.camera_height_half);
+	//show_message("creating camera");
+	//var _camera_x = obj_player.x;
+	//var _camera_y = obj_player.y;
+	// clamp camera to room bounds
+	
+	//var _camera_x = clamp(obj_player.x - global.camera_width_half, global.camera_width_half, room_width-global.camera_width_half);
+	//var _camera_y = clamp(obj_player.y - global.camera_height_half, global.camera_height_half, room_height-global.camera_height_half);
+	//show_debug_message(_camera_x);
+	//show_debug_message(_camera_y);
+	global.camera = instance_create_depth(obj_player.x,obj_player.y,global.instance_depth,obj_con_camera);	
+}
+
+#region FINALIZE ROOM TRANSITIONS
+
+if (global.transitioning) {
+	
+	// set variables for in-transition
+	transition_percent = 0;
+	transition_left = 0;
+	transition_top = 0;
+	transition_right = global.gui_width;
+	transition_bottom = global.gui_height;
+
+	// set in-direction based on previous out-direction
+	switch (global.transition_type) {
+		case "out-left":
+			global.transition_type = "in-right";
+		break;
+		
+		case "out-right":
+			global.transition_type = "in-left";
+		break;
+		
+		case "out-up":
+			global.transition_type = "in-down";
+		break;
+		
+		case "out-down":
+			global.transition_type = "in-up";
+		break;
+	}
+}
+
+#endregion

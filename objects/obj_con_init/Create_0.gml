@@ -1,5 +1,17 @@
 /// @desc initialize game
 
+// -- MACROS --
+#macro COL_TILES_SIZE 16
+#macro FPS game_get_speed(gamespeed_fps)
+
+// -- GLOBAL VARIABLES --
+global.transfer_x		= 288;		// sets x of player when entering new room
+global.transfer_y		= 288;		// sets y of player when entering new room
+global.instance_depth	= 700;		// set the default instance depth for creating new instances on the ground level
+
+
+// -- ENUMS --
+
 // initialize data column enums for easier accessing
 enum ITEM_COLUMN {
 	ID,

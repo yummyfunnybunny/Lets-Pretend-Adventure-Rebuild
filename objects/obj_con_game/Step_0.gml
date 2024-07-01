@@ -228,6 +228,82 @@ function menu_update_system() {
 
 #endregion
 
+#region UPDATE ROOM TRANSITIONS
+
+if (global.transitioning) {
+	
+	// increment the percentage of completion
+	if (transition_percent < 1) {
+		transition_percent += 1/60;	
+	};
+
+	// set the position on the curve
+	var _position = animcurve_channel_evaluate(transition_curve, transition_percent);
+
+	// set transition drawing bounds based on the transition type
+	switch(global.transition_type) {
+		case "out-left":
+			transition_left = global.gui_width - (_position * global.gui_width);
+		break;
+	
+		case "out-right":
+			transition_right = _position * global.gui_width;
+		break;
+	
+		case "out-up":
+			transition_top = global.gui_height - (_position * global.gui_height);
+		break;
+	
+		case "out-down":
+			transition_bottom = _position * global.gui_height;
+		break;
+	
+		case "in-left":
+			transition_left = _position * global.gui_width;
+		break;
+	
+		case "in-right":
+			transition_right = global.gui_width - (_position * global.gui_width);
+		break;
+	
+		case "in-up":
+			transition_top = _position * global.gui_height;
+		break;
+	
+		case "in-down":
+			transition_bottom = global.gui_height - (_position * global.gui_height);
+		break;
+	}
+	
+	// start drawing transition
+	draw_transition = true;
+
+	
+
+	// perform transition end for out/in
+	if (transition_percent == 1) {
+	
+		var _transition = string_split(global.transition_type, "-");
+		// end out transition and transfer to new room
+		if (_transition[0] == "out") {
+			room_goto(global.transfer_room);
+			
+		// end in transition and reset
+		} else if (_transition[0] == "in") {
+			global.transitioning = false;
+			transition_type = noone;
+			transition_percent = 0;
+			transition_left = 0;
+			transition_top = 0;
+			transition_right = global.gui_width;
+			transition_bottom = global.gui_height;
+			draw_transition = false;
+		}
+	}
+}
+
+#endregion
+
 /*
 // debug gui mouse coords
 var _gui_x = device_mouse_x_to_gui(0);

@@ -4,20 +4,34 @@ global.game_paused = -1;
 global.debugger = false;
 global.main_layer = "Instances";
 
+display_set_gui_size(640,360);
+global.gui_width = display_get_gui_width();
+global.gui_height = display_get_gui_height();
+
+#region INITIALIZE ROOM TRANSITIONS
+
+global.transitioning = false;
+global.transition_type = noone;
+global.transfer_room = noone;
+global.transfer_x = 288;
+global.transfer_y = 288;
+transition_curve = animcurve_get_channel(ac_curve_room_transition,"curve1");
+transition_percent = 0;
+transition_left = 0;
+transition_top = 0;
+transition_right = global.gui_width;
+transition_bottom = global.gui_height;
+draw_transition = false;
+
+#endregion
+
 // set GUI size
 display_set_gui_size(640,360);
-
-// -- MACROS --
-#macro COL_TILES_SIZE 16
-#macro FPS game_get_speed(gamespeed_fps)
 
 /// -- initialize path finding grid --
 
 // set the size of each individual cell in the grid
 global.path_grid_cell_size = 8;
-
-// Create the Camera Controller
-global.Camera = instance_create_layer(0, 0, layer,obj_con_camera);
 
 // create the UI Controller
 global.ui = instance_create_layer(0, 0, layer, obj_con_hud);
@@ -225,7 +239,3 @@ function beastiary_grid_shift_left(){
 }
 
 #endregion
-
-
-
-
