@@ -22,6 +22,7 @@
     {"name":"Tilesets","order":6,"path":"folders/Sprites/Tilesets.yy",},
   ],
   "ResourceOrderSettings":[
+    {"name":"ac_curve_camera_zoom","order":2,"path":"animcurves/ac_curve_camera_zoom/ac_curve_camera_zoom.yy",},
     {"name":"ac_curve_room_transition","order":1,"path":"animcurves/ac_curve_room_transition/ac_curve_room_transition.yy",},
     {"name":"fnt_beastiary_category_name","order":5,"path":"fonts/fnt_beastiary_category_name/fnt_beastiary_category_name.yy",},
     {"name":"fnt_display_data","order":4,"path":"fonts/fnt_display_data/fnt_display_data.yy",},
@@ -51,6 +52,7 @@
     {"name":"obj_enemy_slime1","order":1,"path":"objects/obj_enemy_slime1/obj_enemy_slime1.yy",},
     {"name":"obj_enemy_turtle1","order":7,"path":"objects/obj_enemy_turtle1/obj_enemy_turtle1.yy",},
     {"name":"obj_fence","order":1,"path":"objects/obj_fence/obj_fence.yy",},
+    {"name":"obj_fix_camera","order":8,"path":"objects/obj_fix_camera/obj_fix_camera.yy",},
     {"name":"obj_ladder","order":7,"path":"objects/obj_ladder/obj_ladder.yy",},
     {"name":"obj_moving_platform","order":4,"path":"objects/obj_moving_platform/obj_moving_platform.yy",},
     {"name":"obj_object_death","order":16,"path":"objects/obj_object_death/obj_object_death.yy",},

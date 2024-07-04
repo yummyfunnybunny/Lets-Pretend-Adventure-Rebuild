@@ -32,7 +32,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_marker",
+    "path":"sprites/spr_marker/spr_marker.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

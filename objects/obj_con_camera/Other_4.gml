@@ -2,17 +2,15 @@
 
 #region END SCREEN TRANSITION
 
-if (global.transitioning) {
+if (transitioning) {
 	
 	// set camera position to where player will appear
-	x = global.transfer_x;
-	y = global.transfer_y;
+	x = transfer_x;
+	y = transfer_y;
 	
 	// set player position
 	if (!instance_exists(obj_player)) {
-		instance_create_depth(global.transfer_x, global.transfer_y, INSTANCE_DEPTH, obj_player);
-		//obj_player.x = global.transfer_x;
-		//obj_player.y = global.transfer_y;
+		instance_create_depth(transfer_x, transfer_y, INSTANCE_DEPTH, obj_player);
 	}
 	
 	// set variables for in-transition
@@ -23,25 +21,25 @@ if (global.transitioning) {
 	transition_bottom = global.gui_height;
 
 	// set in-direction based on previous out-direction
-	switch (global.transition_type) {
+	switch (transition_type) {
 		case "out-left":
-			global.transition_type = "in-right";
+			transition_type = "in-right";
 		break;
 		
 		case "out-right":
-			global.transition_type = "in-left";
+			transition_type = "in-left";
 		break;
 		
 		case "out-up":
-			global.transition_type = "in-down";
+			transition_type = "in-down";
 		break;
 		
 		case "out-down":
-			global.transition_type = "in-up";
+			transition_type = "in-up";
 		break;
 		
 		case "out-center":
-			global.transition_type = "in-center";
+			transition_type = "in-center";
 		break;
 	}
 }

@@ -11,6 +11,7 @@ last_safe_x = x;
 last_safe_y = y;
 item_id_used = noone;
 equip_slot_used = noone;
+disable_input = false;
 
 // set sprites
 sprite_idle_down = spr_player_idle_down;

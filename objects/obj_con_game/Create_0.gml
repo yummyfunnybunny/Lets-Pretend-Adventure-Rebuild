@@ -231,6 +231,10 @@ if (!instance_exists(obj_player) && !instance_exists(obj_con_camera)) {
 
 #endregion
 
+
+
+
+
 #region CREATE CAMERA
 
 if (!instance_exists(obj_con_camera)) {

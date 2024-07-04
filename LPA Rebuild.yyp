@@ -62,6 +62,7 @@
   },
   "name":"LPA Rebuild",
   "resources":[
+    {"id":{"name":"ac_curve_camera_zoom","path":"animcurves/ac_curve_camera_zoom/ac_curve_camera_zoom.yy",},},
     {"id":{"name":"ac_curve_room_transition","path":"animcurves/ac_curve_room_transition/ac_curve_room_transition.yy",},},
     {"id":{"name":"AnimationCurve1","path":"animcurves/AnimationCurve1/AnimationCurve1.yy",},},
     {"id":{"name":"fnt_beastiary_category_name","path":"fonts/fnt_beastiary_category_name/fnt_beastiary_category_name.yy",},},
@@ -97,6 +98,7 @@
     {"id":{"name":"obj_enemy_slime1","path":"objects/obj_enemy_slime1/obj_enemy_slime1.yy",},},
     {"id":{"name":"obj_enemy_turtle1","path":"objects/obj_enemy_turtle1/obj_enemy_turtle1.yy",},},
     {"id":{"name":"obj_fence","path":"objects/obj_fence/obj_fence.yy",},},
+    {"id":{"name":"obj_fix_camera","path":"objects/obj_fix_camera/obj_fix_camera.yy",},},
     {"id":{"name":"obj_ladder","path":"objects/obj_ladder/obj_ladder.yy",},},
     {"id":{"name":"obj_moving_platform","path":"objects/obj_moving_platform/obj_moving_platform.yy",},},
     {"id":{"name":"obj_object_death","path":"objects/obj_object_death/obj_object_death.yy",},},

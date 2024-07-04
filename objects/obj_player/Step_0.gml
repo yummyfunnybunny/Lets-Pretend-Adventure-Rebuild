@@ -1,6 +1,8 @@
 event_inherited();
 
-player_update_input();
+if (!disable_input) {
+	player_update_input();
+}
 
 player_apply_friction();
 
