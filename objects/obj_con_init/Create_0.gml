@@ -1,13 +1,20 @@
 /// @desc initialize game
 
 // -- MACROS --
+#region MACROS
+
 #macro COL_TILES_SIZE 16
 #macro FPS game_get_speed(gamespeed_fps)
+#macro PLAYER_START_X 84
+#macro PLAYER_START_Y 504
+#macro INSTANCE_DEPTH 700
+
+#endregion
 
 // -- GLOBAL VARIABLES --
-global.transfer_x		= 288;		// sets x of player when entering new room
-global.transfer_y		= 288;		// sets y of player when entering new room
-global.instance_depth	= 700;		// set the default instance depth for creating new instances on the ground level
+//global.transfer_x		= 288;		// sets x of player when entering new room
+//global.transfer_y		= 288;		// sets y of player when entering new room
+//global.instance_depth	= 700;		// set the default instance depth for creating new instances on the ground level
 
 
 // -- ENUMS --

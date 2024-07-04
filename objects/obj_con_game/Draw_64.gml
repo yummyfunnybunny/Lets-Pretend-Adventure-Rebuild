@@ -207,11 +207,3 @@ function menu_draw_system() {
 	// draw background
 	draw_sprite_ext(spr_menu_screen,3,0,0,1,1,0,c_white,1);
 }
-
-#region Room Transition
-
-if (draw_transition) {
-	draw_rectangle_color(transition_left, transition_top, transition_right, transition_bottom, c_black, c_black, c_black, c_black, false);
-}
-
-#endregion

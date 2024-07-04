@@ -8,23 +8,6 @@ display_set_gui_size(640,360);
 global.gui_width = display_get_gui_width();
 global.gui_height = display_get_gui_height();
 
-#region INITIALIZE ROOM TRANSITIONS
-
-global.transitioning = false;
-global.transition_type = noone;
-global.transfer_room = noone;
-global.transfer_x = 288;
-global.transfer_y = 288;
-transition_curve = animcurve_get_channel(ac_curve_room_transition,"curve1");
-transition_percent = 0;
-transition_left = 0;
-transition_top = 0;
-transition_right = global.gui_width;
-transition_bottom = global.gui_height;
-draw_transition = false;
-
-#endregion
-
 // set GUI size
 display_set_gui_size(640,360);
 
@@ -236,6 +219,22 @@ function beastiary_grid_shift_left(){
 		current_slot_x--;
 		_value = ds_grid_get(beastiary,current_slot_x,current_slot_y);
 	}	
+}
+
+#endregion
+
+#region CREATE PLAYER
+
+if (!instance_exists(obj_player) && !instance_exists(obj_con_camera)) {
+	instance_create_depth(PLAYER_START_X, PLAYER_START_Y, INSTANCE_DEPTH, obj_player);
+}
+
+#endregion
+
+#region CREATE CAMERA
+
+if (!instance_exists(obj_con_camera)) {
+	global.camera = instance_create_depth(obj_player.x,obj_player.y,INSTANCE_DEPTH,obj_con_camera);	
 }
 
 #endregion

@@ -26,3 +26,7 @@ function screen_shake(_magnitude, _magnitude_time){
 		}
 	}
 }
+
+function transition() {
+	
+}
