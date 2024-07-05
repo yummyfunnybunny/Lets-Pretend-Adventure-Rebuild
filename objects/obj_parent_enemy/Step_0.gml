@@ -39,6 +39,8 @@ if (hp <= 0) {
 }
 
 // die when touching shallow water, deep water, and pitfalls
+// THIS WILL MOST LIKELY NEED TO BE MOVED
+//		certain enemies will be able to go in water and pitfalls
 if (tilemap_get_at_pixel(global.collision_map,x,y) == 2 ||
 	tilemap_get_at_pixel(global.collision_map,x,y) == 3 ||
 	tilemap_get_at_pixel(global.collision_map,x,y) == 6) {

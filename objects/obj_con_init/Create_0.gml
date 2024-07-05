@@ -11,12 +11,6 @@
 
 #endregion
 
-// -- GLOBAL VARIABLES --
-//global.transfer_x		= 288;		// sets x of player when entering new room
-//global.transfer_y		= 288;		// sets y of player when entering new room
-//global.instance_depth	= 700;		// set the default instance depth for creating new instances on the ground level
-
-
 // -- ENUMS --
 
 // initialize data column enums for easier accessing
@@ -63,6 +57,7 @@ for (var _i = 1; _i < ds_grid_height(global.item_data); _i ++) {
 }
 
 global.enemy_data = load_csv("enemy_data.csv");
+
 for (var _i = 1; _i < ds_grid_height(global.enemy_data); _i ++) {
 	ds_grid_set(global.enemy_data,ENEMY_COLUMN.ID,_i,real(global.enemy_data[# ENEMY_COLUMN.ID,_i]));
 	ds_grid_set(global.enemy_data,ENEMY_COLUMN.GRID_SPRITE_INDEX,_i,real(global.enemy_data[# ENEMY_COLUMN.GRID_SPRITE_INDEX,_i]));
@@ -94,54 +89,8 @@ remove_header_row(global.item_data,0);
 remove_header_row(global.enemy_data,0);
 #endregion
 
-/*
-global.item_data = load_csv("item_data.csv");
-for (var _i = 1; _i < ds_grid_height(global.item_data); _i ++) {
-	ds_grid_set(global.item_data,0,_i,real(global.item_data[# 0,_i]));
-	ds_grid_set(global.item_data,2,_i,real(global.item_data[# 2,_i]));
-	ds_grid_set(global.item_data,4,_i,real(global.item_data[# 4,_i]));
-}
-
-
-global.weapon_data = load_csv("weapon_data.csv");
-for (var _i = 1; _i < ds_grid_height(global.weapon_data); _i ++) {
-	ds_grid_set(global.weapon_data,0,_i,real(global.weapon_data[# 0,_i]));
-	ds_grid_set(global.weapon_data,2,_i,real(global.weapon_data[# 2,_i]));
-	ds_grid_set(global.weapon_data,4,_i,real(global.weapon_data[# 4,_i]));
-	ds_grid_set(global.weapon_data,5,_i,real(global.weapon_data[# 5,_i]));
-	ds_grid_set(global.weapon_data,6,_i,real(global.weapon_data[# 6,_i]));
-	ds_grid_set(global.weapon_data,7,_i,real(global.weapon_data[# 7,_i]));
-	ds_grid_set(global.weapon_data,8,_i,real(global.weapon_data[# 8,_i]));
-	ds_grid_set(global.weapon_data,9,_i,real(global.weapon_data[# 9,_i]));
-}
-*/
-
-/*
-enum ITEM_COLUMN {
-	ID,
-	NAME,
-	SPRITE,
-	DESCRIPTION,
-	EQUIPPEED,
-}
-
-enum WEAPON_COLUMN {
-	ID,
-	NAME,
-	SPRITE,
-	DESCRIPTION,
-	EQUIPPED,
-	DAMAGE_TYPE,
-	DAMAGE,
-	KNOCKBACK,
-	WINDUP,
-	FOLLOWTHROUGH,
-}
-*/
-
-
-
-
+show_debug_message(global.enemy_data);
+show_message(global.enemy_data);
 
 
 

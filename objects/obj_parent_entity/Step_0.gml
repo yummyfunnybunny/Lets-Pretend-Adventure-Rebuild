@@ -1,12 +1,6 @@
 /// @desc Update Entity
 
-
-// update Depth if necessary
-/*
-if (y != yprevious || z_bottom != z_prev) {
-	set_depth();
-}
-*/
+#region UPDATE Z-AXIS
 
 // update z_prev and z_top
 if (z_prev != z_bottom) {
@@ -62,3 +56,13 @@ if (z_bottom > z_floor){
 if (x != xprevious || y != yprevious) {
 	set_z_limits();
 }
+
+// update Depth if necessary
+/*
+if (y != yprevious || z_bottom != z_prev) {
+	set_depth();
+}
+*/
+
+#endregion
+

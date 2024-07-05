@@ -31,14 +31,45 @@ function player_update_face_direction() {
 	if (move_direction == -1) {
 		var _move_dir_prev = 0;
 		switch(move_direction) {
-			case 0: face_direction = 0; _move_dir_prev = 0; break;
-			case 45: if (_move_dir_prev == 0) face_direction = 0 else face_direction = 90; break;
-			case 90: face_direction = 90; _move_dir_prev = 90; break;
-			case 135: if(_move_dir_prev == 180) face_direction = 180 else face_direction = 90; break;
-			case 180: face_direction = 180; _move_dir_prev = 180; break;
-			case 225: if(_move_dir_prev == 270) face_direction = 270 else face_direction = 180; break;
-			case 270: face_direction = 270; _move_dir_prev = 270; break;
-			case 315: if(_move_dir_prev == 0) face_direction = 0 else face_direction = 270; break;
+			case 0: 
+				face_direction = 0; 
+				_move_dir_prev = 0; 
+			break;
+			
+			case 45: 
+				if (_move_dir_prev == 0) { face_direction = 0; } 
+				else { face_direction = 90; } 
+			break;
+			
+			case 90: 
+				face_direction = 90; 
+				_move_dir_prev = 90; 
+			break;
+			
+			case 135: 
+				if (_move_dir_prev == 180) { face_direction = 180; } 
+				else {face_direction = 90; }
+			break;
+			
+			case 180: 
+				face_direction = 180; 
+				_move_dir_prev = 180; 
+			break;
+			
+			case 225: 
+				if (_move_dir_prev == 270) { face_direction = 270; } 
+				else {face_direction = 180; } 
+			break;
+			
+			case 270: 
+				face_direction = 270; 
+				_move_dir_prev = 270; 
+			break;
+			
+			case 315: 
+				if (_move_dir_prev == 0) { face_direction = 0; } 
+				else { face_direction = 270;} 
+			break;
 		}
 	}
 	// last move input
