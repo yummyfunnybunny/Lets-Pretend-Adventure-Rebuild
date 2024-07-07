@@ -2,8 +2,8 @@
   "$GMObject":"",
   "%Name":"obj_enemy_slime1",
   "eventList":[
-    {"$GMEvent":"","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"","%Name":"","collisionObjectId":null,"eventNum":7,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"obj_enemy_slime1",
@@ -20,8 +20,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_entity","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"propertyId":{"name":"knockback_amount","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"6",},
   ],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Enemies.yy",
+    "name":"3 - Enemies",
+    "path":"folders/Objects/3 - Enemies.yy",
   },
   "parentObjectId":{
     "name":"obj_parent_enemy",
@@ -48,6 +48,9 @@
     "name":"spr_blob1_idle",
     "path":"sprites/spr_blob1_idle/spr_blob1_idle.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"spr_enemy_collision_mask",
+    "path":"sprites/spr_enemy_collision_mask/spr_enemy_collision_mask.yy",
+  },
   "visible":true,
 }

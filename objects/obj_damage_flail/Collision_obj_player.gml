@@ -3,7 +3,7 @@
 
 if (creator != other.id) {
 if (other.just_got_damaged == false) {
-	apply_knockback(other, knockback_amount, 1, 1);
+	knockback_apply(other, knockback_amount, 1, 1);
 	enemy_apply_damage_to_player(damage);
 	//other.hp -= damage;
 	other.just_got_damaged = true;

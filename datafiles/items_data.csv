@@ -1,17 +1,17 @@
-﻿id,name,description,Category,sprite index,image index,equipped,damage_type,damage,knockback,windup,followthrough,weapon type,Damage Sprite
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-1,Sword,attack enemies at close range,weapon,spr_inv_weapon,1,0,1,1,6,0.1,0.1,sword,
-2,Shield,block incoming attacks,weapon,spr_inv_weapon,2,0,3,0,6,0,0,shield,
-3,boom stick,throw at long range. Explodes on impact.,weapon,spr_inv_weapon,3,0,4,2,6,0.1,0.5,boomstock,
-4,Flail,swing in a wide arc to damage enemies at close or medium range,weapon,spr_inv_weapon,4,0,3,1,6,0.1,0.5,flail,
-5,Crossbow,attack enemies at long range.,weapon,spr_inv_weapon,5,0,2,1,6,0.1,0.1,crossbow,
-6,Throwing Axe,do heavy damage at long range.,weapon,spr_inv_weapon,6,0,1,2,6,0.1,0.5,tomahawk,
-7,Horn,blow this horn and something amazing will happen,item,spr_inv_item,1,0,0,0,0,0,0,0,
-8,Feather,Makes the player feal light!,item,spr_inv_item,2,0,0,0,0,0,0,0,
-9,Treasure Map,Find the hidden treasure,item,spr_inv_item,3,0,0,0,0,0,0,0,
-10,Dimensional Ord,See into the void,item,spr_inv_item,4,0,0,0,0,0,0,0,
-11,Witch Beads,Access your necomancy powers,item,spr_inv_item,5,0,0,0,0,0,0,0,
-12,Book of Knowledge,Lots of ancient knowledge is hidden in this book,item,spr_inv_item,6,0,0,0,0,0,0,0,
-13,Sun Staff,Call upon the sun to aid you,item,spr_inv_item,7,0,0,0,0,0,0,0,
-14,Talking Skull,This skull just wont shut up,item,spr_inv_item,8,0,0,0,0,0,0,0,
-15,Shard,a broken piece of a bigger whole.,item,spr_inv_item,9,0,0,0,0,0,0,0,
+﻿id,name,description,Category,sprite index,image index,equipped,damage_type,damage,knockback,windup,followthrough,weapon type,Damage Sprite,start_behavior,impact_behavior_wall,impact_behavior_enemy,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1,Sword,attack enemies at close range,weapon,spr_inv_weapon,1,0,1,1,6,0.1,0.1,sword,0,0,0,0,0
+2,Shield,block incoming attacks,weapon,spr_inv_weapon,2,0,3,0,6,0,0,shield,0,0,0,0,0
+3,boom stick,throw at long range. Explodes on impact.,weapon,spr_inv_weapon,3,0,4,2,6,0.1,0.5,boomstock,0,0,0,0,0
+4,Flail,swing in a wide arc to damage enemies at close or medium range,weapon,spr_inv_weapon,4,0,3,1,6,0.1,0.5,flail,0,0,0,0,0
+5,Crossbow,attack enemies at long range.,weapon,spr_inv_weapon,5,0,2,1,6,0.1,0.1,crossbow,0,0,0,0,0
+6,Throwing Axe,do heavy damage at long range.,weapon,spr_inv_weapon,6,0,1,2,6,0.1,0.5,tomahawk,0,0,0,0,0
+7,Horn,blow this horn and something amazing will happen,item,spr_inv_item,1,0,0,0,0,0,0,0,0,0,0,0,0
+8,Feather,Makes the player feal light!,item,spr_inv_item,2,0,0,0,0,0,0,0,0,0,0,0,0
+9,Treasure Map,Find the hidden treasure,item,spr_inv_item,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,Dimensional Ord,See into the void,item,spr_inv_item,4,0,0,0,0,0,0,0,0,0,0,0,0
+11,Witch Beads,Access your necomancy powers,item,spr_inv_item,5,0,0,0,0,0,0,0,0,0,0,0,0
+12,Book of Knowledge,Lots of ancient knowledge is hidden in this book,item,spr_inv_item,6,0,0,0,0,0,0,0,0,0,0,0,0
+13,Sun Staff,Call upon the sun to aid you,item,spr_inv_item,7,0,0,0,0,0,0,0,0,0,0,0,0
+14,Talking Skull,This skull just wont shut up,item,spr_inv_item,8,0,0,0,0,0,0,0,0,0,0,0,0
+15,Shard,a broken piece of a bigger whole.,item,spr_inv_item,9,0,0,0,0,0,0,0,0,0,0,0,0

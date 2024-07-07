@@ -1,0 +1,555 @@
+
+// Inherit the parent event
+event_inherited();
+
+
+#region INIT PLAYER SET VARIABLES
+
+/*
+These variables are used inside functions for calculations or other purposes and 
+do not need to be changed once set.
+
+variables that need to be set an a per-player basis are all in the VARIABLE DEFINITIONS
+*/
+
+// Macro Stuff
+faction				= FACTION.PLAYER;			// tells the game which faction the player belongs to
+disable_input		= false;					// used to disable player input for cutscenes or other
+
+// movement & controls
+face_direction		= 270;						// sets the current direction the player is facing
+move_direction		= -1;						// used to control x/y_speed and helps set the players face direction
+last_safe_x			= x;						// saves the last safe x-position the player was on for respawning
+last_safe_y			= y;						// saves the last safe y-position the player was on for respawning
+
+// inventory, items, abilities
+item_id_used		= noone;					// stores the item id being used to pass into use_weapon/item/consumable functions
+equip_slots			= [0,0,0];					// array for storying id of currently equipped items
+
+#endregion
+
+#region INIT PLAYER SPRITES
+
+// Sprites
+sprite_idle_down = spr_player_idle_down;
+sprite_idle_right = spr_player_idle_right;
+sprite_idle_up = spr_player_idle_up;
+sprite_idle_left = spr_player_idle_left;
+
+sprite_move_down = spr_player_move_down;
+sprite_move_right = spr_player_move_right;
+sprite_move_up = spr_player_move_up;
+sprite_move_left = spr_player_move_left;
+
+sprite_atk_sword_down = spr_player_atk_sword_down;
+sprite_atk_sword_right = spr_player_atk_sword_right;
+sprite_atk_sword_up = spr_player_atk_sword_up;
+sprite_atk_sword_left = spr_player_atk_sword_left;
+
+sprite_atk_flail_down = 0;
+sprite_atk_flail_right = 0;
+sprite_atk_flail_up = 0;
+sprite_atk_flail_left = 0;
+
+sprite_atk_crossbow_down = 0;
+sprite_atk_crossbow_right = 0;
+sprite_atk_crossbow_up = 0;
+sprite_atk_crossbow_left = 0;
+
+sprite_atk_shield_down = 0;
+sprite_atk_shield_right = 0;
+sprite_atk_shield_up = 0;
+sprite_atk_shield_left = 0;
+
+sprite_atk_boomstick_down = 0;
+sprite_atk_boomstick_right = 0;
+sprite_atk_boomstick_up = 0;
+sprite_atk_boomstick_left = 0;
+
+sprite_atk_tomahawk_down = 0;
+sprite_atk_tomahawk_right = 0;
+sprite_atk_tomahawk_up = 0;
+sprite_atk_tomahawk_left = 0;
+
+sprite_run = spr_player2_run;
+sprite_walk = spr_player2_walk;
+sprite_jump = spr_player2_jump;
+sprite_fall = spr_player2_fall;
+sprite_hurt = spr_player2_hurt;
+sprite_climb = spr_player2_climb;
+sprite_pitfall = spr_player2_pitfall;
+sprite_drown = spr_player2_drown;
+sprite_attack = spr_player2_attack_sword;
+sprite_death = spr_player2_death;
+
+#endregion
+
+#region INIT PLAYER ALARMS
+
+enum P_ALARM {
+	DEATH,
+	DAMAGED,
+	ATK_START,
+	ATK_END,
+	COUNT,
+}
+
+#endregion
+
+#region INIT PLAYER EQUIPMENT & INVENTORY
+
+// enum sets the position for the 3 equip slots
+enum EQUIP {
+	B,
+	Y,
+	X,
+}
+
+/*
+// will try to change the inventory into a struct using this
+player_inventory = {
+	equip_slots: [0,0,0],
+	weapons: ds_grid_create(6,1),
+	items: ds_grid_create(6,3),
+	unique_right: ds_grid_create(1,4),
+	unique_left: ds_grid_create(1,4),
+	unique_bottom: ds_grid_create(6,1),
+	shards: ds_grid_create(4,2),
+}
+*/
+
+// initialize inventory DS Grids
+weapons			= ds_grid_create(6,1);		// ds grid for the weapons part of the inventory
+items			= ds_grid_create(6,3);		// ds grid for the items part of the inventory
+unique_right	= ds_grid_create(1,4);		// ds grid for the right side of the unique items inventory
+unique_left		= ds_grid_create(1,4);		// ds grid for the left side of the unique items inventory
+unique_bottom	= ds_grid_create(6,1);		// ds grid for the bottom section of the uniqie items inventory
+shards			= ds_grid_create(4,2);		// ds grid for the shards portion of the inventory
+
+#endregion
+
+#region INIT PLAYER HELPER FUNCTIONS
+
+function player_set_last_safe_coordinates() {
+	if (!on_ground) { exit; }
+	if (tilemap_get_at_pixel(global.collision_map,x,y) != 0) { exit; }
+	last_safe_x = xprevious;
+	last_safe_y = yprevious;	
+}
+
+function player_knockback_check() {
+	if (knockback_check() == true) {
+		if (nest_state != nest_state_hurt) { nest_state = nest_state_hurt; }	
+	} else {
+		if (nest_state = nest_state_hurt) { nest_state = nest_state_free; }
+	}
+}
+
+function player_death_check() {
+	if (nest_state = nest_state_hurt) { exit; }
+	if (hp <= 0) {
+		main_state = main_state_death;
+		nest_state = nest_state_death_normal;
+	}
+}
+
+function player_jump_check() {
+	if (!on_ground && z_speed < 0) {
+		if (nest_state != nest_state_jump) { nest_state = nest_state_jump; }
+	}
+}
+
+function player_fall_check() {
+	if (!on_ground && z_speed > 0) {
+		if (nest_state != nest_state_fall) { nest_state = nest_state_fall; }	
+	}
+}
+
+function player_on_ground_check() {
+	if (nest_state != nest_state_fall) { exit; }
+	if (on_ground) {
+		if (nest_state != nest_state_free) { nest_state = nest_state_free; }	
+	}
+}
+
+function player_respawn() {
+	move_direction = -1;
+	face_direction = 270;
+	x = last_safe_x;
+	y = last_safe_y;
+	image_alpha = 1;
+	alarm[P_ALARM.DAMAGED] = FPS*3;
+	main_state = main_state_alive;
+	nest_state = nest_state_free;
+	
+}
+
+function player_take_damage(_dmg) {
+	if (just_got_damaged) { exit; }
+	hp -= _dmg;
+	just_got_damaged = true;
+	// TODO - reductions, damage types, mulliplers, weaknesses, resistances, armor, etc.
+}
+
+function player_use_equip_slot(_item_id) {
+	// when an equip slot is used, figure out what category it is and proceed accordingly
+	// - weapon
+	// - item
+	// - consumable
+
+	if (!_item_id) { exit; }		// exit if no item is equipped
+	
+	// get item category
+	var _item_category = ds_grid_get(global.item_data,ITEM_COLUMN.CATEGORY, _item_id);
+	
+	item_id_used = _item_id;
+	
+	switch(_item_category) {
+		case "weapon":
+			//nest_state = nest_state_weapon;
+			player_use_weapon(_item_id);
+		break;
+		
+		case "item":
+			//nest_state = nest_state_item;
+			player_use_item(_item_id);
+		break;
+		
+		case "consumable":
+			//nest_state = nest_state_consumable;
+			player_use_consumable(_item_id);
+		break;
+	}
+}
+
+function player_use_weapon(_item_id) {
+	// get weapon type
+	var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEAPON_TYPE,_item_id);
+	
+	// set attack state according to weapon type
+	switch (_weapon_type) {
+		case "sword":		nest_state = nest_state_attack_sword;		break;
+		case "shield":		nest_state = nest_state_attack_shield;		break;
+		case "boomstick":	nest_state = nest_state_attack_boomstick;	break;
+		case "flail":		nest_state = nest_state_attack_flail;		break;
+		case "crossbow":	nest_state = nest_state_attack_crossbow;	break;
+		case "tomahawk":	nest_state = nest_state_attack_tomahawk;	break;
+	}
+}
+
+function player_use_item(_item_id) {
+	
+}
+
+function player_use_consumable(_item_id) {
+	
+}
+
+function player_terrain_checks(){
+
+	var _terrain = tilemap_get_at_pixel(global.collision_map,x,y);
+
+	// Shallow Water
+	if (_terrain == 2) {
+		if (!on_ground) { exit; }
+		if (nest_state != nest_state_wade) {
+			nest_state = nest_state_wade;
+		}
+	} else if (nest_state == nest_state_wade) { nest_state = nest_state_free; }
+
+	// Deep Water
+	if (_terrain == 3) {
+		if (!on_ground) { exit; }
+		player_take_damage(1);
+		main_state = main_state_death;
+		nest_state = nest_state_death_drown;
+	}
+	
+	// climb
+	if (_terrain  == 4) {
+		if (!on_ground) { exit; }
+		if (nest_state != nest_state_climb) { nest_state = nest_state_climb; }
+	} else if (nest_state = nest_state_climb) { nest_state = nest_state_free; }
+
+	// Tall Grass
+	if (_terrain == 5) {
+		if (!on_ground) { exit; }
+		if (nest_state != nest_state_grass) { nest_state = nest_state_grass; }
+	} else if (nest_state = nest_state_grass) { nest_state = nest_state_free; }
+
+	// PitFall
+	if (_terrain  == 6) {
+		if (!on_ground) { exit; }
+		if (main_state == main_state_death) { exit; }
+		player_take_damage(1);
+		main_state = main_state_death;
+		nest_state = nest_state_death_pitfall;
+	}
+	
+		// Pitfall edges
+	if (_terrain == 12) {
+		x_speed += .1;
+	}
+	if (_terrain == 13) {
+		x_speed -= .1;
+	}
+	if (_terrain  == 14) {
+		y_speed += .1;
+	}
+	if (_terrain == 15) {
+		y_speed -= .1;
+	}
+	if (_terrain == 16) {
+		x_speed -= .1;
+		y_speed -= .1;
+	}
+	if (_terrain == 17) {
+		x_speed -= .1;
+		y_speed += .1;
+	}
+	if (_terrain == 18) {
+		x_speed += .1;
+		y_speed += .1;
+	}
+	if (_terrain == 19) {
+		x_speed += .1;
+		y_speed -= .1;
+	}
+}
+
+#endregion
+
+#region INIT PLAYER STATES
+
+// main states
+main_state_alive = function(){
+	player_update_x_speed();				// set x speed
+	player_update_y_speed();				// set y speed
+	player_update_move_direction();			// set move direction
+	player_update_face_direction();			// set face direction
+	player_input_b_check();					// check B input
+	player_input_jump_check();				// check jump input
+	knockback_update();						// update knockback
+}
+
+main_state_death = function() {
+	
+	// begin death
+	if (alarm[P_ALARM.DEATH] == -1) {
+		if (knockback_x != 0) knockback_x = 0;
+		if (knockback_y != 0) knockback_y = 0;
+		if (x_speed != 0) x_speed = 0;
+		if (y_speed != 0) y_speed = 0;
+		image_index = 0;
+		image_speed = 1;
+		alarm[P_ALARM.DEATH] = FPS * 3; 
+	}
+	
+	// during death
+	
+	// end death
+	if (alarm[P_ALARM.DEATH] == 0) {
+		if (hp <= 0) {
+			// GAME OVER SEQUENCE
+			game_restart();	
+		} else {
+			player_respawn();
+		}
+	}
+}
+
+// nest states
+nest_state_free = function() {
+	
+	// set sprite to either moving or idle
+	if (x_speed != 0 || y_speed != 0) {
+		if (image_speed != 1) { image_speed = 1; }
+		player_update_image("spr_player_move");
+	} else { 
+		if (image_speed != 0) { image_speed = 0; }
+		player_update_image("spr_player_idle");
+	}
+}
+
+nest_state_wade = function() {
+	// set sprite to either moving or idle
+	if (x_speed != 0 || y_speed != 0) {
+		if (image_speed != 1) { image_speed = 1; }
+		player_update_image("spr_player_move_wade");
+		
+	} else { 
+		if (image_speed != 0) { image_speed = 0; }
+		player_update_image("spr_player_idle_wade");
+	}
+	if (max_speed != wade_speed) { max_speed = wade_speed; }
+}
+
+nest_state_grass = function() {
+	// set sprite to either moving or idle
+	if (x_speed != 0 || y_speed != 0) {
+		if (image_speed != 1) { image_speed = 1; }
+		player_update_image("spr_player_move_grass");
+		
+	} else { 
+		if (image_speed != 0) { image_speed = 0; }
+		player_update_image("spr_player_idle_grass");
+	}
+	if (max_speed != wade_speed) { max_speed = wade_speed; }
+}
+
+nest_state_attack_sword = function() {
+	player_update_image("spr_player_atk_sword");
+	// begin attack
+	if (alarm[P_ALARM.ATK_START] == -1 && alarm[P_ALARM.ATK_END] == -1) {
+		x_speed = 0;
+		y_speed = 0;
+		// get weapon type
+		var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEAPON_TYPE, item_id_used);
+		image_index = 0;
+		image_speed = 1;
+		alarm[P_ALARM.ATK_START] = -2;
+	}
+	
+	// during attack
+	if (alarm[P_ALARM.ATK_START] == -2) {
+		
+		if (image_index = 3) {
+			var _y_offset = 0;
+			if (face_direction == 90) _y_offset = -16;
+			var _damage = instance_create_layer(x + lengthdir_x(40,face_direction), y+_y_offset+z_bottom + lengthdir_y(24, face_direction), INSTANCE_LAYER, obj_damage_sword, {
+			direction: face_direction,
+			faction: faction,
+			creator: id,
+			damage: 1,
+			knockback_amount: 7,
+			damage_type: DAMAGE_TYPE.PIERCE,
+			});
+		}
+	}
+	
+	// end attack
+	if (alarm[P_ALARM.ATK_START] == -2) {
+		if (image_index >= image_number -1) {
+			nest_state = nest_state_free;
+			alarm[P_ALARM.ATK_START] = -1;
+			alarm[P_ALARM.ATK_END] = FPS * .1;
+			item_id_used = noone;
+		}
+	}
+}
+
+nest_state_attack_shield = function() {
+	
+}
+
+nest_state_attack_boomstick = function() {
+	
+}
+
+nest_state_attack_flail = function() {
+	
+}
+
+nest_state_attack_crossbow = function() {
+	
+}
+
+nest_state_attack_tomahawk = function() {
+	
+}
+
+nest_state_item = function() {
+	
+}
+
+nest_state_consumable = function() {
+	
+}
+
+nest_state_hurt = function() {
+	player_update_image("spr_player_hurt");
+}
+
+nest_state_talk = function() {
+	
+}
+
+nest_state_shop = function() {
+	
+}
+
+nest_state_climb = function() {
+	player_update_image("spr_player_climb");
+	// set sprite to either moving or idle
+	if (x_speed != 0 || y_speed != 0) {
+		if (image_speed != 1) { image_speed = 1; }
+		//player_update_image("spr_player_move");
+	} else { 
+		if (image_speed != 0) { image_speed = 0; }
+		//player_update_image("spr_player_idle");
+	}
+	
+}
+
+nest_state_carry = function() {
+	
+}
+
+nest_state_push = function() {
+	
+}
+
+nest_state_pull = function() {
+	
+}
+
+nest_state_jump = function() {
+	player_update_image("spr_player_jump");
+}
+
+nest_state_fall = function() {
+	player_update_image("spr_player_fall");
+}
+
+nest_state_death_normal = function() {
+	player_update_image("spr_player_death_normal");
+}
+
+nest_state_death_drown = function() {
+	player_update_image("spr_player_death_drown");
+}
+
+nest_state_death_pitfall = function() {
+	player_update_image("spr_player_death_pitfall");
+}
+
+
+/*
+function player_state_attack_crossbow() {
+	// begin attack
+	if (alarm[P_ALARM.ATK_START] == -1 && alarm[P_ALARM.ATK_END] == -1 && alarm[P_ALARM.DAMAGED] == -1) {
+		image_index = 0;
+		x_speed = 0;
+		y_speed = 0;
+		// get weapon type
+		var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEAPON_TYPE, equip_slot_used);
+		player_image_attack(_weapon_type);
+		alarm[P_ALARM.ATK_START] = -2;
+	}
+	
+	// during attack
+	
+	
+	// end attack
+	
+}
+*/
+
+#endregion
+
+#region INIT PLAYER STARTING STATES
+
+main_state = main_state_alive;
+nest_state = nest_state_free
+
+#endregion;

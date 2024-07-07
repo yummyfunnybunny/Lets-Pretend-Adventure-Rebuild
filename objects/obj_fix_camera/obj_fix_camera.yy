@@ -10,8 +10,8 @@
   "name":"obj_fix_camera",
   "overriddenProperties":[],
   "parent":{
-    "name":"Controllers",
-    "path":"folders/Objects/Controllers.yy",
+    "name":"1 - Controllers",
+    "path":"folders/Objects/1 - Controllers.yy",
   },
   "parentObjectId":null,
   "persistent":false,

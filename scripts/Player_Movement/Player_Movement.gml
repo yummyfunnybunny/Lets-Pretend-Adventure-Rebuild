@@ -1,29 +1,26 @@
-///@desc 
 
 function player_update_max_speed() {
-	switch (state) {
-		case player_state_free:		if (max_speed != run_speed) max_speed = run_speed;		break;
-		case player_state_wade:		if (max_speed != wade_speed) max_speed = wade_speed;	break;
-		case player_state_climb:	if (max_speed != climb_speed) max_speed = climb_speed;	break;
+	switch (nest_state) {
+		case nest_state_free:	if (max_speed != run_speed)		max_speed = run_speed;		break;
+		case nest_state_wade:	if (max_speed != wade_speed)	max_speed = wade_speed;		break;
+		case nest_state_climb:	if (max_speed != climb_speed)	max_speed = climb_speed;	break;
 	}
 }
 
-// set move_direction based on player _input
 function player_update_move_direction() {
 	var _x_spd = right_input - left_input;
 	var _y_spd = down_input - up_input;
-	if (_x_spd == 1 && _y_spd = 0) { move_direction = 0;  }
-	if (_x_spd == 1 && _y_spd = -1) { move_direction = 45; }
-	if (_x_spd == 0 && _y_spd = -1) { move_direction = 90; }
-	if (_x_spd == -1 && _y_spd = -1) { move_direction = 135; }
-	if (_x_spd == -1 && _y_spd = 0) { move_direction = 180; }
-	if (_x_spd == -1 && _y_spd = 1) { move_direction = 225; }
-	if (_x_spd == 0 && _y_spd = 1) { move_direction = 270; }
-	if (_x_spd == 1 && _y_spd = 1) { move_direction = 315; }
-	if (_x_spd == 0 && _y_spd = 0) { move_direction = -1; }
+	if (_x_spd == 1 && _y_spd = 0)		{ move_direction = 0; }
+	if (_x_spd == 1 && _y_spd = -1)		{ move_direction = 45; }
+	if (_x_spd == 0 && _y_spd = -1)		{ move_direction = 90; }
+	if (_x_spd == -1 && _y_spd = -1)	{ move_direction = 135; }
+	if (_x_spd == -1 && _y_spd = 0)		{ move_direction = 180; }
+	if (_x_spd == -1 && _y_spd = 1)		{ move_direction = 225; }
+	if (_x_spd == 0 && _y_spd = 1)		{ move_direction = 270; }
+	if (_x_spd == 1 && _y_spd = 1)		{ move_direction = 315; }
+	if (_x_spd == 0 && _y_spd = 0)		{ move_direction = -1; }
 }
 
-// set face_direction
 function player_update_face_direction() {
 	// whichever input is first is whats used and whichever unput is last is than used
 	
@@ -37,8 +34,11 @@ function player_update_face_direction() {
 			break;
 			
 			case 45: 
-				if (_move_dir_prev == 0) { face_direction = 0; } 
-				else { face_direction = 90; } 
+				if (_move_dir_prev == 0) { 
+					face_direction = 0; 
+				} else { 
+					face_direction = 90; 
+				} 
 			break;
 			
 			case 90: 
@@ -47,8 +47,11 @@ function player_update_face_direction() {
 			break;
 			
 			case 135: 
-				if (_move_dir_prev == 180) { face_direction = 180; } 
-				else {face_direction = 90; }
+				if (_move_dir_prev == 180) { 
+					face_direction = 180; 
+				} else {
+					face_direction = 90; 
+				} 
 			break;
 			
 			case 180: 
@@ -57,8 +60,11 @@ function player_update_face_direction() {
 			break;
 			
 			case 225: 
-				if (_move_dir_prev == 270) { face_direction = 270; } 
-				else {face_direction = 180; } 
+				if (_move_dir_prev == 270) { 
+					face_direction = 270; 
+				} else {
+					face_direction = 180; 
+				} 
 			break;
 			
 			case 270: 
@@ -67,8 +73,11 @@ function player_update_face_direction() {
 			break;
 			
 			case 315: 
-				if (_move_dir_prev == 0) { face_direction = 0; } 
-				else { face_direction = 270;} 
+				if (_move_dir_prev == 0) { 
+					face_direction = 0; 
+				} else { 
+					face_direction = 270;
+				} 
 			break;
 		}
 	}
@@ -76,19 +85,65 @@ function player_update_face_direction() {
 	if (move_direction != -1) {
 		var _move_dir_prev = 0;
 		switch(move_direction) {
-			case 0: face_direction = 0; _move_dir_prev = 0; break;
-			case 45: if (_move_dir_prev == 0) face_direction = 0 else face_direction = 90; break;
-			case 90: face_direction = 90; _move_dir_prev = 90; break;
-			case 135: if(_move_dir_prev == 180) face_direction = 180 else face_direction = 90; break;
-			case 180: face_direction = 180; _move_dir_prev = 180; break;
-			case 225: if(_move_dir_prev == 270) face_direction = 270 else face_direction = 180; break;
-			case 270: face_direction = 270; _move_dir_prev = 270; break;
-			case 315: if(_move_dir_prev == 0) face_direction = 0 else face_direction = 270; break;
+			case 0: 
+				face_direction = 0; 
+				_move_dir_prev = 0; 
+			break;
+			
+			case 45: 
+				if (_move_dir_prev == 0) {
+					face_direction = 0;
+				} else {
+					face_direction = 90;
+				}
+			break;
+			
+			case 90: 
+				face_direction = 90; 
+				_move_dir_prev = 90; 
+			break;
+			
+			case 135: 
+				if(_move_dir_prev == 180) {
+					face_direction = 180; 
+				} else {
+					face_direction = 90;
+				}
+			break;
+			
+			case 180: 
+				face_direction = 180; 
+				_move_dir_prev = 180; 
+			break;
+			
+			case 225: 
+				if(_move_dir_prev == 270) {
+					face_direction = 270;
+				} else {
+					face_direction = 180;
+				}
+			break;
+			
+			case 270: 
+				face_direction = 270; 
+				_move_dir_prev = 270; 
+			break;
+			
+			case 315: 
+				if(_move_dir_prev == 0) {
+					face_direction = 0;
+				} else {
+					face_direction = 270;
+				}
+			break;
 		}
 	}
 }
 
 function player_update_x_speed() {
+	if (nest_state == nest_state_attack_sword) { exit; }
+	if (knockback_check()) { exit; }
+	
 	// Set initial x_speed based on user input
 	if (move_direction != -1) {
 			x_speed += lengthdir_x(acceleration, move_direction);
@@ -108,9 +163,17 @@ function player_update_x_speed() {
 	
 	// keep x_speed rounded to .2 dec_imals
 	if (x_speed != 0) x_speed = round(x_speed/.2)*.2;
+		
+	// set x_speed to 0 if no input and x_speed is low enough
+	if (!left_input && !right_input) {
+		if (abs(x_speed <= .2)) x_speed = 0;
+	}
 }
 
 function player_update_y_speed() {
+	if (nest_state == nest_state_attack_sword) { exit; }
+	if (knockback_check()) { exit; }
+	
 	// Set initial y_speed based on user input
 	if (move_direction != -1) {
 			y_speed += lengthdir_y(acceleration, move_direction);
@@ -130,6 +193,11 @@ function player_update_y_speed() {
 	
 	// keep y_speed rounded to .2 dec_imals
 	if (y_speed != 0) y_speed = round(y_speed/.2)*.2;
+		
+	// set y_speed to 0 if no input and y_speed is low enough
+	if (!up_input && !down_input) {
+		if (abs(y_speed <= .2)) y_speed = 0;
+	}
 }
 
 function player_apply_friction() {

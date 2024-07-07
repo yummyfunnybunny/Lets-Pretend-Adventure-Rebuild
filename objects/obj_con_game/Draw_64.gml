@@ -3,8 +3,8 @@
 #region DEBUGGING
 
 /*
-for (var _i = 0; _i < array_length(obj_player.equipped_items); _i++;) {
-	var _item_to_show = obj_player.equipped_items[_i];
+for (var _i = 0; _i < array_length(obj_player.equip_slots); _i++;) {
+	var _item_to_show = obj_player.equip_slots[_i];
 	var drawX = (32 + (_i * 48));
 	var drawY = (32 + (_i * 16));
 	draw_set_font(fnt_display_data);

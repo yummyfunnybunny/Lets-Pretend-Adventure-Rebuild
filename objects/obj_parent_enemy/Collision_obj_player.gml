@@ -1,13 +1,9 @@
-if (check_z_overlap(other) == true) {
-	if (other.just_got_damaged == false) {
-		if (nest_state != enemy_state_death) {
-			other.just_got_damaged = true;
-			enemy_apply_damage_to_player(damage);
-			apply_knockback(other, knockback_amount, 1, point_direction(x,y,other.x,other.y));
-			other.alarm[2] = FPS*1;
-		}
-	}
-}
+if (!check_z_overlap(other)) exit;
+if (other.just_got_damaged) exit;
+if (other.main_state == main_state_death) exit;
+if (main_state == main_state_death) exit;
 
-
+knockback_apply(other, knockback_amount, 1, point_direction(x,y,other.x,other.y));
+other.player_take_damage(damage);
+other.alarm[P_ALARM.DAMAGED] = FPS*3;
 

@@ -24,8 +24,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_enemy","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"propertyId":{"name":"wander_weight","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
   ],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Enemies.yy",
+    "name":"3 - Enemies",
+    "path":"folders/Objects/3 - Enemies.yy",
   },
   "parentObjectId":{
     "name":"obj_parent_enemy",
@@ -52,6 +52,9 @@
     "name":"spr_turtle1_idle",
     "path":"sprites/spr_turtle1_idle/spr_turtle1_idle.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"spr_enemy_collision_mask",
+    "path":"sprites/spr_enemy_collision_mask/spr_enemy_collision_mask.yy",
+  },
   "visible":true,
 }

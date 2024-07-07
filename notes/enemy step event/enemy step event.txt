@@ -98,7 +98,7 @@ if (nest_state == enemy_state_hurt) {
 	//begin hurt
 	
 	// end hurt
-	if (check_knockback_is_0() == true) {
+	if (knockback_check() == false) {
 		nest_state = enemy_choose_state;	
 	}
 }

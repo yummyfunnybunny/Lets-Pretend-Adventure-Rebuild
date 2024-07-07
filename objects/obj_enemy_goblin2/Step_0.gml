@@ -120,9 +120,10 @@ if (nest_state = enemy_state_attack) {
 }
 
 if (nest_state == enemy_state_hurt) {
-	if (check_knockback_is_0() == true) {
+	if (knockback_check()) { exit; }
+	//if (knockback_check() == true) {
 		goblin2_choose_state()	
-	}
+	//}
 }
 
 #endregion

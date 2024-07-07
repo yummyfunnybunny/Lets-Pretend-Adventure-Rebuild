@@ -13,5 +13,6 @@ if (instance_exists(creator)){
 
 // Destroy Pather if creator does not exist
 }else{
+	path_delete(path);
 	instance_destroy();
 }

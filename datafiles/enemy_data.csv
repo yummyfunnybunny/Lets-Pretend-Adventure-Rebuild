@@ -1,4 +1,4 @@
-﻿id,name,Category,grid sprite,grid sprite index,display sprite,description,defeated,locales
+﻿id,name,Category,beastiary Sprite,Spr_index,display sprite,description,defeated,locales
 0,0,0,0,0,0,0,0,0
 1,turtle 1,critters,spr_beastiary_grid_critters,1,spr_turtle1_idle,weiners,0,0
 2,bat 1,critters,spr_beastiary_grid_critters,2,spr_bat1_move,I kill you,0,0

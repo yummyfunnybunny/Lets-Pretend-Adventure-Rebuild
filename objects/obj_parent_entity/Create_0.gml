@@ -34,7 +34,8 @@ just_got_damaged	= 0;						// starts temporary invulnerability after taking dama
 
 #endregion
 
-#region FUNCTIONS
+
+
 
 #endregion
 

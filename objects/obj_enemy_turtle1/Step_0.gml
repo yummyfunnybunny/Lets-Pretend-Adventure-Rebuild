@@ -97,7 +97,7 @@ if (nest_state = enemy_state_flee) {
 }
 
 if (nest_state == enemy_state_hurt) {
-	if (check_knockback_is_0() == true) {
+	if (knockback_check() == true) {
 		nest_state = enemy_state_wait;
 	}
 }

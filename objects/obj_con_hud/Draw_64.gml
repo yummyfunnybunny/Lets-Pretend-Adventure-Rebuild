@@ -17,10 +17,10 @@ if (ui_type) == "level" {
 		// draw equipped items
 		var _start_x = 512;
 		var _start_y = 32;
-		for (var _i = 0; _i < array_length(obj_player.equipped_items); _i++;) {
-			if (obj_player.equipped_items[_i] != 0) {
-				var _sprite = asset_get_index(ds_grid_get(global.item_data,ITEM_COLUMN.SPRITE_INDEX,obj_player.equipped_items[_i]));
-				var _sprite_index = ds_grid_get(global.item_data,ITEM_COLUMN.IMAGE_INDEX,obj_player.equipped_items[_i]);
+		for (var _i = 0; _i < array_length(obj_player.equip_slots); _i++;) {
+			if (obj_player.equip_slots[_i] != 0) {
+				var _sprite = asset_get_index(ds_grid_get(global.item_data,ITEM_COLUMN.SPRITE_INDEX,obj_player.equip_slots[_i]));
+				var _sprite_index = ds_grid_get(global.item_data,ITEM_COLUMN.IMAGE_INDEX,obj_player.equip_slots[_i]);
 				draw_sprite(_sprite,_sprite_index,_start_x+(48*_i),_start_y);
 			}
 		}

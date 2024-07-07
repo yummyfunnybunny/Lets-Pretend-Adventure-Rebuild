@@ -1,4 +1,9 @@
-// == initialize Game Manager ==
+/// @desc initialize Game Manager
+/*
+- initialize everything that is needed for inside the levels
+- where the actual game is played
+- 
+*/
 
 global.game_paused = -1;
 global.debugger = false;
@@ -26,16 +31,20 @@ enum DAMAGE_TYPE {
 	PIERCE,			// 2
 	BLUNT,			// 3
 	EXPLOSIVE,		// 4
-	FROST,			// 5
-	SHOCK,			// 6
-	NECRO,			// 7
+}
+
+enum ELEMENT_TYPE {
+	NONE,			// 0
+	FROST,			// 1
+	SHOCK,			// 2
+	NECRO,			// 3
 }
 
 enum FACTION {
-	NONE,
-	ENEMY,
-	PLAYER,
-	NPC,
+	NONE,			// 0
+	ENEMY,			// 1
+	PLAYER,			// 2
+	NPC,			// 3
 	COUNT,
 }
 
@@ -50,19 +59,42 @@ enum UI_MODE {
 */
 
 enum MENU {
-	MAP,
-	ITEMS,
-	BEASTIARY,
-	SYSTEM,
+	MAP,			// 0
+	ITEMS,			// 1
+	BEASTIARY,		// 2
+	SYSTEM,			// 3
 }
 
 enum INVENTORY {
-	WEAPONS,
-	ITEMS,
-	UNIQUE_RIGHT,
-	SHARDS,
-	UNIQUE_LEFT,
-	UNIQUE_BOTTOM,
+	WEAPONS,		// 0
+	ITEMS,			// 1
+	UNIQUE_RIGHT,	// 2
+	SHARDS,			// 3
+	UNIQUE_LEFT,	// 4
+	UNIQUE_BOTTOM,	// 5
+}
+
+// determines the behavior of the damage object while its active
+enum WEP_START {
+	MELEE,
+	STRAIGHT,
+	ARCH,
+	HOMING,
+	BOUNCE,
+	BEAM,
+	SHOCKWAVE,
+	APPEAR,
+}
+
+// determines the behavior of the damage object when it collides with an enemy/wall
+enum WEP_END {
+	DELETE,
+	RETURN,
+	EXPLODE,
+	PIERCE,
+	HOMING,
+	CREATE,
+	BOUNCE,
 }
 
 current_menu = MENU.ITEMS;
@@ -76,9 +108,9 @@ selector_sprite = 0;
 #region INITIALIZE INVENTORY
 
 function check_if_equipped(_item_id) {
-	for (var _i = 0; _i < array_length(obj_player.equipped_items); _i++){
-		if (_item_id == obj_player.equipped_items[_i]) {
-			// return the obj_player.equipped_items slot that its in
+	for (var _i = 0; _i < array_length(obj_player.equip_slots); _i++){
+		if (_item_id == obj_player.equip_slots[_i]) {
+			// return the obj_player.equip_slots slot that its in
 			return (_i);
 		} 
 	}
@@ -93,9 +125,9 @@ function set_inv_to_check() {
 }
 		
 function unequip_item(_item_id) {
-	for (var _i = 0; _i < array_length(obj_player.equipped_items); _i++;) {
-		if (_item_id == obj_player.equipped_items[_i]){
-			obj_player.equipped_items[_i] = 0;	
+	for (var _i = 0; _i < array_length(obj_player.equip_slots); _i++;) {
+		if (_item_id == obj_player.equip_slots[_i]){
+			obj_player.equip_slots[_i] = 0;	
 		}
 	}
 }

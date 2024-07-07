@@ -1,36 +1,10 @@
 
-
-function weighted_chance() {
-	//-------------------------------------
-	//	== Weighted Chance ==
-	//-------------------------------------
-	///@param op1
-	///@param wt1
-	///@param op2
-	///@param wt2
-	///@param op3
-	///@param wt3
-	///@param op4
-	///@param wt4
-	///@param op5
-	///@param wt5
-	///@param op6
-	///@param wt6
-	//-------------------------------------
-
-	// Set Default Values
-	var _op1 = noone;
-	var _wt1 = 0;
-	var _op2 = noone;
-	var _wt2 = 0;
-	var _op3 = noone;
-	var _wt3 = 0;
-	var _op4 = noone;
-	var _wt4 = 0;
-	var _op5 = noone;
-	var _wt5 = 0;
-	var _op6 = noone;
-	var _wt6 = 0;
+function weighted_chance(_op1 = noone, _wt1 = 0, 
+						 _op2 = noone, _wt2 = 0, 
+						 _op3 = noone, _wt3 = 0, 
+						 _op4 = noone, _wt4 = 0, 
+						 _op5 = noone, _wt5 = 0, 
+						 _op6 = noone, _wt6 = 0) {
 
 	// Reset Needed Variables
 	if (argument_count > 0)		{ _op1 = argument[0];  }

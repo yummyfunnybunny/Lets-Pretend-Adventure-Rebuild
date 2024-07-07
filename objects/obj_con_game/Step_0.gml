@@ -19,9 +19,10 @@ if (global.game_paused == 1) {
 	down_input = keyboard_check_pressed(vk_down);
 	right_bumper = keyboard_check_pressed(ord("E"));
 	left_bumper = keyboard_check_pressed(ord("Q"));
-	b_input = keyboard_check_pressed(ord("S"));
-	y_input = keyboard_check_pressed(ord("A"));
-	x_input = keyboard_check_pressed(ord("W"));
+	b_input = keyboard_check_pressed(ord("Z"));
+	x_input = keyboard_check_pressed(ord("X"));
+	y_input = keyboard_check_pressed(ord("C"));
+	
 	
 	
 	// switch between menus with bumper input
@@ -75,7 +76,7 @@ function menu_update_items() {
 		var _current_inventory = set_inv_to_check();
 		var _selected_item_id = ds_grid_get(global.item_data,ITEM_COLUMN.ID,ds_grid_get(_current_inventory,current_slot_x,current_slot_y));
 		unequip_item(_selected_item_id);
-		obj_player.equipped_items[_input] = _selected_item_id;
+		obj_player.equip_slots[_input] = _selected_item_id;
 	}
 	
 	if (y_input) {
@@ -83,7 +84,7 @@ function menu_update_items() {
 		var _current_inventory = set_inv_to_check();
 		var _selected_item_id = ds_grid_get(global.item_data,ITEM_COLUMN.ID,ds_grid_get(_current_inventory,current_slot_x,current_slot_y));
 		unequip_item(_selected_item_id);
-		obj_player.equipped_items[_input] = _selected_item_id;
+		obj_player.equip_slots[_input] = _selected_item_id;
 	}
 	
 	if (x_input) {
@@ -91,7 +92,7 @@ function menu_update_items() {
 		var _current_inventory = set_inv_to_check();
 		var _selected_item_id = ds_grid_get(global.item_data,ITEM_COLUMN.ID,ds_grid_get(_current_inventory,current_slot_x,current_slot_y));
 		unequip_item(_selected_item_id);
-		obj_player.equipped_items[_input] = _selected_item_id;
+		obj_player.equip_slots[_input] = _selected_item_id;
 	}
 	
 	// Set Items Selection

@@ -4,8 +4,7 @@
 event_inherited();
 
 /*
-if (on_top_of == obj_player && on_ground == true) {
-	show_message("ON TOP OF PLAYER");	
+if (on_top_of == obj_player && on_ground == true) {	
 }
 */
 

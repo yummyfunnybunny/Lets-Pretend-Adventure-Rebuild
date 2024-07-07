@@ -11,21 +11,21 @@ if (global.game_paused == -1) {
 
 // update image
 enemy_flip_image();
-enemy_image_speed();
 enemy_update_sprite();
 
 // update collision
 entity_collision();
 
 // update knockback
-entity_update_knockback();
+knockback_update();
 
 // update movement
 if (move_speed != 0) {
-	if (check_knockback_is_0() == true) {
+	if (knockback_check()) { exit; }
+	//if (knockback_check() == false) {
 		x_speed = lengthdir_x(move_speed, direction);
 		y_speed = lengthdir_y(move_speed, direction);
-	}
+	//}
 }
 
 // apply damage
@@ -35,12 +35,14 @@ if (apply_damage != 0) {
 
 // check death by 0 HP
 if (hp <= 0) {
-	nest_state = enemy_state_death;	
+	main_state = main_state_death;
+	nest_state = nest_state_death_normal;	
 }
 
 // die when touching shallow water, deep water, and pitfalls
-// THIS WILL MOST LIKELY NEED TO BE MOVED
+// THIS WILL MOST LIKELY NEED TO BE MOVED/CHANGED
 //		certain enemies will be able to go in water and pitfalls
+// different enemies will react differently to terrain
 if (tilemap_get_at_pixel(global.collision_map,x,y) == 2 ||
 	tilemap_get_at_pixel(global.collision_map,x,y) == 3 ||
 	tilemap_get_at_pixel(global.collision_map,x,y) == 6) {

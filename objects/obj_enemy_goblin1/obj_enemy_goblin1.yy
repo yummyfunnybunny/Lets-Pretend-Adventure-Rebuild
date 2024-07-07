@@ -3,7 +3,7 @@
   "%Name":"obj_enemy_goblin1",
   "eventList":[
     {"$GMEvent":"","%Name":"","collisionObjectId":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"obj_enemy_goblin1",
@@ -19,14 +19,15 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_enemy","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"propertyId":{"name":"sprite_idle","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_goblin1_idle",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_enemy","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"propertyId":{"name":"idle_weight","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_enemy","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"propertyId":{"name":"wander_weight","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_enemy","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"propertyId":{"name":"aggro_range","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"8",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_enemy","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"propertyId":{"name":"aggro_range","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"4",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_entity","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"propertyId":{"name":"knockback_amount","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"8",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_enemy","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"propertyId":{"name":"origin_range","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"15",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_enemy","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"propertyId":{"name":"immune_array","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"[DAMAGE_TYPE.NONE]",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_enemy","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"propertyId":{"name":"max_hp","path":"objects/obj_parent_enemy/obj_parent_enemy.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
   ],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Enemies.yy",
+    "name":"3 - Enemies",
+    "path":"folders/Objects/3 - Enemies.yy",
   },
   "parentObjectId":{
     "name":"obj_parent_enemy",
@@ -54,8 +55,8 @@
     "path":"sprites/spr_goblin1_idle/spr_goblin1_idle.yy",
   },
   "spriteMaskId":{
-    "name":"spr_goblin1_idle",
-    "path":"sprites/spr_goblin1_idle/spr_goblin1_idle.yy",
+    "name":"spr_enemy_collision_mask",
+    "path":"sprites/spr_enemy_collision_mask/spr_enemy_collision_mask.yy",
   },
   "visible":true,
 }

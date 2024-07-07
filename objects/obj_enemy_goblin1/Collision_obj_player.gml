@@ -1,4 +1,5 @@
 // Inherit the parent event
 event_inherited();
 
-state = enemy_state_wait;
+main_state = main_state_unaware;
+nest_state = nest_state_wait;

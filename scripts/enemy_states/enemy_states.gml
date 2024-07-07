@@ -1,23 +1,15 @@
 
-// === MAIN STATES ===
 
+/*
 function enemy_state_unaware() {
-	/*
-	if (point_distance(x,y,obj_player.x,obj_player.y) <= aggro_range*COL_TILES_SIZE) {
-			main_state = enemy_state_aware();
-	}
-	*/
+
 }
 
 function enemy_state_aware() {
 	
 }
 
-//==========================================================================
 
-// === NEST STATES ===
-
-// --- misc states ---
 
 function enemy_choose_state() {
 
@@ -78,38 +70,21 @@ function enemy_state_return_origin() {
 	}	
 }
 
-// ------------------------------------------------------------
 
-// --- unaware states ---
 
 function enemy_state_idle(){
 
 }
 
 function enemy_state_wander() {
-	/*
-	// set movement
-	if (alarm[1] == -1) {
-		direction = choose (0,45,90,135,180,225,270,315);
-		move_speed = walk_speed;
-		alarm[1] = FPS*2;
-	}
-	if (alarm[1] == 0) {
-		move_speed = 0;
-		enemy_choose_state();
-	}
-	enemy_aggro_range_check();
-	enemy_return_origin_check();
-	*/
+
 }
 
 function enemy_state_sleep() {
 		
 }
 
-// ------------------------------------------------------------
 
-// --- aware states ---
 
 function enemy_state_chase() {
 	if (!instance_exists(target) || target.state == player_state_death) {
@@ -130,5 +105,5 @@ function enemy_state_align() {
 	
 }
 
-// ------------------------------------------------------------
+*/
 
