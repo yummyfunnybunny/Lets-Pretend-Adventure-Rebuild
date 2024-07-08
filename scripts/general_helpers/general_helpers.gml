@@ -60,6 +60,4 @@ function weighted_chance(_op1 = noone, _wt1 = 0,
 
 	// Return the chosen option
 	return _option_picked;
-
-
 }

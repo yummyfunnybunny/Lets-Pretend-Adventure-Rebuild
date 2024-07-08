@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"Entity_Collision",
   "parent":{
-    "name":"General",
-    "path":"folders/Scripts/General.yy",
+    "name":"Untilities",
+    "path":"folders/Scripts/Untilities.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

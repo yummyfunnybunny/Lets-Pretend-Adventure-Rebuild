@@ -1,30 +1,35 @@
-function attack_check_immunities(_dmg_type, _obj) {
-	for (var _i = 0; _i < array_length(_obj.immune_array); _i++;){
-		if (_dmg_type == _obj.immune_array[_i]) {
-			return true;	
-		}else {
-			return false;	
+
+function damage_check_modifiers(_damage_type, _element_type, _array) {
+	
+	// check that the array has anything in it
+	if (array_length(_array) == 0) { return false; }
+	
+	// check damage type
+	if (_damage_type && _array) {
+		for (var _i = 0; _i < array_length(_array); _i++;){
+			if (_damage_type == _array[_i]) {
+				return true;	
+			}
 		}
 	}
+	// check element type
+	if (_element_type) {
+		for (var _i = 0; _i < array_length(_array); _i++;){
+			if (_element_type == _array[_i]) {
+				return true;	
+			}
+		}
+	}
+	
+	// return false if no matches were found
+	return false;
 }
 
-function attack_check_vulnerabilities(_dmg_type, _obj) {
-	for (var _i = 0; _i < array_length(_obj.vulnerable_array); _i++;){
-		if (_dmg_type == _obj.vulnerable_array[_i]) {
-			return true;	
-		}else {
-			return false;	
-		}
+function damage_check_armor(_damage) {
+	while (armor > 0) {
+		_damage--;
+		armor--;
 	}
-}
-
-function damage_modifier(_dmg_type, _obj, _modifier_array) {
-	for (var _i = 0; _i < array_length(_modifier_array); _i++;){
-		if (_dmg_type == _modifier_array[_i]) {
-			return true;	
-		}else {
-			return false;
-		}
-	}
+	return _damage;
 }
 

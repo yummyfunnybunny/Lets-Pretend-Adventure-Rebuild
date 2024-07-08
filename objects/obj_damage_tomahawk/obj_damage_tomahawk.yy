@@ -22,8 +22,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_entity","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"propertyId":{"name":"knockback_reduction","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
   ],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"5 - Damage Objects",
+    "path":"folders/Objects/5 - Damage Objects.yy",
   },
   "parentObjectId":{
     "name":"obj_parent_entity",
@@ -55,8 +55,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_damage",
-    "path":"sprites/spr_damage/spr_damage.yy",
+    "name":"spr_damage_melee",
+    "path":"sprites/spr_damage_melee/spr_damage_melee.yy",
   },
   "spriteMaskId":null,
   "visible":true,

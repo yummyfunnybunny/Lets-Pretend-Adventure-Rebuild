@@ -1,15 +1,14 @@
 /// @desc ???
 function entity_collision(){
-	// -- Set z l_im_ites --
-	// we need th_is _in order to check for z overlap later _in the code, so update _it now
-	set_z_limits();
+	// set z limites
+	set_z_limits();		// we need this in order to check for z overlap later in the code, so update it now
 	
 	
 	
-	// === HORiZONTAL AXiS ===
-	// iSSUE HAPPENS BEFORE WE MAKE iT TO COLLiSiON CHECKiNG
+	// === HORIZONTAL AXIS ===
+	// ISSUE HAPPENS BEFORE WE MAKE iT TO COLLiSiON CHECKING
 
-	// -- Hor_izontal collision_map Check --
+	// horizontal collision_map Check
 	var _bbox_width_half = (bbox_right-bbox_left)/2;
 	var _bbox_height_half = (bbox_bottom-bbox_top)/2;
 	var _xx = _bbox_width_half*sign(x_speed);
@@ -29,23 +28,25 @@ function entity_collision(){
 	}
 	
 	// -- Horizontal entities --
+	
+	// check for a collision with an entity x_speed distance away
 	if (place_meeting(x+x_speed,y,obj_parent_entity)){
 		
-		// save the object _in quest_ion
+		// save the object in question
 		var _entity_collided = instance_place(x+x_speed,y,obj_parent_entity);
 		
-		// check if ent_ity _is sol_id
+		// check if entity is solid
 		if (_entity_collided.entity_solid) {
 			// check for z overlap with object _in quest_ion
 			if (check_z_overlap(_entity_collided) == true){
 				// perform step-up check
 				if (stepup_check(_entity_collided) == false){
-					// check for coll_is_ion 1 p_ixel away
+					// check for collision 1 pixel away
 					if (place_meeting(x+sign(x_speed),y,_entity_collided)){
-						// there _is a coll_is_ion, return 0 so there _is no movement
+						// there is a collision, return 0 so there is no movement
 						x_speed = 0;
 					}else {
-						// no coll_is_ion, return the sign of e_ither x_speed or y_speed
+						// no collision, return the sign x_speed
 						x_speed = sign(x_speed);
 					}
 				}
@@ -69,7 +70,7 @@ function entity_collision(){
 		}
 	}
 
-	// -- Horinzontal Move Commit --
+	// apply the x_speed to the x coordinate
 	x += x_speed;
 	
 	// === VERTICAL AXIS ===

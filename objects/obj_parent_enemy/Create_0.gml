@@ -9,16 +9,16 @@ do not need to be changed once set.
 variables that need to be set an a per-enemy basis are all in the VARIABLE DEFINITIONS
 */
 
-faction				= FACTION.ENEMY;		// set the faction of the instance
-hp					= max_hp;				// set hp to max hp
-mp					= max_mp;				// set mp to max mp
-armor				= max_armor;			// set armor to max armor
-move_speed			= 0;					// set max move speed
-apply_damage		= 0;					// holds an object of all the damage specs when dealing damage to another instance 
-target				= noone;				// id of current target to chase/attack
-align_x				= 0;					// sets x-position to for aligning a certain way to target for attacks
-align_y				= 0;					// sets y-position for aligning a certain way to target for attacks
-damage_script		= undefined;			// 
+faction					= FACTION.ENEMY;		// set the faction of the instance
+hp						= max_hp;				// set hp to max hp
+mp						= max_mp;				// set mp to max mp
+armor					= max_armor;			// set armor to max armor
+move_speed				= 0;					// set max move speed
+apply_damage			= 0;					// holds an object of all the damage specs when dealing damage to another instance 
+target					= noone;				// id of current target to chase/attack
+align_x					= 0;					// sets x-position to for aligning a certain way to target for attacks
+align_y					= 0;					// sets y-position for aligning a certain way to target for attacks
+extra_damage_check		= noone;				// use this to store a function to perform additional checks for unique enemies when taking damage
 
 #endregion
 
@@ -138,50 +138,82 @@ nest_state_react			= function(){
 
 #region INIT ENEMY HELPER FUNCTIONS
 
-//function enemy_apply_damage_to_player(_amount) {
-//	other.hp -= _amount;
+function enemy_take_damage(_damage, _damage_type, _element_type, _special_effect) {
+	if (just_got_damaged) { exit; }
+	
+	// check immunities
+	if (damage_check_modifiers(_damage_type, _element_type, immune_array) == true) { _damage = 0; }
+	
+	// run extra damage check
+	if (extra_damage_check) { script_execute(extra_damage_check); }
+	
+	// check resistances
+	if (damage_check_modifiers(_damage_type, _element_type, resistance_array) == true) { _damage /= round(_damage*2); }
+	
+	// check vulnerabilities
+	if (damage_check_modifiers(_damage_type, _element_type, vulnerable_array) == true) { _damage *= round(_damage*2); }
+	
+	// check armor
+	_damage = damage_check_armor(_damage);
+	
+	// run special effect
+	if (_special_effect) { script_execute(_special_effect); }
+	
+	// finalize damage
+	if (_damage > 0) {
+		hp -= _damage;
+		just_got_damaged = true;
+		alarm[ALARM.ATK_START] = -1;		// cancels an attack if one was underway
+		alarm[ALARM.DAMAGED] = FPS*0.5;
+		nest_state = nest_state_hurt;
+		// play damage sound
+	} else {
+		// play block/resist/immune sound	
+	}
+	
+}
+
+
+//function enemy_start_damage() {
+//	// set additional damage function
+//	var _function = undefined;
+//	if (argument_count > 0) {
+//		_function = argument[0];
+//	}
+//	// run additional damage function
+//	if (_function != undefined) {
+//		script_execute(_function);
+//	} else {
+//	// finalize damage
+//		var _damage = enemy_modify_damage(apply_damage.damage);
+//		enemy_end_damage(_damage);
+//	}
 //}
 
-function enemy_start_damage() {
-	// set additional damage function
-	var _function = undefined;
-	if (argument_count > 0) {
-		_function = argument[0];
-	}
-	// run additional damage function
-	if (_function != undefined) {
-		script_execute(_function);
-	} else {
-	// finalize damage
-		var _damage = enemy_modify_damage(apply_damage.damage);
-		enemy_end_damage(_damage);
-	}
-}
+//function enemy_modify_damage(_damage) {
+//	// apply vulnerabilities
+//	if (damage_modifier(apply_damage.damage_type, id, vulnerable_array) == true) { _damage *= round(_damage*2); }
+//	// apply resistances
+//	if (damage_modifier(apply_damage.damage_type, id, resistance_array) == true) {	_damage /= round(_damage*2); }
+//	// apply immunities
+//	if (damage_modifier(apply_damage.damage_type, id, immune_array) == true) { _damage = 0; }
+//	return _damage;
+//}
 
-function enemy_modify_damage(_damage) {
-	// apply vulnerabilities
-	if (damage_modifier(apply_damage.damage_type, id, vulnerable_array) == true) { _damage *= round(_damage*2); }
-	// apply resistances
-	if (damage_modifier(apply_damage.damage_type, id, resistance_array) == true) {	_damage /= round(_damage*2); }
-	// apply immunities
-	if (damage_modifier(apply_damage.damage_type, id, immune_array) == true) { _damage = 0; }
-	return _damage;
-}
-
-function enemy_end_damage(_damage) {
-	// apply knockback
-	var _knockback_direction = point_direction(target.x,target.y,x,y);
-	knockback_apply(id, apply_damage.knockback_amount, knockback_reduction, _knockback_direction);
+//function enemy_end_damage(_damage) {
+//	// apply knockback
+//	var _knockback_direction = point_direction(target.x,target.y,x,y);
+//	knockback_apply(id, apply_damage.knockback_amount, knockback_reduction, _knockback_direction);
 	
-	// finalize
-	hp -= _damage;
-	just_got_damaged = true;
-	alarm[2] = FPS*0.5;
-	nest_state = nest_state_hurt;
-	if (alarm[3] > -1) alarm[3] = -1;
-	if (alarm[4] > -1) alarm[4] = -1;
-	apply_damage = 0;
-}
+//	// finalize
+//	hp -= _damage;
+//	just_got_damaged = true;
+//	alarm[2] = FPS*0.5;
+//	nest_state = nest_state_hurt;
+//	if (alarm[3] > -1) alarm[3] = -1;
+//	if (alarm[4] > -1) alarm[4] = -1;
+//	apply_damage = 0;
+//}
 
 function enemy_aggro_range_check(_main_state = main_state_aware,_nest_state = nest_state_chase){
 	if (target == noone) exit;

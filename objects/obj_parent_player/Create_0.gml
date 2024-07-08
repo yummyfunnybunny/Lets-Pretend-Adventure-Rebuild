@@ -16,6 +16,12 @@ variables that need to be set an a per-player basis are all in the VARIABLE DEFI
 faction				= FACTION.PLAYER;			// tells the game which faction the player belongs to
 disable_input		= false;					// used to disable player input for cutscenes or other
 
+// stats
+hp						= max_hp;				// set hp to max hp
+mp						= max_mp;				// set mp to max mp
+armor					= max_armor;			// set armor to max armor
+extra_damage_check		= noone;				// dictates any additional checks to be made before dealing damage to player
+
 // movement & controls
 face_direction		= 270;						// sets the current direction the player is facing
 move_direction		= -1;						// used to control x/y_speed and helps set the players face direction
@@ -184,10 +190,44 @@ function player_respawn() {
 	
 }
 
-function player_take_damage(_dmg) {
+function player_take_damage(_damage, _damage_type, _element_type, _special_effect) {
 	if (just_got_damaged) { exit; }
-	hp -= _dmg;
-	just_got_damaged = true;
+	
+	// check immunities
+	if (damage_check_modifiers(_damage_type, _element_type, immune_array) == true) { _damage = 0; }
+	
+	// run extra damage check
+	if (extra_damage_check) { script_execute(extra_damage_check); }
+	
+	// check resistances
+	if (damage_check_modifiers(_damage_type, _element_type, resistance_array) == true) { _damage /= round(_damage*2); }
+	
+	// check vulnerabilities
+	if (damage_check_modifiers(_damage_type, _element_type, vulnerable_array) == true) { _damage *= round(_damage*2); }
+	
+	// check armor
+	_damage = damage_check_armor(_damage);
+	
+	// run special effect
+	if (_special_effect) { script_execute(_special_effect); }
+	
+	// finalize damage
+	if (_damage > 0) {
+		hp -= _damage;
+		just_got_damaged = true;
+		alarm[ALARM.ATK_START] = -1;		// cancels an attack if one was underway
+		alarm[ALARM.DAMAGED] = FPS*0.5;
+		nest_state = nest_state_hurt;
+		// play damage sound
+	} else {
+		// play block/resist/immune sound	
+	}
+	
+	//===================
+	
+	//if (just_got_damaged) { exit; }
+	//hp -= _damage;
+	//just_got_damaged = true;
 	// TODO - reductions, damage types, mulliplers, weaknesses, resistances, armor, etc.
 }
 
@@ -414,16 +454,21 @@ nest_state_attack_sword = function() {
 	if (alarm[P_ALARM.ATK_START] == -2) {
 		
 		if (image_index = 3) {
+			var _x_offset = 0;
 			var _y_offset = 0;
-			if (face_direction == 90) _y_offset = -16;
-			var _damage = instance_create_layer(x + lengthdir_x(40,face_direction), y+_y_offset+z_bottom + lengthdir_y(24, face_direction), INSTANCE_LAYER, obj_damage_sword, {
-			direction: face_direction,
-			faction: faction,
-			creator: id,
-			damage: 1,
-			knockback_amount: 7,
-			damage_type: DAMAGE_TYPE.PIERCE,
-			});
+			if (face_direction == 0) _x_offset = 8;
+			if (face_direction == 90) _y_offset = -10;
+			if (face_direction == 180) _x_offset = -8;
+			if (face_direction == 270) _y_offset = 2;
+			player_create_damage_object(item_id_used, _x_offset, _y_offset);
+			//var _damage = instance_create_layer(x + lengthdir_x(40,face_direction), y+_y_offset+z_bottom + lengthdir_y(24, face_direction), INSTANCE_LAYER, obj_damage_sword, {
+			//direction: face_direction,
+			//faction: faction,
+			//creator: id,
+			//damage: 1,
+			//knockback_amount: 7,
+			//damage_type: DAMAGE_TYPE.PIERCE,
+			//});
 		}
 	}
 	
@@ -436,6 +481,41 @@ nest_state_attack_sword = function() {
 			item_id_used = noone;
 		}
 	}
+}
+
+function player_create_damage_object(_item_id, _x_offset, _y_offset) {
+	// get all needed data to pass to damage object
+	var _faction = faction;
+	var _creator = id;
+	var _face_dir = face_direction;
+	var _dmg_type = ds_grid_get(global.item_data, ITEM_COLUMN.DAMAGE_TYPE, _item_id);
+	var _element_type = ds_grid_get(global.item_data, ITEM_COLUMN.ELEMENT_TYPE, _item_id);
+	var _dmg_amt = ds_grid_get(global.item_data, ITEM_COLUMN.DAMAGE, _item_id);
+	var _knockback =  ds_grid_get(global.item_data, ITEM_COLUMN.KNOCKBACK, _item_id);
+	var _special_effect = ds_grid_get(global.item_data, ITEM_COLUMN.EFFECT, _item_id);
+	
+	// determine which damage object to create
+	var _wep_type = ds_grid_get(global.item_data, ITEM_COLUMN.WEAPON_TYPE, _item_id);
+	var _wep_type = asset_get_index("obj_damage_" + string(_wep_type));
+	
+	// get the sprite to set for the damage object
+	var _sprite = ds_grid_get(global.item_data, ITEM_COLUMN.DAMAGE_SPRITE, _item_id);
+	var _sprite = asset_get_index(_sprite);
+	if (!_sprite) { _sprite = asset_get_index("spr_damage_melee"); }
+	
+	
+	// create the damage object
+	instance_create_layer(x + _x_offset, y + _y_offset, INSTANCE_LAYER, _wep_type, {
+		faction: _faction,
+		creator: _creator,
+		image_angle: _face_dir,
+		sprite_index: _sprite,
+		damage_type: _dmg_type,
+		element_type: _element_type,
+		damage: _dmg_amt,
+		knockback_amount: _knockback,
+		special_effect: _special_effect,
+	});
 }
 
 nest_state_attack_shield = function() {

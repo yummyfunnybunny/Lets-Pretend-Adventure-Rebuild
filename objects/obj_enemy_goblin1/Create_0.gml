@@ -15,13 +15,6 @@ main_state_aware = function() {
 	enemy_origin_distance_check();
 }
 
-//main_state_death = function() {
-//	if (alarm[ALARM.DEATH] == -1) { alarm[ALARM.DEATH] = FPS * 3;}
-//	if (alarm[ALARM.DEATH] == 0) { 
-//		instance_destroy();	
-//	}
-//}
-
 #endregion
 
 #region SET NEST STATES
@@ -99,7 +92,7 @@ nest_state_hurt = function() {
 	if (knockback_check()) { exit; }
 	//if (knockback_check() == true) {
 		//goblin1_choose_state();	
-		choose_state();
+		nest_state = nest_state_wait;
 	//}	
 }
 
