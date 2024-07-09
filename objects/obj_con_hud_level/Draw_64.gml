@@ -1,5 +1,5 @@
 
-if (global.game_paused == 1) exit;
+if (global.game_paused == true) exit;
 if (global.ui_type != UI_TYPE.LEVEL) exit;
 if (!instance_exists(obj_player)) exit;
 		

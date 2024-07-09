@@ -1,7 +1,7 @@
 /// @desc draw menu
 
 // draw game menu
-if (global.game_paused == 1) {
+if (global.game_paused) {
 
 	switch(current_menu) {
 		case MENU.ITEMS:

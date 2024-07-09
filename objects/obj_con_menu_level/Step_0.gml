@@ -1,16 +1,10 @@
 /// @desc - Update Menu
 
-// Set Input For Opening Menu
-menu_input = keyboard_check_pressed(ord("P"));
 
-// Update Menu open/close Input
-if (menu_input) {
-	global.game_paused *= -1;
-}
 
 // Update The Open Menu
-if (global.game_paused == 1) {
-	
+if (global.game_paused) {
+	show_debug_message("game paused, running menu stuff");
 	// update menu input
 	right_input = keyboard_check_pressed(vk_right);
 	left_input = keyboard_check_pressed(vk_left);

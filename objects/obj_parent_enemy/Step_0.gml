@@ -1,42 +1,16 @@
 /// @descr update enemy
 event_inherited();
 
-enemy_set_target();
-
-// Run Current State
-if (global.game_paused == -1) { 
-	script_execute(main_state);
-	script_execute(nest_state);
-}
-
-// update image
-enemy_flip_image();
-enemy_update_sprite();
-
-// update collision
-entity_collision();
-
-// update knockback
-knockback_update();
-
-// update movement
-if (move_speed != 0) {
-	if (knockback_check()) { exit; }
-	//if (knockback_check() == false) {
-		x_speed = lengthdir_x(move_speed, direction);
-		y_speed = lengthdir_y(move_speed, direction);
-	//}
-}
-
-// apply damage
-//if (apply_damage != 0) {
-//	enemy_start_damage(damage_script);
-//}
-
-// check death by 0 HP
-if (hp <= 0) {
-	main_state = main_state_death;
-	nest_state = nest_state_death_normal;	
+if (!global.game_paused) {
+	enemy_set_target();				// set target
+	script_execute(main_state);		// update main state
+	script_execute(nest_state);		// update nest state
+	enemy_flip_image();				// update flip image
+	enemy_update_sprite();			// update sprite
+	entity_collision();				// update collision
+	knockback_update();				// update knockback
+	enemy_update_movement();		// update movement
+	enemy_death_check();			// check death by 0 HP
 }
 
 // die when touching shallow water, deep water, and pitfalls

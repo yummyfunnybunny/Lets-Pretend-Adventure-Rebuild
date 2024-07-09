@@ -21,7 +21,7 @@ display_set_gui_size(640,360);
 
 #region GLOBALM VARIABLES
 
-global.game_paused = -1;
+global.game_paused = false;
 global.debugger = false;
 global.main_layer = "Instances";
 global.ui_type = UI_TYPE.MAIN_MENU;

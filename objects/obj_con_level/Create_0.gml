@@ -1,5 +1,7 @@
 /// @desc level manager
 
+#region CREATE LEVEL ESSENTIALS
+
 // create the HUD Controller
 if (!instance_exists(obj_con_hud_level)) {
 	global.level_hud = instance_create_layer(0, 0, layer, obj_con_hud_level);
@@ -19,4 +21,23 @@ if (!instance_exists(obj_player)) {
 if (!instance_exists(obj_con_camera)) {
 	global.camera = instance_create_depth(obj_player.x,obj_player.y,INSTANCE_DEPTH,obj_con_camera);	
 }
+
+#endregion
+
+
+#region LEVEL HELPER FUNCTIONS
+
+function level_pause_game() {
+	with (all) {
+		image_speed = 0;	
+	}
+}
+
+function level_resume_game() {
+	with (all) {
+		image_speed = 1;	
+	}
+}
+
+#endregion
 

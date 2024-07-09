@@ -65,7 +65,6 @@ main_state_death			= function(){
 	
 	// fade out with 1 second left
 	if (alarm[ALARM.DEATH] <= FPS* 1) {
-		show_debug_message(image_alpha);
 		image_alpha = ((alarm[ALARM.DEATH]*100)/60)/100;
 	}
 	
@@ -174,6 +173,20 @@ nest_state_react			= function(){
 #endregion
 
 #region INIT ENEMY HELPER FUNCTIONS
+
+function enemy_death_check() {
+	if (nest_state = nest_state_hurt) { exit; }
+	if (hp <= 0) {
+		main_state = main_state_death;
+		nest_state = nest_state_death_normal;
+	}	
+}
+
+function enemy_update_movement() {
+	if (knockback_check()) { exit; }
+	x_speed = lengthdir_x(move_speed, direction);
+	y_speed = lengthdir_y(move_speed, direction);
+}
 
 function enemy_take_damage(_damage, _damage_type, _element_type, _special_effect) {
 	if (just_got_damaged) { exit; }

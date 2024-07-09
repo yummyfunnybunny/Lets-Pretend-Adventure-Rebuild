@@ -14,7 +14,6 @@ variables that need to be set an a per-player basis are all in the VARIABLE DEFI
 
 // Macro Stuff
 faction				= FACTION.PLAYER;			// tells the game which faction the player belongs to
-//disable_input		= false;					// used to disable player input for cutscenes or other
 terrain_state		= TERRAIN.NONE				// saves the current terrain state of the player
 
 // stats
