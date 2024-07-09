@@ -3,9 +3,6 @@
 // Inherit the parent event
 event_inherited();
 
-main_state_unaware = function() {
-}
-
 nest_state_wait = function() {
 	// wait is almost identical to idle, but wait will cancel
 	// state change checks like aggro range and attack range
@@ -52,8 +49,8 @@ nest_state_wander = function() {
 	if (alarm[ALARM.STATE] == -1) {
 		direction = choose (0,90,180,270);
 		move_speed = choose(walk_speed, run_speed);
-		x_speed = lengthdir_x(move_speed, direction);
-		y_speed = lengthdir_y(move_speed, direction);
+		//x_speed = lengthdir_x(move_speed, direction);
+		//y_speed = lengthdir_y(move_speed, direction);
 		alarm[ALARM.STATE] = FPS*(choose(1,2));
 	}
 	
@@ -68,30 +65,17 @@ nest_state_wander = function() {
 	}
 }
 
-nest_state_get_hurt = function() {
-	if (knockback_check() == true) {
-		//goblin1_choose_state();	
-		choose_state();
-	}	
+nest_state_hurt = function() {
+	if (knockback_check()) { exit; }
+	nest_state = weighted_chance(nest_state_idle, idle_weight, nest_state_wander, wander_weight);
 }
 
-nest_state_death = function() {
+nest_state_death_normal = function() {
 	
-	// begin death
-	if (alarm[ALARM.STATE] == -1) {
-		if (image_speed != 1) { image_speed = 1; }
-		alarm[ALARM.STATE] = FPS * 3;	
-	}
-	
-	// during death
+	// stop animation on end
 	if (image_index >= image_number -1) {
 		image_speed = 0;
 		image_index = image_number -1;	
-	}
-	
-	// end death
-	if (alarm[ALARM.STATE] == 0) {
-		// TODO - run item drop function
 	}
 }
 

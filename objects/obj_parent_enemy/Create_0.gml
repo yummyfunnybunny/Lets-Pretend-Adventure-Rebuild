@@ -56,12 +56,22 @@ main_state_death			= function(){
 	// the death main_state controls the overall function of the enemy's death
 	// there are many ways an enemy can die, but some of the functionality is always the same
 	// the nest state will control the different ways an enemy can die (normal, pitfall, water, etc.);
-	if (alarm[ALARM.DEATH] == -1) { alarm[ALARM.DEATH] = FPS * 3;}
-	if (alarm[ALARM.DEATH] == 0) { 
+	if (alarm[ALARM.DEATH] == -1) {
+		image_index = 0;
+		alarm[ALARM.DEATH] = FPS * 4;
+	}
+	
+	// fade out with 1 second left
+	if (alarm[ALARM.DEATH] <= FPS* 1) {
+		show_debug_message(image_alpha);
+		image_alpha = ((alarm[ALARM.DEATH]*100)/60)/100;
+	}
+	
+	// destroy enemy
+	if (alarm[ALARM.DEATH] == 0) {
 		instance_destroy();	
 	}
 }
-
 // unuware states
 nest_state_idle				= function(){
 	// the idle state controls how long the enemy will sit idly before 
@@ -84,6 +94,31 @@ nest_state_return_origin	= function(){
 	// return_origin is an unuware moving state that moves the enemy
 	// back to its origin_x & origin_y
 	// aggro range & attack range checks are not performed here
+		// create pather
+	if (!pather_object) {
+		pather_object = instance_create_depth(x,y,INSTANCE_DEPTH,obj_con_pather,{
+			creator: id,
+			path: noone,
+			move_speed: run_speed,
+			target_x: origin_x,
+			target_y: origin_y,
+			path_end_action: path_action_stop,
+		});
+	}
+	
+	// follow pather
+	if (pather_object) {
+		if (move_speed != run_speed) { move_speed = run_speed; }
+		direction = point_direction(x,y,pather_object.x,pather_object.y);
+	}
+	
+	// end once origin is reached
+	if (point_distance(x,y,origin_x,origin_y) <= COL_TILES_SIZE) {
+		instance_destroy(pather_object);
+		pather_object = noone;
+		main_state = main_state_unaware;
+		nest_state = nest_state_wait;
+	}
 };
 
 // aware states
@@ -288,6 +323,12 @@ function enemy_quadrant_check(_target) {
 			}
 		break;
 	}
+}
+
+function enemy_collide_with_player(_main_state = main_state_aware, _nest_state = nest_state_wait) {
+	// provide behaivor for after colliding with player
+	main_state = _main_state;
+	nest_state = _nest_state;
 }
 
 #endregion

@@ -7,18 +7,18 @@ function weighted_chance(_op1 = noone, _wt1 = 0,
 						 _op6 = noone, _wt6 = 0) {
 
 	// Reset Needed Variables
-	if (argument_count > 0)		{ _op1 = argument[0];  }
-	if (argument_count > 1)		{ _wt1 = argument[1];  }
-	if (argument_count > 2)		{ _op2 = argument[2];  }
-	if (argument_count > 3)		{ _wt2 = argument[3];  }
-	if (argument_count > 4)		{ _op3 = argument[4];  }
-	if (argument_count > 5)		{ _wt3 = argument[5];  }
-	if (argument_count > 6)		{ _op4 = argument[6];  }
-	if (argument_count > 7)		{ _wt4 = argument[7];  }
-	if (argument_count > 8)		{ _op5 = argument[8];  }
-	if (argument_count > 9)		{ _wt5 = argument[9];  }
-	if (argument_count > 10)	{ _op6 = argument[10]; }
-	if (argument_count > 11)	{ _wt6 = argument[11]; }
+	//if (argument_count > 0)		{ _op1 = argument[0];  }
+	//if (argument_count > 1)		{ _wt1 = argument[1];  }
+	//if (argument_count > 2)		{ _op2 = argument[2];  }
+	//if (argument_count > 3)		{ _wt2 = argument[3];  }
+	//if (argument_count > 4)		{ _op3 = argument[4];  }
+	//if (argument_count > 5)		{ _wt3 = argument[5];  }
+	//if (argument_count > 6)		{ _op4 = argument[6];  }
+	//if (argument_count > 7)		{ _wt4 = argument[7];  }
+	//if (argument_count > 8)		{ _op5 = argument[8];  }
+	//if (argument_count > 9)		{ _wt5 = argument[9];  }
+	//if (argument_count > 10)	{ _op6 = argument[10]; }
+	//if (argument_count > 11)	{ _wt6 = argument[11]; }
 
 	// set each item choice to roll on
 	var _option;

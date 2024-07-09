@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"general_helpers",
   "parent":{
-    "name":"Untilities",
-    "path":"folders/Scripts/Untilities.yy",
+    "name":"Utilities",
+    "path":"folders/Scripts/Utilities.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

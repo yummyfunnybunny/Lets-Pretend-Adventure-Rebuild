@@ -19,12 +19,6 @@ main_state_aware = function() {
 
 #region SET NEST STATES
 
-choose_state = function() {
-	var _chosen_state = weighted_chance(nest_state_idle, idle_weight, nest_state_wander, wander_weight);
-	main_state = main_state_unaware;
-	nest_state = _chosen_state;
-}
-
 nest_state_wait = function() {
 	if (image_speed != 1) image_speed = 1;
 	
@@ -38,7 +32,8 @@ nest_state_wait = function() {
 	
 	// end idle
 	if (alarm[ALARM.STATE] == 0) {
-		choose_state();
+		main_state = main_state_unaware;
+		nest_state = weighted_chance(nest_state_idle, idle_weight, nest_state_wander, wander_weight);
 	}
 }
 
@@ -55,7 +50,8 @@ nest_state_idle = function() {
 	
 	// end idle
 	if (alarm[ALARM.STATE] == 0) {
-		choose_state();
+		main_state = main_state_unaware;
+		nest_state = weighted_chance(nest_state_idle, idle_weight, nest_state_wander, wander_weight);
 	}
 }
 
@@ -78,7 +74,8 @@ nest_state_wander = function() {
 		move_speed = 0;
 		x_speed = 0;
 		y_speed = 0;
-		choose_state();
+		main_state = main_state_unaware;
+		nest_state = weighted_chance(nest_state_idle, idle_weight, nest_state_wander, wander_weight);
 	}
 }
 
@@ -90,10 +87,7 @@ nest_state_chase = function() {
 
 nest_state_hurt = function() {
 	if (knockback_check()) { exit; }
-	//if (knockback_check() == true) {
-		//goblin1_choose_state();	
 		nest_state = nest_state_wait;
-	//}	
 }
 
 nest_state_flee = function() {
@@ -101,36 +95,6 @@ nest_state_flee = function() {
 	// search for hiding spots?
 	// run towards allied units
 		// once allied units are found, attack player again
-}
-
-nest_state_return_origin = function() {
-	
-	// create pather
-	if (!pather_object) {
-		pather_object = instance_create_depth(x,y,INSTANCE_DEPTH,obj_con_pather,{
-			creator: id,
-			path: noone,
-			move_speed: run_speed,
-			target_x: origin_x,
-			target_y: origin_y,
-			path_end_action: path_action_stop,
-		});
-	}
-	
-	// follow pather
-	if (pather_object) {
-		//if (target != pather_object) { target = pather_object; }
-		if (move_speed != run_speed) { move_speed = run_speed; }
-		direction = point_direction(x,y,pather_object.x,pather_object.y);
-	}
-	
-	// end once origin is reached
-	if (point_distance(x,y,origin_x,origin_y) <= COL_TILES_SIZE) {
-		instance_destroy(pather_object);
-		pather_object = noone;
-		main_state = main_state_unaware;
-		nest_state = nest_state_wait;
-	}
 }
 
 #endregion

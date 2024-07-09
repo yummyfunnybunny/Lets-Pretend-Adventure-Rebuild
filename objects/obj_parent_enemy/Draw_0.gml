@@ -8,6 +8,7 @@ if (global.debugger) {
 	switch(main_state){
 		case main_state_unaware:			_main_state = "unaware";		break;	
 		case main_state_aware:				_main_state = "aware";			break;	
+		case main_state_death:				_main_state = "death";			break;	
 		default:							_main_state = "unknown";		break;	
 	}
 	
