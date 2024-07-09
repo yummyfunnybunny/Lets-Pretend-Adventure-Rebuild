@@ -1,6 +1,6 @@
 event_inherited();
 
-if (!disable_input) { player_update_input(); }				// 1 - update player input
+player_update_input();										// 1 - update player input
 player_apply_friction();									// 2 - update player friction
 player_update_max_speed();									// 3 - Update Player max_speed - *do this before updating x_speed/y_speed*
 entity_collision();											// 4 - Collision Checking - *must do this AFTER updating max_speed*

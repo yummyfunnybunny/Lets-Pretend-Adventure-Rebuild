@@ -14,7 +14,7 @@ variables that need to be set an a per-player basis are all in the VARIABLE DEFI
 
 // Macro Stuff
 faction				= FACTION.PLAYER;			// tells the game which faction the player belongs to
-disable_input		= false;					// used to disable player input for cutscenes or other
+//disable_input		= false;					// used to disable player input for cutscenes or other
 terrain_state		= TERRAIN.NONE				// saves the current terrain state of the player
 
 // stats
@@ -320,15 +320,6 @@ function player_create_damage_object(_item_id, _x_offset, _y_offset) {
 	});
 }
 
-//function player_reset_terrain_sprites() {
-//	show_debug_message("reset terrain sprites");
-//	if (terrain_state != TERRAIN.NONE) { terrain_state = TERRAIN.PITFALL; }
-//	//if (sprite_move_down != spr_player_move_down) { sprite_move_down = spr_player_move_down; }
-//	//if (sprite_move_left != spr_player_move_left) { sprite_move_left = spr_player_move_left; }
-//	//if (sprite_move_right != spr_player_move_right) { sprite_move_right = spr_player_move_right; }
-//	//if (sprite_move_up != spr_player_move_up) { sprite_move_up = spr_player_move_up; }
-//}
-
 function player_terrain_checks(){
 
 	var _terrain = tilemap_get_at_pixel(global.collision_map,x,y);
@@ -479,32 +470,6 @@ nest_state_free = function() {
 	}
 }
 
-//nest_state_wade = function() {
-//	// set sprite to either moving or idle
-//	if (x_speed != 0 || y_speed != 0) {
-//		if (image_speed != 1) { image_speed = 1; }
-//		player_update_image("spr_player_move_wade");
-		
-//	} else { 
-//		if (image_speed != 0) { image_speed = 0; }
-//		player_update_image("spr_player_idle_wade");
-//	}
-//	if (max_speed != wade_speed) { max_speed = wade_speed; }
-//}
-
-//nest_state_grass = function() {
-//	// set sprite to either moving or idle
-//	if (x_speed != 0 || y_speed != 0) {
-//		if (image_speed != 1) { image_speed = 1; }
-//		player_update_image("spr_player_move_grass");
-		
-//	} else { 
-//		if (image_speed != 0) { image_speed = 0; }
-//		player_update_image("spr_player_idle_grass");
-//	}
-//	if (max_speed != wade_speed) { max_speed = wade_speed; }
-//}
-
 nest_state_attack_sword = function() {
 
 	// begin attack
@@ -542,8 +507,6 @@ nest_state_attack_sword = function() {
 		}
 	}
 }
-
-
 
 nest_state_attack_shield = function() {
 	
@@ -592,7 +555,6 @@ nest_state_climb = function() {
 	} else { 
 		if (image_speed != 0) { image_speed = 0; }
 	}
-	
 }
 
 nest_state_carry = function() {
