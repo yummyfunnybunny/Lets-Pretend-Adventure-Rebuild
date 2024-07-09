@@ -160,7 +160,7 @@
           1,-3,-2147483648,-2,0,-47,1,1,1073741825,-17,-2147483648,1,1,-33,3,-22,2,-30,3,-3,2,1,1,-3,-2147483648,
           -2,0,-47,1,1,1073741825,-17,-2147483648,1,1,-85,3,-3,2,1,1,-3,-2147483648,-2,0,-47,1,1,1073741825,-18,
           1,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"t_collisionMap","path":"tilesets/t_collisionMap/t_collisionMap.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":{"name":"t_collisionMap","path":"tilesets/t_collisionMap/t_collisionMap.yy",},"userdefinedDepth":false,"visible":false,"x":0,"y":0,},
     {"$GMRLayer":"","%Name":"Above","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[
         {"$GMRTileLayer":"","%Name":"above_modifiers","depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"above_modifiers","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":45,"SerialiseWidth":80,"TileCompressedData":[
               -240,-2147483648,-10,0,-70,-2147483648,-10,0,-70,-2147483648,-10,0,12,-2147483648,3411,3412,-2147483648,

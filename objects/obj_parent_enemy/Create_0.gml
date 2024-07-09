@@ -57,6 +57,8 @@ main_state_death			= function(){
 	// there are many ways an enemy can die, but some of the functionality is always the same
 	// the nest state will control the different ways an enemy can die (normal, pitfall, water, etc.);
 	if (alarm[ALARM.DEATH] == -1) {
+		x_speed = 0;
+		y_speed = 0;
 		image_index = 0;
 		alarm[ALARM.DEATH] = FPS * 4;
 	}

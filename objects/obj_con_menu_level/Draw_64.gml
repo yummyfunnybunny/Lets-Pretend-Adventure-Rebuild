@@ -2,7 +2,7 @@
 
 // draw game menu
 if (global.game_paused == 1) {
-	show_debug_message("should be drawing menu");
+
 	switch(current_menu) {
 		case MENU.ITEMS:
 			menu_draw_items();

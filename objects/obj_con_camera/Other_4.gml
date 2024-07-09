@@ -11,6 +11,9 @@ if (transitioning) {
 	// set player position
 	if (!instance_exists(obj_player)) {
 		instance_create_depth(transfer_x, transfer_y, INSTANCE_DEPTH, obj_player);
+	} else {
+		obj_player.x = transfer_x;
+		obj_player.y = transfer_y;
 	}
 	
 	// set variables for in-transition

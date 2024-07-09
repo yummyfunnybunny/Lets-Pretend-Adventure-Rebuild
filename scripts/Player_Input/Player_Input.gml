@@ -26,6 +26,9 @@ function player_update_input(){
 
 function player_input_jump_check() {
 	if (!on_ground) { exit; }
+	if (terrain_state == TERRAIN.SHALLOW_WATER || terrain_state == TERRAIN.TALL_GRASS) { exit; }
+	if (nest_state == nest_state_climb) { exit; }
+	if (nest_state == nest_state_hurt) { exit; }
 	if (jump_input) {
 		last_safe_x = xprevious;
 		last_safe_y = yprevious;
@@ -39,25 +42,37 @@ function player_input_a_check() {
 
 function player_input_b_check() {
 	// keyboard = Z
+	if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
+	if (!on_ground) { exit; }
+	if (terrain_state == TERRAIN.SHALLOW_WATER || terrain_state == TERRAIN.TALL_GRASS) { exit; }
+	if (nest_state == nest_state_climb) { exit; }
+	if (nest_state == nest_state_hurt) { exit; }
 	if (b_input_pressed) {
-		if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
 		player_use_equip_slot(equip_slots[EQUIP.B]);
 	}
 }
 
 function player_input_x_check() {
 	// keyboard = X
+	if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
+	if (!on_ground) { exit; }
+	if (terrain_state == TERRAIN.SHALLOW_WATER || terrain_state == TERRAIN.TALL_GRASS) { exit; }
+	if (nest_state == nest_state_climb) { exit; }
+	if (nest_state == nest_state_hurt) { exit; }
 	if (x_input_pressed) {
-		if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
-		//show_message(equip_slots[EQUIP.X]);
 		player_use_equip_slot(equip_slots[EQUIP.X]);
 	}
 }
 
 function player_input_y_check() {
 	// keyboard = C	
+	if (nest_state == nest_state_hurt) { exit; }
+	if (terrain_state == TERRAIN.SHALLOW_WATER || terrain_state == TERRAIN.TALL_GRASS) { exit; }
+	if (nest_state == nest_state_climb) { exit; }
+	if (!on_ground) { exit; }
+	if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
 	if (y_input_pressed) {
-		if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
+		
 		player_use_equip_slot(equip_slots[EQUIP.Y]);
 	}
 }

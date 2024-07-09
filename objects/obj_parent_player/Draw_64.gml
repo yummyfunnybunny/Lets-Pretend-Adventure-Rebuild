@@ -13,7 +13,7 @@ if (global.debugger == true) {
 	switch(nest_state) {
 		case nest_state_free: _nest_state = "Free"; break;
 		case nest_state_jump: _nest_state = "Jump"; break;
-		case nest_state_wade: _nest_state = "Wade"; break;
+		//case nest_state_wade: _nest_state = "Wade"; break;
 		case nest_state_fall: _nest_state = "Fall"; break;
 		case nest_state_climb: _nest_state = "Cl_imb"; break;
 		case nest_state_death_pitfall: _nest_state = "PitFall"; break;

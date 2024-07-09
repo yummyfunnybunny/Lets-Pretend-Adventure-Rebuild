@@ -85,6 +85,16 @@ enum INVENTORY {
 	UNIQUE_BOTTOM,	// 5
 }
 
+enum TERRAIN {
+	NONE,
+	WALL,
+	SHALLOW_WATER,
+	DEEP_WATER,
+	LADDER,
+	TALL_GRASS,
+	PITFALL,
+}
+
 #endregion
 
 #region GAME INIT FUNCTIONS
