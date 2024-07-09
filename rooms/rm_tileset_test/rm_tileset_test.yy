@@ -7,7 +7,6 @@
   "inheritLayers":false,
   "instanceCreationOrder":[
     {"name":"inst_55099F07_1","path":"rooms/rm_tileset_test/rm_tileset_test.yy",},
-    {"name":"inst_56701919_1","path":"rooms/rm_tileset_test/rm_tileset_test.yy",},
     {"name":"inst_33D64FF5","path":"rooms/rm_tileset_test/rm_tileset_test.yy",},
     {"name":"inst_649C5333","path":"rooms/rm_tileset_test/rm_tileset_test.yy",},
     {"name":"inst_1FA1790C","path":"rooms/rm_tileset_test/rm_tileset_test.yy",},
@@ -204,7 +203,6 @@
     {"$GMRLayer":"","%Name":"OnGround","depth":600,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[
         {"$GMRInstanceLayer":"","%Name":"Instances","depth":700,"effectEnabled":true,"effectType":null,"gridX":8,"gridY":8,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":false,"instances":[
             {"$GMRInstance":"","%Name":"inst_55099F07_1","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_55099F07_1","objectId":{"name":"obj_con_level","path":"objects/obj_con_level/obj_con_level.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":0.0,"y":0.0,},
-            {"$GMRInstance":"","%Name":"inst_56701919_1","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_56701919_1","objectId":{"name":"obj_con_pause_menu","path":"objects/obj_con_pause_menu/obj_con_pause_menu.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":64.0,"y":0.0,},
             {"$GMRInstance":"","%Name":"inst_33D64FF5","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_33D64FF5","objectId":{"name":"obj_transition","path":"objects/obj_transition/obj_transition.yy",},"properties":[
                 {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_transition","path":"objects/obj_transition/obj_transition.yy",},"propertyId":{"name":"transfer_room","path":"objects/obj_transition/obj_transition.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"rm_transition_test",},
                 {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_transition","path":"objects/obj_transition/obj_transition.yy",},"propertyId":{"name":"transfer_x","path":"objects/obj_transition/obj_transition.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"632",},

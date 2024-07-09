@@ -173,48 +173,6 @@ function enemy_take_damage(_damage, _damage_type, _element_type, _special_effect
 	
 }
 
-
-//function enemy_start_damage() {
-//	// set additional damage function
-//	var _function = undefined;
-//	if (argument_count > 0) {
-//		_function = argument[0];
-//	}
-//	// run additional damage function
-//	if (_function != undefined) {
-//		script_execute(_function);
-//	} else {
-//	// finalize damage
-//		var _damage = enemy_modify_damage(apply_damage.damage);
-//		enemy_end_damage(_damage);
-//	}
-//}
-
-//function enemy_modify_damage(_damage) {
-//	// apply vulnerabilities
-//	if (damage_modifier(apply_damage.damage_type, id, vulnerable_array) == true) { _damage *= round(_damage*2); }
-//	// apply resistances
-//	if (damage_modifier(apply_damage.damage_type, id, resistance_array) == true) {	_damage /= round(_damage*2); }
-//	// apply immunities
-//	if (damage_modifier(apply_damage.damage_type, id, immune_array) == true) { _damage = 0; }
-//	return _damage;
-//}
-
-//function enemy_end_damage(_damage) {
-//	// apply knockback
-//	var _knockback_direction = point_direction(target.x,target.y,x,y);
-//	knockback_apply(id, apply_damage.knockback_amount, knockback_reduction, _knockback_direction);
-	
-//	// finalize
-//	hp -= _damage;
-//	just_got_damaged = true;
-//	alarm[2] = FPS*0.5;
-//	nest_state = nest_state_hurt;
-//	if (alarm[3] > -1) alarm[3] = -1;
-//	if (alarm[4] > -1) alarm[4] = -1;
-//	apply_damage = 0;
-//}
-
 function enemy_aggro_range_check(_main_state = main_state_aware,_nest_state = nest_state_chase){
 	if (target == noone) exit;
 	if (nest_state = nest_state_return_origin) { exit; }

@@ -107,8 +107,8 @@ enum P_ALARM {
 // enum sets the position for the 3 equip slots
 enum EQUIP {
 	B,
-	Y,
 	X,
+	Y,
 }
 
 /*
@@ -368,6 +368,8 @@ main_state_alive = function(){
 	player_update_move_direction();			// set move direction
 	player_update_face_direction();			// set face direction
 	player_input_b_check();					// check B input
+	player_input_x_check();					// check X input
+	player_input_y_check();					// check Y input
 	player_input_jump_check();				// check jump input
 	knockback_update();						// update knockback
 }

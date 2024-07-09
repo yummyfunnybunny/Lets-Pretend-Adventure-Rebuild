@@ -47,8 +47,17 @@ function player_input_b_check() {
 
 function player_input_x_check() {
 	// keyboard = X
+	if (x_input_pressed) {
+		if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
+		//show_message(equip_slots[EQUIP.X]);
+		player_use_equip_slot(equip_slots[EQUIP.X]);
+	}
 }
 
 function player_input_y_check() {
 	// keyboard = C	
+	if (y_input_pressed) {
+		if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
+		player_use_equip_slot(equip_slots[EQUIP.Y]);
+	}
 }

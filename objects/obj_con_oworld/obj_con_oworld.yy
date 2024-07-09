@@ -6,8 +6,8 @@
   "name":"obj_con_oworld",
   "overriddenProperties":[],
   "parent":{
-    "name":"1 - Controllers",
-    "path":"folders/Objects/1 - Controllers.yy",
+    "name":"Managers",
+    "path":"folders/Objects/1 - Controllers/Managers.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -27,7 +27,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_con_oworld",
+    "path":"sprites/spr_con_oworld/spr_con_oworld.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

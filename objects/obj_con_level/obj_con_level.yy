@@ -16,8 +16,8 @@
   "name":"obj_con_level",
   "overriddenProperties":[],
   "parent":{
-    "name":"1 - Controllers",
-    "path":"folders/Objects/1 - Controllers.yy",
+    "name":"Managers",
+    "path":"folders/Objects/1 - Controllers/Managers.yy",
   },
   "parentObjectId":null,
   "persistent":true,

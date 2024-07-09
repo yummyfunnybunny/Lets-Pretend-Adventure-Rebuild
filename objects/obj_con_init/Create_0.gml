@@ -24,6 +24,7 @@ display_set_gui_size(640,360);
 global.game_paused = -1;
 global.debugger = false;
 global.main_layer = "Instances";
+global.ui_type = UI_TYPE.MAIN_MENU;
 
 display_set_gui_size(640,360);
 global.gui_width = display_get_gui_width();

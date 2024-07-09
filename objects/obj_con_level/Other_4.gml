@@ -1,5 +1,6 @@
 /// @desc Collision Map
 
+global.ui_type = UI_TYPE.LEVEL;
 
 /// Set the collision map
 global.collision_map = layer_tilemap_get_id(layer_get_id("CollisionMap"));
