@@ -259,7 +259,7 @@ function menu_draw_items() {
 	for(var _i = 0; _i < _weapon_length; _i++;) {
 		if (ds_grid_get(_weapons,_i,0) != 0) {
 			// draw Item Sprite
-			draw_sprite(spr_inv_weapon,global.item_data[# ITEM_COLUMN.IMAGE_INDEX,_weapons[# _i,0]],_weapon_slots_x+(48*_i),_weapon_slots_y);
+			draw_sprite(spr_inv_weapon,global.item_data[# ITEM_COLUMN.INV_IMG_IDX,_weapons[# _i,0]],_weapon_slots_x+(48*_i),_weapon_slots_y);
 			// draw equipped input icon
 			var _equipped_input = check_if_equipped(ds_grid_get(_weapons,_i,0));
 			if (_equipped_input != -1) {
@@ -278,7 +278,7 @@ function menu_draw_items() {
 		for (var _row = 0; _row < ds_grid_height(_items); _row++;) {
 			if (_items[# _col,_row] != 0) {
 				// draw item sprite
-				draw_sprite(spr_inv_item,global.item_data[# ITEM_COLUMN.IMAGE_INDEX,_items[# _col,_row]],_item_slots_x+(48*_col),_item_slots_y+(32*_row));
+				draw_sprite(spr_inv_item,global.item_data[# ITEM_COLUMN.INV_IMG_IDX,_items[# _col,_row]],_item_slots_x+(48*_col),_item_slots_y+(32*_row));
 				// draw equipped input icon
 				var _equipped_input = check_if_equipped(ds_grid_get(_items,_col,_row));
 				if (_equipped_input != -1) {

@@ -1,21 +1,21 @@
 
-function damage_check_modifiers(_damage_type, _element_type, _array) {
+function damage_check_modifiers(_damage_type, _element_type, _dmg_array, _elmt_array) {
 	
 	// check that the array has anything in it
-	if (array_length(_array) == 0) { return false; }
+	//if (array_length(_array) == 0) { return false; }
 	
 	// check damage type
-	if (_damage_type && _array) {
-		for (var _i = 0; _i < array_length(_array); _i++;){
-			if (_damage_type == _array[_i]) {
+	if (_damage_type && array_length(_dmg_array) > 0) {
+		for (var _i = 0; _i < array_length(_dmg_array); _i++;){
+			if (_damage_type == _dmg_array[_i]) {
 				return true;	
 			}
 		}
 	}
 	// check element type
-	if (_element_type) {
-		for (var _i = 0; _i < array_length(_array); _i++;){
-			if (_element_type == _array[_i]) {
+	if (_element_type && array_length(_elmt_array) > 0) {
+		for (var _i = 0; _i < array_length(_elmt_array); _i++;){
+			if (_element_type == _elmt_array[_i]) {
 				return true;	
 			}
 		}

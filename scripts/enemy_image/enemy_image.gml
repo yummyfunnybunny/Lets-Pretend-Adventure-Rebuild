@@ -20,6 +20,8 @@ function enemy_update_sprite() {
 		case nest_state_flee:			_sprite = sprite_move;		break;
 		case nest_state_attack:			_sprite = sprite_attack;	break;
 		case nest_state_death_normal:	_sprite = sprite_death;		break;
+		case nest_state_death_drown:	_sprite = spr_splash;		break;
+		case nest_state_death_pitfall:	_sprite = spr_pitfall;		break;
 		default:						_sprite = sprite_idle;		break;
 	}
 	

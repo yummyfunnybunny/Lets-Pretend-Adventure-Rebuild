@@ -14,7 +14,7 @@ variables that need to be set an a per-player basis are all in the VARIABLE DEFI
 
 // Macro Stuff
 faction				= FACTION.PLAYER;			// tells the game which faction the player belongs to
-terrain_state		= TERRAIN.NONE				// saves the current terrain state of the player
+
 
 // stats
 hp						= max_hp;				// set hp to max hp
@@ -148,7 +148,6 @@ function player_knockback_check() {
 		if (nest_state != nest_state_hurt) { nest_state = nest_state_hurt; }	
 	} else {
 		if (nest_state == nest_state_hurt) {
-			show_debug_message("knockback > free");
 			nest_state = nest_state_free;
 		}
 	}
@@ -198,16 +197,16 @@ function player_take_damage(_damage, _damage_type, _element_type, _special_effec
 	if (just_got_damaged) { exit; }
 	
 	// check immunities
-	if (damage_check_modifiers(_damage_type, _element_type, immune_array) == true) { _damage = 0; }
+	if (damage_check_modifiers(_damage_type, _element_type, damage_immunities, element_immunities) == true) { _damage = 0; }
 	
 	// run extra damage check
 	if (extra_damage_check) { script_execute(extra_damage_check); }
 	
 	// check resistances
-	if (damage_check_modifiers(_damage_type, _element_type, resistance_array) == true) { _damage /= round(_damage*2); }
+	if (damage_check_modifiers(_damage_type, _element_type, damage_resistances, element_resistances) == true) { _damage /= round(_damage*2); }
 	
 	// check vulnerabilities
-	if (damage_check_modifiers(_damage_type, _element_type, vulnerable_array) == true) { _damage *= round(_damage*2); }
+	if (damage_check_modifiers(_damage_type, _element_type, damage_vulnerabilities, element_vulnerabilities) == true) { _damage *= round(_damage*2); }
 	
 	// check armor
 	_damage = damage_check_armor(_damage);
@@ -239,7 +238,7 @@ function player_use_equip_slot(_item_id) {
 	if (!_item_id) { exit; }		// exit if no item is equipped
 	
 	// get item category
-	var _item_category = ds_grid_get(global.item_data,ITEM_COLUMN.CATEGORY, _item_id);
+	var _item_category = ds_grid_get(global.item_data,ITEM_COLUMN.TYPE, _item_id);
 	
 	item_id_used = _item_id;
 	
@@ -263,7 +262,7 @@ function player_use_equip_slot(_item_id) {
 
 function player_use_weapon(_item_id) {
 	// get weapon type
-	var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEAPON_TYPE,_item_id);
+	var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEP_TYPE,_item_id);
 	
 	// set attack state according to weapon type
 	switch (_weapon_type) {
@@ -289,18 +288,18 @@ function player_create_damage_object(_item_id, _x_offset, _y_offset) {
 	var _faction = faction;
 	var _creator = id;
 	var _face_dir = face_direction;
-	var _dmg_type = ds_grid_get(global.item_data, ITEM_COLUMN.DAMAGE_TYPE, _item_id);
+	var _dmg_type = ds_grid_get(global.item_data, ITEM_COLUMN.DMG_TYPE, _item_id);
 	var _element_type = ds_grid_get(global.item_data, ITEM_COLUMN.ELEMENT_TYPE, _item_id);
-	var _dmg_amt = ds_grid_get(global.item_data, ITEM_COLUMN.DAMAGE, _item_id);
+	var _dmg_amt = ds_grid_get(global.item_data, ITEM_COLUMN.DMG_AMT, _item_id);
 	var _knockback =  ds_grid_get(global.item_data, ITEM_COLUMN.KNOCKBACK, _item_id);
 	var _special_effect = ds_grid_get(global.item_data, ITEM_COLUMN.EFFECT, _item_id);
 	
 	// determine which damage object to create
-	var _wep_type = ds_grid_get(global.item_data, ITEM_COLUMN.WEAPON_TYPE, _item_id);
+	var _wep_type = ds_grid_get(global.item_data, ITEM_COLUMN.WEP_TYPE, _item_id);
 	_wep_type = asset_get_index("obj_damage_" + string(_wep_type));
 	
 	// get the sprite to set for the damage object
-	var _sprite = ds_grid_get(global.item_data, ITEM_COLUMN.DAMAGE_SPRITE, _item_id);
+	var _sprite = ds_grid_get(global.item_data, ITEM_COLUMN.DMG_OBJ_SPR, _item_id);
 	_sprite = asset_get_index(_sprite);
 	if (!_sprite) { _sprite = asset_get_index("spr_damage_melee"); }
 	
@@ -329,7 +328,7 @@ function player_terrain_checks(){
 		if (terrain_state != TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.SHALLOW_WATER; }
 		if (max_speed != wade_speed) { max_speed = wade_speed; }
 	} else { 
-		if (terrain_state == TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.NONE } 
+		if (terrain_state == TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.NONE }
 	}
 	
 	// Deep Water
@@ -476,7 +475,7 @@ nest_state_attack_sword = function() {
 		x_speed = 0;
 		y_speed = 0;
 		// get weapon type
-		var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEAPON_TYPE, item_id_used);
+		var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEP_TYPE, item_id_used);
 		image_index = 0;
 		image_speed = 1;
 		alarm[P_ALARM.ATK_START] = -2;

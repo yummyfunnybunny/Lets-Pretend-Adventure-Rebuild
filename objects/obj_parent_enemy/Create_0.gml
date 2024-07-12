@@ -19,6 +19,44 @@ target					= noone;				// id of current target to chase/attack
 align_x					= 0;					// sets x-position to for aligning a certain way to target for attacks
 align_y					= 0;					// sets y-position for aligning a certain way to target for attacks
 extra_damage_check		= noone;				// use this to store a function to perform additional checks for unique enemies when taking damage
+item_drops = {
+	// guaranteed - everything here will drop 100% of the time
+	guaranteed: [
+		//{ category: "weapon", item_id: "1", qty: 1 },
+		//{ category: "ammo", item_id: 3, qty: 15, }
+	],
+	
+	// categories - first chance roll is to see which category we're going to drop from
+	categories: [
+		{ "none": 1 },
+		{ "ammo": 1 },
+		{ "powerup": 1 },
+		{ "consumable": 1 },
+		{ "collectible": 1 },
+		{ "weapon": 1 },
+	],
+	categories2: {
+		none: 1,
+		ammo: 1,
+		powerup: 1,
+		consumable: 1,
+		collectible: 1,
+		weapon: 1,
+	},
+	// whichever category was chosen will be rolled on from the arrays below
+	ammo: [
+		{ category: "ammo", item_id: "1", weight: 1, qty: 1 },
+		{ category: "ammo", item_id: "2", weight: 1, qty: 1 },
+		{ category: "ammo", item_id: "3", weight: 1, qty: 1 },
+		{ category: "ammo", item_id: "4", weight: 1, qty: 1 },
+		{ category: "ammo", item_id: "5", weight: 1, qty: 1 },
+		{ category: "ammo", item_id: "6", weight: 1, qty: 1 },
+	],
+	powerup: [],
+	consumable: [],
+	collectible: [],
+	weapon: [],
+}
 
 #endregion
 
@@ -34,7 +72,7 @@ enum ALARM {
 
 #endregion
 
-#region INIT ENEMY STATES
+#region DEFAULT ENEMY STATES
 
 // these are default empty state functions
 // the actual states are created in each enemy's create event.
@@ -59,7 +97,8 @@ main_state_death			= function(){
 	if (alarm[ALARM.DEATH] == -1) {
 		x_speed = 0;
 		y_speed = 0;
-		image_index = 0;
+		move_speed = 0;
+		//image_index = 0;
 		alarm[ALARM.DEATH] = FPS * 4;
 	}
 	
@@ -70,7 +109,8 @@ main_state_death			= function(){
 	
 	// destroy enemy
 	if (alarm[ALARM.DEATH] == 0) {
-		instance_destroy();	
+		enemy_drop_items();
+		instance_destroy();
 	}
 }
 // unuware states
@@ -138,15 +178,44 @@ nest_state_attack			= function(){
 };
 
 // death states
-nest_state_death_normal		= function(){
+nest_state_death_normal = function(){
 	// death state is the normal way to die (on the ground)
 	// animates the enemy in their normal fashion
 };
-nest_state_death_drown		= function(){
-	// drown is the state that controls how an enemy dies when touching water
+nest_state_death_drown = function(){
+	// begin drown
+	if (alarm[ALARM.STATE] == -1) {
+		sprite_index = spr_splash;
+		image_index = 0;
+		image_speed = 1;
+		alarm[ALARM.STATE] = -2;
+	}
+	
+	// end drown
+	if (alarm[ALARM.STATE] == -2) {
+		if (image_index >= image_number-1) {
+			image_speed = 0;
+			image_alpha = 0;
+		}
+	}
+	
 }
-nest_state_death_pitfall	= function(){
-	// pitfall controls how the enemy dies when touching a pitfall
+nest_state_death_pitfall = function(){
+	// begin pitfall
+	if (alarm[ALARM.STATE] == -1) {
+		sprite_index = spr_pitfall;
+		image_index = 0;
+		image_speed = 1;
+		alarm[ALARM.STATE] = -2;
+	}
+	
+	// end pitfall
+	if (alarm[ALARM.STATE] == -2) {
+		if (image_index >= image_number-1) {
+			image_speed = 0;
+			image_alpha = 0;
+		}
+	}
 }
 
 // wild-card states (can belong to unaware or aware
@@ -172,14 +241,57 @@ nest_state_react			= function(){
 
 #endregion
 
-#region INIT ENEMY HELPER FUNCTIONS
+#region DEFAULT HELPER FUNCTIONS
 
 function enemy_death_check() {
 	if (nest_state = nest_state_hurt) { exit; }
+	if (main_state = main_state_death) { exit; }
 	if (hp <= 0) {
 		main_state = main_state_death;
 		nest_state = nest_state_death_normal;
 	}	
+}
+
+function enemy_drop_items() {
+	// check guaranteed drops
+	if (array_length(item_drops.guaranteed) > 0) {
+		for (var _i = 0; _i < item_drops.guaranteed.length; _i++) {
+			repeat(item_drops.guaranteed[_i].qty) {
+				var _item = instance_create_layer(x,y,INSTANCE_LAYER, obj_parent_item, {
+					category: item_drops.guaranteed[_i].category,
+					item_id: item_drops.guaranteed[_i].item_id,
+				});
+			}
+		}
+	} else {
+		// randomly choose the category
+		var _chosen_category = weighted_chance(
+			"none", item_drops.categories2.none,
+			"ammo", item_drops.categories2.ammo,
+			"powerup", item_drops.categories2.powerup,
+			"consumable", item_drops.categories2.consumable,
+			"collectible", item_drops.categories2.collectible,
+			"weapon", item_drops.categories2.weapon);
+		
+		// randomly choose the item id
+		var _item_drop = 0;
+		switch (_chosen_category) {
+			case "none":		_item_drop = 0;																break;
+			case "ammo":		_item_drop = irandom_range(1, ds_grid_height(global.ammo_data)-1);			break;
+			case "powerup":		_item_drop = irandom_range(1, ds_grid_height(global.powerup_data)-1);		break;
+			case "consumable":	_item_drop = irandom_range(1, ds_grid_height(global.consumable_data)-1);	break;
+			case "collectible": _item_drop = irandom_range(1, ds_grid_height(global.collectible_data)-1);	break;
+			case "weapon":		_item_drop = irandom_range(1, ds_grid_height(global.weapon_data)-1);		break;
+		}
+		
+		// drop the item
+		if (_item_drop > 0) {
+			var _item = instance_create_layer(x,y,INSTANCE_LAYER, obj_parent_item, {
+				category: _chosen_category,
+				item_id: _item_drop,
+			});
+		}
+	}
 }
 
 function enemy_update_movement() {
@@ -192,16 +304,16 @@ function enemy_take_damage(_damage, _damage_type, _element_type, _special_effect
 	if (just_got_damaged) { exit; }
 	
 	// check immunities
-	if (damage_check_modifiers(_damage_type, _element_type, immune_array) == true) { _damage = 0; }
+	if (damage_check_modifiers(_damage_type, _element_type, damage_immunities, element_immunities) == true) { _damage = 0; }
 	
 	// run extra damage check
 	if (extra_damage_check) { script_execute(extra_damage_check); }
 	
 	// check resistances
-	if (damage_check_modifiers(_damage_type, _element_type, resistance_array) == true) { _damage /= round(_damage*2); }
+	if (damage_check_modifiers(_damage_type, _element_type, damage_resistances, element_resistances) == true) { _damage /= round(_damage*2); }
 	
 	// check vulnerabilities
-	if (damage_check_modifiers(_damage_type, _element_type, vulnerable_array) == true) { _damage *= round(_damage*2); }
+	if (damage_check_modifiers(_damage_type, _element_type, damage_vulnerabilities, element_vulnerabilities) == true) { _damage *= round(_damage*2); }
 	
 	// check armor
 	_damage = damage_check_armor(_damage);
@@ -215,7 +327,9 @@ function enemy_take_damage(_damage, _damage_type, _element_type, _special_effect
 		just_got_damaged = true;
 		alarm[ALARM.ATK_START] = -1;		// cancels an attack if one was underway
 		alarm[ALARM.DAMAGED] = FPS*0.5;
+		//alarm[ALARM.STATE] = 1;
 		nest_state = nest_state_hurt;
+		
 		// play damage sound
 	} else {
 		// play block/resist/immune sound	
@@ -345,6 +459,126 @@ function enemy_collide_with_player(_main_state = main_state_aware, _nest_state =
 	main_state = _main_state;
 	nest_state = _nest_state;
 }
+
+function enemy_update_terrain_state(){
+
+	var _terrain = tilemap_get_at_pixel(global.collision_map,x,y);
+
+	// Shallow Water
+	if (_terrain == 2) {
+		if (!on_ground) { exit; }
+		if (terrain_state != TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.SHALLOW_WATER; }
+		//enemy_terrain_shallow_water();
+	} else { 
+		if (terrain_state == TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.NONE }
+		
+	}
+	
+	// Deep Water
+	if (_terrain == 3) {
+		if (!on_ground) { exit; }
+		if (terrain_state != TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.DEEP_WATER; }
+		//enemy_terrain_deep_water();
+	} else { 
+		if (terrain_state == TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.NONE } 
+		
+	}
+	
+	// ladder
+	if (_terrain == 4) {
+		if (!on_ground) { exit; }
+		if (terrain_state != TERRAIN.LADDER) { terrain_state = TERRAIN.LADDER; }
+		//enemy_terrain_ladder();
+	} else {
+		if (terrain_state == TERRAIN.LADDER) { terrain_state = TERRAIN.NONE }
+		
+	}
+	
+	// Tall Grass
+	if (_terrain == 5) {
+		if (!on_ground) { exit; }
+		if (terrain_state != TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.TALL_GRASS; }
+		//enemy_terrain_tall_grass();
+	} else { 
+		if (terrain_state == TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.NONE } 
+		
+	}
+
+	// PitFall
+	if (_terrain == 6) {
+		if (!on_ground) { exit; }
+		if (terrain_state != TERRAIN.PITFALL) { terrain_state = TERRAIN.PITFALL; }
+		//enemy_terrain_pitfall();
+	} else { 
+		if (terrain_state == TERRAIN.PITFALL) { terrain_state = TERRAIN.NONE }
+		
+	}
+	
+	// Pitfall edges
+	if (_terrain == 12) {
+		if (!on_ground) { exit; }
+		x_speed += .1;
+	}
+	if (_terrain == 13) {
+		if (!on_ground) { exit; }
+		x_speed -= .1;
+	}
+	if (_terrain  == 14) {
+		if (!on_ground) { exit; }
+		y_speed += .1;
+	}
+	if (_terrain == 15) {
+		if (!on_ground) { exit; }
+		y_speed -= .1;
+	}
+	if (_terrain == 16) {
+		if (!on_ground) { exit; }
+		x_speed -= .1;
+		y_speed -= .1;
+	}
+	if (_terrain == 17) {
+		if (!on_ground) { exit; }
+		x_speed -= .1;
+		y_speed += .1;
+	}
+	if (_terrain == 18) {
+		if (!on_ground) { exit; }
+		x_speed += .1;
+		y_speed += .1;
+	}
+	if (_terrain == 19) {
+		if (!on_ground) { exit; }
+		x_speed += .1;
+		y_speed -= .1;
+	}
+}
+
+function enemy_terrain_effect() {
+	switch (terrain_state) {
+		case TERRAIN.SHALLOW_WATER: enemy_terrain_shallow_water();	break;
+		case TERRAIN.DEEP_WATER:	enemy_terrain_deep_water();		break;
+		case TERRAIN.LADDER:		enemy_terrain_ladder();			break;
+		case TERRAIN.TALL_GRASS:	enemy_terrain_tall_grass();		break;
+		case TERRAIN.PITFALL:		enemy_terrain_pitfall();		break;
+		default: /* nothing */										break;
+	}
+}
+
+enemy_terrain_shallow_water = function(){
+	main_state = main_state_death;
+	nest_state = nest_state_death_drown;
+}
+enemy_terrain_deep_water = function(){
+	main_state = main_state_death;
+	nest_state = nest_state_death_drown;
+}
+enemy_terrain_ladder = function(){}
+enemy_terrain_tall_grass = function(){}
+enemy_terrain_pitfall = function(){
+	main_state = main_state_death;
+	nest_state = nest_state_death_pitfall;
+}
+
 
 #endregion
 

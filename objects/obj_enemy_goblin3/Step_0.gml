@@ -143,7 +143,7 @@ if (nest_state = enemy_state_attack) {
 			damage_object_duration: 3,
 			damage: other.damage,
 			knockback_amount: other.knockback_amount,
-			damage_type: DAMAGE_TYPE.PIERCE
+			damage_type: DAMAGE.PIERCE
 		});
 		with (_damage){
 			

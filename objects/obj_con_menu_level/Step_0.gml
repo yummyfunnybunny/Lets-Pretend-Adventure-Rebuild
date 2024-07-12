@@ -4,7 +4,6 @@
 
 // Update The Open Menu
 if (global.game_paused) {
-	show_debug_message("game paused, running menu stuff");
 	// update menu input
 	right_input = keyboard_check_pressed(vk_right);
 	left_input = keyboard_check_pressed(vk_left);

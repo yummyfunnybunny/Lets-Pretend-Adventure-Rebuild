@@ -1,6 +1,8 @@
 
 
-#region CALCULATION VARIABLES
+#region SET VARIABLES
+
+
 
 // z-axis
 z_top				= z_bottom - z_height;		// gives us the top of the instance
@@ -11,11 +13,11 @@ z_prev				= -1;						// previous z-position
 on_top_of			= noone;					// id of instance we are above, used to altar z_floor
 below_of			= noone;					// id of instance we are below, used to alar z_roof
 on_ground			= true;						// boolean - are we on the ground or not
-//z_height			= 0;						// sets the height of the instance on the z-axis
 //z_gravity			= 0.5;						// sets how quickly instance falls when in the air
 
 
 // basics
+terrain_state		= TERRAIN.NONE;				// saves the current terrain state of the player
 x_speed				= 0;						// current x-axis speed
 y_speed				= 0;						// current y-axis speed
 knockback_x			= 0;						// current x-axis knockback speed

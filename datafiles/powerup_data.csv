@@ -1,0 +1,7 @@
+﻿ID,NAME,DESC,CATEGORY,DROP_IMG_IDX,EFFECT
+0,0,0,0,0,0
+1,bloodlust,"temporailly doubles the damage you deal, but increases the damage you take",powerup,1,0
+2,frenzy,temporailly increases your attack speed,powerup,2,0
+3,shieldwall,temporailly doubles your armor,powerup,3,0
+4,star,temporailly grants invincibility and insta-kill,powerup,4,0
+5,sprint,temporailly doubles your run speed,powerup,5,0

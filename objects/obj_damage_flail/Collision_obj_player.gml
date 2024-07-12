@@ -12,7 +12,7 @@ if (other.just_got_damaged == false) {
 }
 
 if (creator != other.id) {
-	if (damage_type == DAMAGE_TYPE.PIERCE) {
+	if (damage_type == DAMAGE.PIERCE) {
 		instance_destroy();	
 	}
 }

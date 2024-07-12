@@ -40,7 +40,7 @@ function enemy_turtle1_damage() {
 #region CALCULATION VARIABLES
 
 has_shell = true;
-shell_immune_array = [DAMAGE_TYPE.SLASH];
+shell_immune_array = [DAMAGE.SLASH];
 shell_id = noone;
 damage_script = enemy_turtle1_damage;
 

@@ -38,20 +38,42 @@ if (z_top < z_roof){
 }
 
 // update on_ground
-if (z_bottom > z_floor){
+if (z_bottom < z_floor) {
+	on_ground = false;	
+} else {
 	z_bottom = z_floor;
-	// check if entity is currently on a pitfall
-	if (tilemap_get_at_pixel(global.collision_map,x,y) == 6) {
-		// entity is on a pitfall
-		on_ground = false;
+	if (abs(z_speed) > 1) {
+		z_speed = -z_speed*z_bounce;	
 	} else {
-		// entity is on ground
-		on_ground = true;
 		z_speed = 0;
+		on_ground = true;	
 	}
-} else if (z_bottom < z_floor){
-	on_ground = false;
 }
+
+//if (z_bottom > z_floor){
+//	z_bottom = z_floor;
+//	show_debug_message("inside on_ground check");
+	
+//	if (z_speed > 0 && abs(z_speed) > 1){
+//		z_speed = -z_speed*z_bounce;
+//		on_ground = false;
+//	} else {
+//		z_speed = 0;
+//		on_ground = true;
+//	}
+	
+	//// check if entity is currently on a pitfall
+	//if (tilemap_get_at_pixel(global.collision_map,x,y) == 6) {
+	//	// entity is on a pitfall
+	//	on_ground = false;
+	//} else {
+	//	// entity is on ground
+	//	on_ground = true;
+	//	z_speed = 0;
+	//}
+//} else if (z_bottom < z_floor){
+//	on_ground = false;
+//}
 
 // set z limits
 if (x != xprevious || y != yprevious) {

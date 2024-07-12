@@ -31,5 +31,5 @@ function knockback_update() {
 
 function knockback_check() {
 	// checks for any knockback on an entity
-	if (knockback_x	> 0 || knockback_y > 0) {return true; } else { return false; }
+	if (abs(knockback_x)	> 0 || abs(knockback_y) > 0) {return true; } else { return false; }
 }

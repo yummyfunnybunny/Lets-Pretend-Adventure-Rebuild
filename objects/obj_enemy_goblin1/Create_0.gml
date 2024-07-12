@@ -3,7 +3,7 @@
 // Inherit the parent event
 event_inherited();
 
-#region SET MAIN STATES
+#region CUSTOME MAIN STATES
 
 main_state_unaware = function() {
 	enemy_aggro_range_check();
@@ -17,7 +17,7 @@ main_state_aware = function() {
 
 #endregion
 
-#region SET NEST STATES
+#region CUSTOME NEST STATES
 
 nest_state_wait = function() {
 	if (image_speed != 1) image_speed = 1;
@@ -87,7 +87,7 @@ nest_state_chase = function() {
 
 nest_state_hurt = function() {
 	if (knockback_check()) { exit; }
-		nest_state = nest_state_wait;
+	nest_state = nest_state_wait;
 }
 
 nest_state_flee = function() {
@@ -96,6 +96,12 @@ nest_state_flee = function() {
 	// run towards allied units
 		// once allied units are found, attack player again
 }
+
+#endregion
+
+#region CUSTOME HELPERS
+
+
 
 #endregion
 
