@@ -1,7 +1,6 @@
 /// @desc
 
 
-
 if (global.debugger) {
 	
 	var _main_state;

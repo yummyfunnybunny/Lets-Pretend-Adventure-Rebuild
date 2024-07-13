@@ -14,8 +14,7 @@ variables that need to be set an a per-player basis are all in the VARIABLE DEFI
 
 // Macro Stuff
 faction				= FACTION.PLAYER;			// tells the game which faction the player belongs to
-
-
+interact_target		= noone;					// stores the entity that will be intereacted with when A is pressed
 // stats
 hp						= max_hp;				// set hp to max hp
 mp						= max_mp;				// set mp to max mp
@@ -418,6 +417,7 @@ main_state_alive = function(){
 	player_update_y_speed();				// set y speed
 	player_update_move_direction();			// set move direction
 	player_update_face_direction();			// set face direction
+	player_input_a_check();					// check A input
 	player_input_b_check();					// check B input
 	player_input_x_check();					// check X input
 	player_input_y_check();					// check Y input

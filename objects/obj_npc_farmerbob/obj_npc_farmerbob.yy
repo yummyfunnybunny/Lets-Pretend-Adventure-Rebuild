@@ -1,10 +1,21 @@
 {
   "$GMObject":"",
   "%Name":"obj_npc_farmerbob",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"obj_npc_farmerbob",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"sprite_idle","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_farmerbob_idle",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"sprite_move","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_farmerbob_move",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"sprite_interact","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_farmerbob_interact",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"idle_weight","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"wander_weight","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"patrol_path","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"pth_farmerbob",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"patrol_end_action","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"path_action_restart",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"interact_type","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"INTERACT.TALK",},
+  ],
   "parent":{
     "name":"4 - NPCs",
     "path":"folders/Objects/4 - NPCs.yy",
@@ -31,9 +42,12 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_farmerbob_still",
-    "path":"sprites/spr_farmerbob_still/spr_farmerbob_still.yy",
+    "name":"spr_farmerbob_idle",
+    "path":"sprites/spr_farmerbob_idle/spr_farmerbob_idle.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"spr_npc_collision_mask",
+    "path":"sprites/spr_npc_collision_mask/spr_npc_collision_mask.yy",
+  },
   "visible":true,
 }

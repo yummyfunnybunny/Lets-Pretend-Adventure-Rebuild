@@ -9,7 +9,7 @@ function player_update_input(){
 	jump_input			= keyboard_check_pressed(vk_space);
 	
 	// letter inputs
-	a_input				= keyboard_check(ord("V"));
+	a_input_pressed		= keyboard_check_pressed(ord("V"));
 	
 	b_input_pressed		= keyboard_check_pressed(ord("Z"));
 	b_input_held		= keyboard_check(ord("Z"));
@@ -38,6 +38,14 @@ function player_input_jump_check() {
 
 function player_input_a_check() {
 	// keyboard = V
+	if (!interact_target) { exit; }
+	if (a_input_pressed) {
+		// will need to dynamically choose what to do here later...
+		with (interact_target) {
+			npc_interact_input_progress()
+			//nest_state = nest_state_interact;
+		}
+	}
 }
 
 function player_input_b_check() {

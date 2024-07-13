@@ -124,6 +124,16 @@ enum WEP_TYPE {
 	TOMAHAWK,
 }
 
+enum INTERACT {
+	NONE,
+	TALK,
+	SHOP,
+	QUEST,
+	PUSH,
+	PULL,
+	CARRY,
+}
+
 #endregion
 
 #region GAME INIT FUNCTIONS

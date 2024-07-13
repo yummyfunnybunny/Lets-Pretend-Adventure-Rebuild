@@ -14,11 +14,14 @@ hp						= max_hp;				// set hp to max hp
 mp						= max_mp;				// set mp to max mp
 armor					= max_armor;			// set armor to max armor
 move_speed				= 0;					// set max move speed
-apply_damage			= 0;					// holds an object of all the damage specs when dealing damage to another instance 
+//apply_damage			= 0;					// holds an object of all the damage specs when dealing damage to another instance 
 target					= noone;				// id of current target to chase/attack
 align_x					= 0;					// sets x-position to for aligning a certain way to target for attacks
 align_y					= 0;					// sets y-position for aligning a certain way to target for attacks
 extra_damage_check		= noone;				// use this to store a function to perform additional checks for unique enemies when taking damage
+
+patrol_path				= noone;
+
 item_drops = {
 	// guaranteed - everything here will drop 100% of the time
 	guaranteed: [
@@ -135,7 +138,7 @@ nest_state_return_origin	= function(){
 	// return_origin is an unuware moving state that moves the enemy
 	// back to its origin_x & origin_y
 	// aggro range & attack range checks are not performed here
-		// create pather
+	// create pather
 	if (!pather_object) {
 		pather_object = instance_create_depth(x,y,INSTANCE_DEPTH,obj_con_pather,{
 			creator: id,
@@ -219,13 +222,13 @@ nest_state_death_pitfall = function(){
 }
 
 // wild-card states (can belong to unaware or aware
-choose_state				= function(){
+//choose_state				= function(){
 	// choose state controls rolling the dice on all the available states
 	// the enemy can choose to go into in whichever main state they are in
 	// this can be used to randomly choose an unaware main state
 	// or it can be useed to choose the next move the enemy will 
 	// make while they are persuing/attacking the player (multiple attack choices, etc)
-};
+//};
 nest_state_wait				= function(){
 	// wait is a bridge state between just performing an action and moving on to the next state
 	// wait cancels most state-change-checks and cannot be skipped by the enemy
@@ -349,7 +352,9 @@ function enemy_aggro_range_check(_main_state = main_state_aware,_nest_state = ne
 
 function enemy_origin_distance_check(_main_state = main_state_unaware, _nest_state = nest_state_return_origin) {
 	if (nest_state == nest_state_return_origin) { exit; }
+	if (nest_state == nest_state_patrol) { exit; }
 	if (nest_state = nest_state_wait) { exit; }
+	if (origin_range == 0) { exit; }
 	if (point_distance(x,y,origin_x,origin_y) >= origin_range*COL_TILES_SIZE) {
 		main_state = _main_state;
 		nest_state = _nest_state;
@@ -384,7 +389,6 @@ function enemy_set_target() {
 			}
 		}
 	}
-	
 }
 
 function enemy_quadrant_check(_target) {
@@ -468,7 +472,6 @@ function enemy_update_terrain_state(){
 	if (_terrain == 2) {
 		if (!on_ground) { exit; }
 		if (terrain_state != TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.SHALLOW_WATER; }
-		//enemy_terrain_shallow_water();
 	} else { 
 		if (terrain_state == TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.NONE }
 		
@@ -478,7 +481,6 @@ function enemy_update_terrain_state(){
 	if (_terrain == 3) {
 		if (!on_ground) { exit; }
 		if (terrain_state != TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.DEEP_WATER; }
-		//enemy_terrain_deep_water();
 	} else { 
 		if (terrain_state == TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.NONE } 
 		
@@ -488,7 +490,6 @@ function enemy_update_terrain_state(){
 	if (_terrain == 4) {
 		if (!on_ground) { exit; }
 		if (terrain_state != TERRAIN.LADDER) { terrain_state = TERRAIN.LADDER; }
-		//enemy_terrain_ladder();
 	} else {
 		if (terrain_state == TERRAIN.LADDER) { terrain_state = TERRAIN.NONE }
 		
@@ -498,7 +499,6 @@ function enemy_update_terrain_state(){
 	if (_terrain == 5) {
 		if (!on_ground) { exit; }
 		if (terrain_state != TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.TALL_GRASS; }
-		//enemy_terrain_tall_grass();
 	} else { 
 		if (terrain_state == TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.NONE } 
 		
@@ -508,7 +508,6 @@ function enemy_update_terrain_state(){
 	if (_terrain == 6) {
 		if (!on_ground) { exit; }
 		if (terrain_state != TERRAIN.PITFALL) { terrain_state = TERRAIN.PITFALL; }
-		//enemy_terrain_pitfall();
 	} else { 
 		if (terrain_state == TERRAIN.PITFALL) { terrain_state = TERRAIN.NONE }
 		
@@ -582,3 +581,9 @@ enemy_terrain_pitfall = function(){
 
 #endregion
 
+#region DEFAULT STARTING STATES
+
+main_state = main_state_unaware;
+nest_state = nest_state_idle;
+
+#endregion

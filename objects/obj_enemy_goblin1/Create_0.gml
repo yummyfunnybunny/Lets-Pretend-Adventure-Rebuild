@@ -20,10 +20,10 @@ main_state_aware = function() {
 #region CUSTOME NEST STATES
 
 nest_state_wait = function() {
-	if (image_speed != 1) image_speed = 1;
 	
 	// begin idle
 	if (alarm[ALARM.STATE] == -1) {
+		if (image_speed != 1) image_speed = 1;
 		move_speed = 0;
 		x_speed = 0;
 		y_speed = 0;
@@ -38,10 +38,10 @@ nest_state_wait = function() {
 }
 
 nest_state_idle = function() {
-	if (image_speed != 1) image_speed = 1;
 	
 	// begin idle
 	if (alarm[ALARM.STATE] == -1) {
+		if (image_speed != 1) image_speed = 1;
 		move_speed = 0;
 		x_speed = 0;
 		y_speed = 0;
@@ -57,11 +57,9 @@ nest_state_idle = function() {
 
 nest_state_wander = function() {
 	
-	// set image
-	if (image_speed != 1) image_speed = 1;
-	
 	// begin wander
 	if (alarm[ALARM.STATE] == -1) {
+		if (image_speed != 1) image_speed = 1;
 		alarm[ALARM.STATE] = FPS * 2;
 		direction = choose (0,45,90,135,180,225,270,315);
 		move_speed = walk_speed;

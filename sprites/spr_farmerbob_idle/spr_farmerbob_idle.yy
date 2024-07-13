@@ -1,6 +1,6 @@
 {
   "$GMSprite":"",
-  "%Name":"spr_farmerbob_still",
+  "%Name":"spr_farmerbob_idle",
   "bboxMode":0,
   "bbox_bottom":17,
   "bbox_left":1,
@@ -22,9 +22,9 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"1dd6e71b-7db7-44a6-93d8-fa03c899d96b","blendMode":0,"displayName":"default","isLocked":false,"name":"1dd6e71b-7db7-44a6-93d8-fa03c899d96b","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_farmerbob_still",
+  "name":"spr_farmerbob_idle",
   "nineSlice":null,
-  "origin":0,
+  "origin":7,
   "parent":{
     "name":"NPCs",
     "path":"folders/Sprites/NPCs.yy",
@@ -34,7 +34,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"",
-    "%Name":"spr_farmerbob_still",
+    "%Name":"spr_farmerbob_idle",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -58,9 +58,9 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_farmerbob_still",
+    "name":"spr_farmerbob_idle",
     "playback":1,
-    "playbackSpeed":10.0,
+    "playbackSpeed":2.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
@@ -70,17 +70,17 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f4cc6f90-51a6-4e17-bf34-710dba6a05ee","path":"sprites/spr_farmerbob_still/spr_farmerbob_still.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f4cc6f90-51a6-4e17-bf34-710dba6a05ee","path":"sprites/spr_farmerbob_idle/spr_farmerbob_idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"f019688e-41dc-4338-83b9-3dfd472c5f77","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c1521067-516a-4cd5-97d2-e2813e1cee0e","path":"sprites/spr_farmerbob_still/spr_farmerbob_still.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c1521067-516a-4cd5-97d2-e2813e1cee0e","path":"sprites/spr_farmerbob_idle/spr_farmerbob_idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"e218686a-61e0-48ec-adf0-1d1f0e8b6f45","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":0,
-    "yorigin":0,
+    "xorigin":8,
+    "yorigin":18,
   },
   "swatchColours":null,
   "swfPrecision":0.5,
