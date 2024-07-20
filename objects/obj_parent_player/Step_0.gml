@@ -16,6 +16,3 @@ if (!global.game_paused) {
 	player_death_check();					// 9 - Death Check
 	player_terrain_checks();				// 10 - check terrain
 }
-
-//show_debug_message(image_alpha);
-//show_debug_message(sprite_index);

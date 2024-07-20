@@ -14,7 +14,6 @@ function player_update_image() {
 	var _face_dir = player_image_face_dir(_state, _speed, _terrain);
 	
 	// 5 - set the sprite
-	//show_debug_message($"spr_player{_state}{_speed}{_terrain}{_face_dir}");
 	sprite_index = asset_get_index($"spr_player{_state}{_speed}{_terrain}{_face_dir}");
 }
 
@@ -58,13 +57,13 @@ function player_image_speed(_state) {
 function player_image_terrain(_state, _speed) {
 	var _terrain;
 	switch(terrain_state){
-		case TERRAIN.NONE:			_terrain = "";		break;
-		case TERRAIN.WALL:			_terrain = "";		break;
-		case TERRAIN.SHALLOW_WATER:	_terrain = "_wade";	break;
-		case TERRAIN.DEEP_WATER:	_terrain = "";		break;
-		case TERRAIN.LADDER:		_terrain = "";		break;
-		case TERRAIN.TALL_GRASS:	_terrain = "_wade";	break;
-		case TERRAIN.PITFALL:		_terrain = "";		break;
+		case TERRAIN_TYPE.NONE:			_terrain = "";		break;
+		case TERRAIN_TYPE.WALL:			_terrain = "";		break;
+		case TERRAIN_TYPE.SHALLOW_WATER:	_terrain = "_wade";	break;
+		case TERRAIN_TYPE.DEEP_WATER:	_terrain = "";		break;
+		case TERRAIN_TYPE.LADDER:		_terrain = "";		break;
+		case TERRAIN_TYPE.TALL_GRASS:	_terrain = "_wade";	break;
+		case TERRAIN_TYPE.PITFALL:		_terrain = "";		break;
 	}
 	return _terrain;
 }

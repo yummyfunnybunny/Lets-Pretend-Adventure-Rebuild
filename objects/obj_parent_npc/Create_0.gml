@@ -2,7 +2,7 @@ event_inherited();
 
 #region DEFAULT SET VARIABLES
 
-faction					= FACTION.NPC;			// set the faction of the instance
+faction					= FACTION_TYPE.NPC;			// set the faction of the instance
 hp						= max_hp;				// set hp to max hp
 mp						= max_mp;				// set mp to max mp
 armor					= max_armor;			// set armor to max armor
@@ -21,30 +21,43 @@ quest = {
 
 // dialogue
 dialogue = {
-	//active: false,				// turn true if currently talking - CAN JUST CHECK THE TEXTBOX_ID
 	textbox_id: noone,				//stores the id of the current textbox object
 	title: "textbox title",			// title displayed in textbox
-	stage: 0,
+	quest_id: 0,					// stores the id of the quest this NPC connects to. 0 = no quest
+	stage: 0,						// stores the current stage of the quest
 	text: [
 		[
+			// stage 0: quest = inactive, prerequisites = incomplete
+			"stage 0 - text 1",
+			"stage 0 - text 2",
+			"stage 0 - text 3",
+		],
+		[
+			// stage 1: - quest = inactive, prerequisites = complete || 0
 			"stage 1 - text 1",
 			"stage 1 - text 2",
 			"stage 1 - text 3",
 		],
 		[
+			// stage 2: quest = active, tasks = incomplete
 			"stage 2 - text 1",
 			"stage 2 - text 2",
 			"stage 2 - text 3",
 		],
 		[
+			// stage 3: quest = active, teasks = complete
 			"stage 3 - text 1",
 			"stage 3 - text 2",
 			"stage 3 - text 3",
 		],
+		[
+			// stage 4: quest = complete
+			"stage 4 - text 1",
+			"stage 4 - text 2",
+			"stage 4 - text 3",
+		],
 	]
 }
-// WE CAN CHECK THE CURRENT INDEX OF THE  TEXT ARRAY TO DETERMINE IF WE NEED TO TURN THE PAGE OR END THE INTERACTION
-// IF A QUEST OR SOME KIND OF PROGRESSION EXISTS, THE STAGE OF THE QUEST WILL DETERNINE THE ARRAY INDEX TO RUN
 
 #endregion
 
@@ -138,7 +151,6 @@ nest_state_patrol = function() {
 
 	// begin patrol - create pather
 	if (alarm[NPC_ALARM.STATE] == -1) {
-		//show_debug_message(patrol_path);
 		if (!pather_object) {
 			pather_object = instance_create_depth(x,y,INSTANCE_DEPTH,obj_con_pather,{
 				creator: id,
@@ -183,8 +195,8 @@ nest_state_interact = function() {
 	
 	// figure out what type of interaction to run
 	switch(interact_type) {
-		case INTERACT.TALK: npc_interact_talk();	break;
-		case INTERACT.SHOP: npc_interact_shop();	break;
+		case INTERACT_TYPE.TALK: npc_interact_talk();	break;
+		case INTERACT_TYPE.SHOP: npc_interact_shop();	break;
 	}
 }
 
@@ -338,45 +350,45 @@ function npc_update_terrain_state(){
 	// Shallow Water
 	if (_terrain == 2) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.SHALLOW_WATER; }
+		if (terrain_state != TERRAIN_TYPE.SHALLOW_WATER) { terrain_state = TERRAIN_TYPE.SHALLOW_WATER; }
 	} else { 
-		if (terrain_state == TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER) { terrain_state = TERRAIN_TYPE.NONE }
 		
 	}
 	
 	// Deep Water
 	if (_terrain == 3) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.DEEP_WATER; }
+		if (terrain_state != TERRAIN_TYPE.DEEP_WATER) { terrain_state = TERRAIN_TYPE.DEEP_WATER; }
 	} else { 
-		if (terrain_state == TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.NONE } 
+		if (terrain_state == TERRAIN_TYPE.DEEP_WATER) { terrain_state = TERRAIN_TYPE.NONE } 
 		
 	}
 	
 	// ladder
 	if (_terrain == 4) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.LADDER) { terrain_state = TERRAIN.LADDER; }
+		if (terrain_state != TERRAIN_TYPE.LADDER) { terrain_state = TERRAIN_TYPE.LADDER; }
 	} else {
-		if (terrain_state == TERRAIN.LADDER) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.LADDER) { terrain_state = TERRAIN_TYPE.NONE }
 		
 	}
 	
 	// Tall Grass
 	if (_terrain == 5) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.TALL_GRASS; }
+		if (terrain_state != TERRAIN_TYPE.TALL_GRASS) { terrain_state = TERRAIN_TYPE.TALL_GRASS; }
 	} else { 
-		if (terrain_state == TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.NONE } 
+		if (terrain_state == TERRAIN_TYPE.TALL_GRASS) { terrain_state = TERRAIN_TYPE.NONE } 
 		
 	}
 
 	// PitFall
 	if (_terrain == 6) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.PITFALL) { terrain_state = TERRAIN.PITFALL; }
+		if (terrain_state != TERRAIN_TYPE.PITFALL) { terrain_state = TERRAIN_TYPE.PITFALL; }
 	} else { 
-		if (terrain_state == TERRAIN.PITFALL) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.PITFALL) { terrain_state = TERRAIN_TYPE.NONE }
 		
 	}
 	
@@ -421,11 +433,11 @@ function npc_update_terrain_state(){
 
 function npc_terrain_effect() {
 	switch (terrain_state) {
-		case TERRAIN.SHALLOW_WATER: npc_terrain_shallow_water();	break;
-		case TERRAIN.DEEP_WATER:	npc_terrain_deep_water();		break;
-		case TERRAIN.LADDER:		npc_terrain_ladder();			break;
-		case TERRAIN.TALL_GRASS:	npc_terrain_tall_grass();		break;
-		case TERRAIN.PITFALL:		npc_terrain_pitfall();			break;
+		case TERRAIN_TYPE.SHALLOW_WATER: npc_terrain_shallow_water();	break;
+		case TERRAIN_TYPE.DEEP_WATER:	npc_terrain_deep_water();		break;
+		case TERRAIN_TYPE.LADDER:		npc_terrain_ladder();			break;
+		case TERRAIN_TYPE.TALL_GRASS:	npc_terrain_tall_grass();		break;
+		case TERRAIN_TYPE.PITFALL:		npc_terrain_pitfall();			break;
 		default: /* nothing */										break;
 	}
 }
@@ -447,7 +459,7 @@ npc_terrain_pitfall = function(){
 
 // Interact Functions
 function npc_interact_set_target() {
-	if (interact_type == INTERACT.NONE) { exit; }
+	if (interact_type == INTERACT_TYPE.NONE) { exit; }
 	if (!instance_exists(interact_target)) {
 		if (instance_exists(obj_parent_player)){
 			interact_target = instance_nearest(x,y,obj_parent_player);	
@@ -464,7 +476,7 @@ function npc_interact_set_target() {
 }
 
 function npc_interact_check_interact_range() {
-	if (interact_type == INTERACT.NONE) { exit; }
+	if (interact_type == INTERACT_TYPE.NONE) { exit; }
 	if (!instance_exists(interact_target)) { exit; }
 	var _dis = point_distance(x,y,interact_target.x,interact_target.y);
 	if (_dis <= interact_range*COL_TILES_SIZE) {
@@ -472,7 +484,6 @@ function npc_interact_check_interact_range() {
 	} else {
 		if (interact_target.interact_target == id) { interact_target.interact_target = noone; }
 	}
-	
 }
 
 function npc_interact_draw_icon() {
@@ -482,7 +493,7 @@ function npc_interact_draw_icon() {
 	if (alarm[NPC_ALARM.INTERACT] != -1) { exit; }
 	
 	switch(interact_type) {
-		case INTERACT.TALK: draw_sprite(spr_interact_talk,-1,x,y-z_height);	break;
+		case INTERACT_TYPE.TALK: draw_sprite(spr_interact_talk,-1,x,y-z_height);	break;
 	}
 }
 
@@ -509,7 +520,7 @@ function npc_interact_face_target() {
 	if (sign(_x_diff) == -1) { direction = 0; } else { direction = 180; }
 }
 
-function npc_interact_input_progress() {
+function npc_interact_input_progression() {
 	// this function takes in the input from the player and progresses the interaction	
 	if (alarm[NPC_ALARM.INTERACT] != -1) { exit; }
 	
@@ -520,7 +531,7 @@ function npc_interact_input_progress() {
 	} else {
 		
 		switch (interact_type) {
-			case INTERACT.TALK:
+			case INTERACT_TYPE.TALK:
 				var _tb = dialogue.textbox_id;	// store the id of the textbox
 				if (_tb.main_state != _tb.main_state_display_text) { exit; }
 
@@ -540,7 +551,7 @@ function npc_interact_input_progress() {
 				
 			break;
 			
-			case INTERACT.SHOP:
+			case INTERACT_TYPE.SHOP:
 			
 			break;
 		}

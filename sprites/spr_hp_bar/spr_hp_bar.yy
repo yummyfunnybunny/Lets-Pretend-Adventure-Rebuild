@@ -28,8 +28,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"GUI",
-    "path":"folders/Sprites/GUI.yy",
+    "name":"Level HUD",
+    "path":"folders/Sprites/GUI/Level HUD.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

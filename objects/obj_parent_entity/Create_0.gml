@@ -17,7 +17,7 @@ on_ground			= true;						// boolean - are we on the ground or not
 
 
 // basics
-terrain_state		= TERRAIN.NONE;				// saves the current terrain state of the player
+terrain_state		= TERRAIN_TYPE.NONE;				// saves the current terrain state of the player
 x_speed				= 0;						// current x-axis speed
 y_speed				= 0;						// current y-axis speed
 knockback_x			= 0;						// current x-axis knockback speed

@@ -27,7 +27,7 @@ if (global.debugger) {
 		default:							_nest_state = "unknown";		break;	
 	}
 	
-	draw_set_font(fnt_debugger);
+	draw_set_font(fnt_text_10);
 	draw_text(x + 16,y-32, "main_state= " + string(_main_state));
 	draw_text(x + 16,y-16, "nest_state = " + string(_nest_state));
 	//draw_text(x + 16,y, "z_floor " + string(z_floor));
@@ -42,6 +42,9 @@ if (global.debugger) {
 	// border box
 	//draw_rectangle(bbox_left,bbox_top+z_bottom,bbox_right,bbox_bottom+z_bottom, true);
 	draw_ellipse(bbox_left,bbox_top+z_bottom,bbox_right,bbox_bottom+z_bottom, true);
+	
+	// reset text
+	reset_text();
 }
 
 // Inherit the parent event

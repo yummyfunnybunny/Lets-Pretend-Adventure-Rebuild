@@ -1,0 +1,3 @@
+﻿ID,NAME,DESC,TYPE,TRACK_ID,TRACK_QTY,REWARD,START_TYPE,START,END,ACTIVE,PREREQS
+0,0,0,0,0,0,0-0-0,0,0,0,0,0
+1,farmer bobs disturbance,"Farmer bob is having a goblin problem in his crops, and has asked you to take care of it for him. Venture west to the fields of grass and slay all of the goblins there! Return to Farmer Bob once this task is completed for a nice reward.",eradicate,rm_transition_test,0,"mainhand-1-1,ammo-3-10",npc,farmerbob,farmerbob,FALSE,0
