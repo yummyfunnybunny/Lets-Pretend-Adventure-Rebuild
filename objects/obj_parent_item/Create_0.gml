@@ -11,6 +11,8 @@ float_curve				= animcurve_get_channel(ac_curve_item_idle,"curve1");
 float_percent			= 0;
 float_change			= (1/120);
 image_speed				= 0;
+interact_target			= noone;
+interact_range			= 1;
 
 
 #endregion
@@ -74,6 +76,52 @@ main_state_despawn = function() {
 
 #region HELPER FUNCTIONS
 
+function item_check_for_empty_bag_slot() {
+	var _bag = global.player.bag;
+	var _bag_w = array_length(global.player.bag[0]);
+	var _bag_h = array_length(global.player.bag);
+	for (var _i = 0; _i < _bag_h; _i++) {
+		for (var _j	= 0; _j < _bag_w; _j++) {
+			if (_bag[_i][_j].item_id == 0) {
+				return _bag[_i][_j];
+			}
+		}
+	}
+	return false;
+}
+
+function item_interact_input_progression() {
+	// check if you can pick up the item
+	var _empty_slot = item_check_for_empty_bag_slot();
+	
+	// if yes, pick up the item
+	if (_empty_slot != false) {
+		_empty_slot.category = category;
+		_empty_slot.item_id = item_id;
+		instance_destroy();
+		// play sound effect
+	} else {
+		// no empty slots, can't pick up
+		// - play sound effect?
+	}
+}
+
+function item_set_interact_type() {
+	switch(category) {
+		case "ammo" : 
+		case "powerup":
+			interact_type = INTERACT_TYPE.NONE; break;
+		case "mainhand":
+		case "offhand":
+		case "armor":
+		case "boots":
+		case "trinket":
+		case "collectible":
+		case "consumable":
+			interact_type = INTERACT_TYPE.PICKUP; break;
+	}
+}
+
 function item_check_despawn() {
 	if (alarm[0] == 0) {
 		main_state = main_state_despawn;	
@@ -94,37 +142,17 @@ function item_float() {
 }
 
 function item_set_sprite() {
-	switch (category) {
-		case "ammo":
-			sprite_index = spr_item_drop_ammo;
-			image_index = ds_grid_get(global.ammo_data, AMMO_DATA.DROP_IMG_IDX, item_id); 
-		break;
-		case "powerup":
-			sprite_index = spr_item_drop_powerup;
-			image_index = ds_grid_get(global.powerup_data, POWERUP_DATA.DROP_IMG_IDX, item_id); 
-		break;
-		case "consumable":
-			sprite_index = spr_item_drop_consumable;
-			image_index = ds_grid_get(global.consumable_data, CONSUMABLE_DATA.DROP_IMG_IDX, item_id); 
-		break;
-		case "collectible":
-			sprite_index = spr_item_drop_collectible;
-			image_index = ds_grid_get(global.collectible_data, COLLECTIBLE_DATA.DROP_IMG_IDX, item_id); 
-		break;
-		case "weapon":
-			sprite_index = spr_item_drop_weapon;
-			image_index = ds_grid_get(global.weapon_data, WEP_DATA.DROP_IMG_IDX, item_id); 
-		break;
-	}
+	var _dataset = get_dataset(category);
+	var _img_idx_col = enum_get_drop_img_idx(category);
+	var _sprite = asset_get_index($"spr_item_drop_{category}");
+	sprite_index = _sprite;
+	image_index = ds_grid_get(_dataset,_img_idx_col, item_id);
 }
 
 function item_pickup() {
 	switch (category) {
 		case "ammo":		item_pickup_ammo();			break;
 		case "powerup":		item_pickup_powerup();		break;
-		case "consumable":	item_pickup_consumable();	break;	
-		case "collectible": item_pickup_collectible();	break;	
-		case "weapon":		item_pickup_weapon();		break;	
 	}
 }
 
@@ -145,16 +173,42 @@ function item_pickup_powerup() {
 	// apply powerup function
 }
 
-function item_pickup_consumable() {
-	// add consumable to inventory
+function item_interact_set_target() {
+	if (interact_type == INTERACT_TYPE.NONE) { exit; }
+	if (main_state != main_state_idle) { exit; }
+	if (!instance_exists(interact_target)) {
+		if (instance_exists(obj_parent_player)){
+			interact_target = instance_nearest(x,y,obj_parent_player);	
+		} else if (interact_target != noone) {
+			interact_target = noone;
+		}
+	}
+	
+	if (instance_exists(interact_target)) {
+		if (interact_target.main_state == obj_parent_player.main_state_death) {
+			if (interact_target != noone) { interact_target = noone; }
+		}
+	}
 }
 
-function item_pickup_collectible() {
-	// add collectible to appropriate inventory section
+function item_interact_check_interact_range() {
+	if (interact_type == INTERACT_TYPE.NONE) { exit; }
+	if (!instance_exists(interact_target)) { exit; }
+	var _dis = point_distance(x,y,interact_target.x,interact_target.y);
+	if (_dis <= interact_range*COL_TILES_SIZE) {
+		interact_target.interact_target = id;
+	} else {
+		if (interact_target.interact_target == id) { interact_target.interact_target = noone; }
+	}
 }
 
-function item_pickup_weapon() {
-	// add weapon to inventory
+function item_interact_draw_icon() {
+	if (!instance_exists(interact_target)) { exit; }
+	if (interact_target.interact_target != id) { exit; }
+	
+	switch(interact_type) {
+		case INTERACT_TYPE.PICKUP: draw_sprite(spr_interact_pickup,-1,x,y-z_height);	break;
+	}
 }
 
 #endregion
@@ -163,6 +217,7 @@ function item_pickup_weapon() {
 
 main_state = main_state_spawn;
 item_set_sprite();
+item_set_interact_type();
 
 #endregion
 

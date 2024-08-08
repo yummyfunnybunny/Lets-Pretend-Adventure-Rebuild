@@ -24,6 +24,7 @@ function npc_update_sprite() {
 		case nest_state_death_normal:	_sprite = sprite_death;		break;
 		case nest_state_death_drown:	_sprite = spr_splash;		break;
 		case nest_state_death_pitfall:	_sprite = spr_pitfall;		break;
+		case nest_state_follow:			_sprite = (move_speed > 0) ? sprite_move : sprite_idle;	break;
 		default:						_sprite = sprite_idle;		break;
 	}
 	

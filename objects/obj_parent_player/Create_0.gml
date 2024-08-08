@@ -5,15 +5,8 @@ event_inherited();
 
 #region INIT PLAYER SET VARIABLES
 
-/*
-These variables are used inside functions for calculations or other purposes and 
-do not need to be changed once set.
-
-variables that need to be set an a per-player basis are all in the VARIABLE DEFINITIONS
-*/
-
-// Macro Stuff
-faction				= FACTION.PLAYER;			// tells the game which faction the player belongs to
+// meta
+faction				= FACTION_TYPE.PLAYER;			// tells the game which faction the player belongs to
 interact_target		= noone;					// stores the entity that will be intereacted with when A is pressed
 // stats
 hp						= max_hp;				// set hp to max hp
@@ -28,8 +21,58 @@ last_safe_x			= x;						// saves the last safe x-position the player was on for 
 last_safe_y			= y;						// saves the last safe y-position the player was on for respawning
 
 // inventory, items, abilities
-item_id_used		= noone;					// stores the item id being used to pass into use_weapon/item/consumable functions
+item_used			= noone;						// stores the item object from the equipped struct being used to pass into use_weapon/item/consumable functions
 equip_slots			= [0,0,0];					// array for storying id of currently equipped items
+
+coins = 0;
+
+global.player = {
+	stats: {
+		hp: hp,
+		max_hp: max_hp,
+		mp: mp,
+		max_mp: max_mp,
+		armor: armor,
+		max_armor: max_armor,
+	},
+	ammo: {
+		coins: 0,
+		arrows: 0,
+		bullets: 0,
+		axes: 0,
+		bombs: 0,
+	},
+	equipped: [
+		[
+			{ category: "mainhand", item_id: 1 },
+			{ category: "offhand", item_id: 0 },
+		],
+		[
+			{ category: "armor", item_id: 0 },
+			{ category: "boots", item_id: 0 },
+		],
+		[
+			{ category: "trinket", item_id: 0 },
+			{ category: "trinket", item_id: 0 },
+		],
+	],
+	bag_size: 6,
+	bag: [
+		[
+			// row 1
+			{ category: "collectible", item_id: 1 },
+			{ category: "consumable", item_id: 1 },
+			{ category: "mainhand", item_id: 1 },
+		],
+		[
+			// row 2
+			{ category: 0, item_id: 0 },
+			{ category: 0, item_id: 0 },
+			{ category: 0, item_id: 0 },
+		],
+	],
+	keys: [],
+}
 
 #endregion
 
@@ -101,38 +144,6 @@ enum P_ALARM {
 
 #endregion
 
-#region INIT PLAYER EQUIPMENT & INVENTORY
-
-// enum sets the position for the 3 equip slots
-enum EQUIP {
-	B,
-	X,
-	Y,
-}
-
-/*
-// will try to change the inventory into a struct using this
-player_inventory = {
-	equip_slots: [0,0,0],
-	weapons: ds_grid_create(6,1),
-	items: ds_grid_create(6,3),
-	unique_right: ds_grid_create(1,4),
-	unique_left: ds_grid_create(1,4),
-	unique_bottom: ds_grid_create(6,1),
-	shards: ds_grid_create(4,2),
-}
-*/
-
-// initialize inventory DS Grids
-weapons			= ds_grid_create(6,1);		// ds grid for the weapons part of the inventory
-items			= ds_grid_create(6,3);		// ds grid for the items part of the inventory
-unique_right	= ds_grid_create(1,4);		// ds grid for the right side of the unique items inventory
-unique_left		= ds_grid_create(1,4);		// ds grid for the left side of the unique items inventory
-unique_bottom	= ds_grid_create(6,1);		// ds grid for the bottom section of the uniqie items inventory
-shards			= ds_grid_create(4,2);		// ds grid for the shards portion of the inventory
-
-#endregion
-
 #region INIT PLAYER HELPER FUNCTIONS
 
 function player_set_last_safe_coordinates() {
@@ -188,7 +199,7 @@ function player_respawn() {
 	alarm[P_ALARM.DAMAGED] = FPS*3;
 	main_state = main_state_alive;
 	nest_state = nest_state_free;
-	terrain_state = TERRAIN.NONE;
+	terrain_state = TERRAIN_TYPE.NONE;
 	
 }
 
@@ -217,7 +228,7 @@ function player_take_damage(_damage, _damage_type, _element_type, _special_effec
 	if (_damage > 0) {
 		hp -= _damage;
 		just_got_damaged = true;
-		item_id_used = noone;
+		item_used = noone;
 		alarm[ALARM.ATK_START] = -1;		// cancels an attack if one was underway
 		alarm[ALARM.DAMAGED] = FPS*0.5;
 		nest_state = nest_state_hurt;
@@ -228,45 +239,15 @@ function player_take_damage(_damage, _damage_type, _element_type, _special_effec
 	}
 }
 
-function player_use_equip_slot(_item_id) {
-	// when an equip slot is used, figure out what category it is and proceed accordingly
-	// - weapon
-	// - item
-	// - consumable
-
-	if (!_item_id) { exit; }		// exit if no item is equipped
-	
-	// get item category
-	var _item_category = ds_grid_get(global.item_data,ITEM_COLUMN.TYPE, _item_id);
-	
-	item_id_used = _item_id;
-	
-	switch(_item_category) {
-		case "weapon":
-			//nest_state = nest_state_weapon;
-			player_use_weapon(_item_id);
-		break;
-		
-		case "item":
-			//nest_state = nest_state_item;
-			player_use_item(_item_id);
-		break;
-		
-		case "consumable":
-			//nest_state = nest_state_consumable;
-			player_use_consumable(_item_id);
-		break;
-	}
-}
-
-function player_use_weapon(_item_id) {
+function player_use_mainhand(_item) {
 	// get weapon type
-	var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEP_TYPE,_item_id);
+	var _item_id = _item.item_id;
+	var _weapon_type = ds_grid_get(global.mainhand_data,MAINHAND_DATA.WEP_TYPE,_item_id);
+	item_used = _item;
 	
 	// set attack state according to weapon type
 	switch (_weapon_type) {
 		case "sword":		nest_state = nest_state_attack_sword;		break;
-		case "shield":		nest_state = nest_state_attack_shield;		break;
 		case "boomstick":	nest_state = nest_state_attack_boomstick;	break;
 		case "flail":		nest_state = nest_state_attack_flail;		break;
 		case "crossbow":	nest_state = nest_state_attack_crossbow;	break;
@@ -274,31 +255,58 @@ function player_use_weapon(_item_id) {
 	}
 }
 
-function player_use_item(_item_id) {
+function player_use_offhand(_item) {
+	// get weapon type
+	var _item_id = _item.item_id;
+	var _weapon_type = ds_grid_get(global.offhand_data,OFFHAND_DATA.WEP_TYPE,_item_id);
 	
+	// set attack state according to weapon type
+	switch (_weapon_type) {
+		case "shield":		nest_state = nest_state_attack_shield;		break;
+	}
+}
+
+function player_use_item(_item_id) {
+
 }
 
 function player_use_consumable(_item_id) {
 	
 }
 
-function player_create_damage_object(_item_id, _x_offset, _y_offset) {
+function player_create_damage_object(_item, _x_offset, _y_offset) {
 	// get all needed data to pass to damage object
+	var _category = _item.category;
+	var _weapon_id = _item.item_id;
+	
+	
+	// get the DB and data types to pull from
+	var _dataset = get_dataset(_category);
+	var _dmg_type_data = enum_get_dmg_type(_category);
+	var _elmt_type_data = enum_get_elmt_type(_category);
+	var _dmg_amt_data = enum_get_dmg_amt(_category);
+	var _kb_data = enum_get_knockback(_category);
+	var _effect_data = enum_get_effect(_category);
+	var _wep_type_date = enum_get_wep_type(_category);
+	var _dmg_obj_spr_data = enum_get_dmg_obj_spr(_category);
+	var _dmg_spr_idx_data = enum_get_dmg_spr_idx(_category);
+	
+	// get variables to pass to the damage object
 	var _faction = faction;
 	var _creator = id;
 	var _face_dir = face_direction;
-	var _dmg_type = ds_grid_get(global.item_data, ITEM_COLUMN.DMG_TYPE, _item_id);
-	var _element_type = ds_grid_get(global.item_data, ITEM_COLUMN.ELEMENT_TYPE, _item_id);
-	var _dmg_amt = ds_grid_get(global.item_data, ITEM_COLUMN.DMG_AMT, _item_id);
-	var _knockback =  ds_grid_get(global.item_data, ITEM_COLUMN.KNOCKBACK, _item_id);
-	var _special_effect = ds_grid_get(global.item_data, ITEM_COLUMN.EFFECT, _item_id);
+	var _dmg_type = ds_grid_get(_dataset, _dmg_type_data, _weapon_id);
+	var _element_type = ds_grid_get(_dataset, _elmt_type_data, _weapon_id);
+	var _dmg_amt = ds_grid_get(_dataset, _dmg_amt_data, _weapon_id);
+	var _knockback =  ds_grid_get(_dataset, _kb_data, _weapon_id);
+	var _special_effect = ds_grid_get(_dataset, _effect_data, _weapon_id);
 	
 	// determine which damage object to create
-	var _wep_type = ds_grid_get(global.item_data, ITEM_COLUMN.WEP_TYPE, _item_id);
+	var _wep_type = ds_grid_get(_dataset, _wep_type_date, _weapon_id);
 	_wep_type = asset_get_index("obj_damage_" + string(_wep_type));
 	
 	// get the sprite to set for the damage object
-	var _sprite = ds_grid_get(global.item_data, ITEM_COLUMN.DMG_OBJ_SPR, _item_id);
+	var _sprite = ds_grid_get(_dataset, _dmg_spr_idx_data, _weapon_id);
 	_sprite = asset_get_index(_sprite);
 	if (!_sprite) { _sprite = asset_get_index("spr_damage_melee"); }
 	
@@ -324,16 +332,16 @@ function player_terrain_checks(){
 	// Shallow Water
 	if (_terrain == 2) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.SHALLOW_WATER; }
+		if (terrain_state != TERRAIN_TYPE.SHALLOW_WATER) { terrain_state = TERRAIN_TYPE.SHALLOW_WATER; }
 		if (max_speed != wade_speed) { max_speed = wade_speed; }
 	} else { 
-		if (terrain_state == TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER) { terrain_state = TERRAIN_TYPE.NONE }
 	}
 	
 	// Deep Water
 	if (_terrain == 3) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.DEEP_WATER; }
+		if (terrain_state != TERRAIN_TYPE.DEEP_WATER) { terrain_state = TERRAIN_TYPE.DEEP_WATER; }
 		player_take_damage(1);
 		main_state = main_state_death;
 		nest_state = nest_state_death_drown;
@@ -342,26 +350,26 @@ function player_terrain_checks(){
 	// ladder
 	if (_terrain == 4) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.LADDER) { terrain_state = TERRAIN.LADDER; }
+		if (terrain_state != TERRAIN_TYPE.LADDER) { terrain_state = TERRAIN_TYPE.LADDER; }
 		if (nest_state != nest_state_climb) { nest_state = nest_state_climb; }
 	} else {
-		if (terrain_state == TERRAIN.LADDER) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.LADDER) { terrain_state = TERRAIN_TYPE.NONE }
 		if (nest_state == nest_state_climb) { nest_state = nest_state_free; }
 	}
 	
 	// Tall Grass
 	if (_terrain == 5) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.TALL_GRASS; }
+		if (terrain_state != TERRAIN_TYPE.TALL_GRASS) { terrain_state = TERRAIN_TYPE.TALL_GRASS; }
 		if (max_speed != wade_speed) { max_speed = wade_speed; }
 	} else { 
-		if (terrain_state == TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.NONE } 
+		if (terrain_state == TERRAIN_TYPE.TALL_GRASS) { terrain_state = TERRAIN_TYPE.NONE } 
 	}
 
 	// PitFall
 	if (_terrain == 6) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.PITFALL) { terrain_state = TERRAIN.PITFALL; }
+		if (terrain_state != TERRAIN_TYPE.PITFALL) { terrain_state = TERRAIN_TYPE.PITFALL; }
 		if (main_state == main_state_death) { exit; }
 		player_take_damage(1);
 		main_state = main_state_death;
@@ -475,7 +483,7 @@ nest_state_attack_sword = function() {
 		x_speed = 0;
 		y_speed = 0;
 		// get weapon type
-		var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEP_TYPE, item_id_used);
+		//var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEP_TYPE, item_used);
 		image_index = 0;
 		image_speed = 1;
 		alarm[P_ALARM.ATK_START] = -2;
@@ -490,7 +498,7 @@ nest_state_attack_sword = function() {
 			if (face_direction == 90) _y_offset = -10;
 			if (face_direction == 180) _x_offset = -8;
 			if (face_direction == 270) _y_offset = 2;
-			player_create_damage_object(item_id_used, _x_offset, _y_offset);
+			player_create_damage_object(item_used, _x_offset, _y_offset);
 			alarm[P_ALARM.ATK_START] = -3;
 		}
 	}
@@ -501,7 +509,7 @@ nest_state_attack_sword = function() {
 			nest_state = nest_state_free;
 			alarm[P_ALARM.ATK_START] = -1;
 			alarm[P_ALARM.ATK_END] = FPS * .1;
-			item_id_used = noone;
+			item_used = noone;
 		}
 	}
 }
@@ -586,28 +594,6 @@ nest_state_death_drown = function() {
 nest_state_death_pitfall = function() {
 
 }
-
-
-/*
-function player_state_attack_crossbow() {
-	// begin attack
-	if (alarm[P_ALARM.ATK_START] == -1 && alarm[P_ALARM.ATK_END] == -1 && alarm[P_ALARM.DAMAGED] == -1) {
-		image_index = 0;
-		x_speed = 0;
-		y_speed = 0;
-		// get weapon type
-		var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEAPON_TYPE, equip_slot_used);
-		player_image_attack(_weapon_type);
-		alarm[P_ALARM.ATK_START] = -2;
-	}
-	
-	// during attack
-	
-	
-	// end attack
-	
-}
-*/
 
 #endregion
 

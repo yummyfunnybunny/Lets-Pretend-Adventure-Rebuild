@@ -1,15 +1,16 @@
 
 function player_update_max_speed() {
 	switch(terrain_state) {
-		case TERRAIN.NONE:			if (max_speed != run_speed)		max_speed = run_speed;		break;
-		case TERRAIN.SHALLOW_WATER: if (max_speed != wade_speed)	max_speed = wade_speed;		break;
-		case TERRAIN.TALL_GRASS:	if (max_speed != wade_speed)	max_speed = wade_speed;		break;
-		case TERRAIN.LADDER:		if (max_speed != climb_speed)	max_speed = climb_speed;	break;
+		case TERRAIN_TYPE.NONE:			if (max_speed != run_speed)		max_speed = run_speed;		break;
+		case TERRAIN_TYPE.SHALLOW_WATER: if (max_speed != wade_speed)	max_speed = wade_speed;		break;
+		case TERRAIN_TYPE.TALL_GRASS:	if (max_speed != wade_speed)	max_speed = wade_speed;		break;
+		case TERRAIN_TYPE.LADDER:		if (max_speed != climb_speed)	max_speed = climb_speed;	break;
 		default:					if (max_speed != run_speed)		max_speed = run_speed;		break;
 	}
 }
 
 function player_update_move_direction() {
+	if (instance_exists(obj_con_textbox)) { exit; }
 	var _x_spd = right_input - left_input;
 	var _y_spd = down_input - up_input;
 	if (_x_spd == 1 && _y_spd = 0)		{ move_direction = 0; }
@@ -25,7 +26,7 @@ function player_update_move_direction() {
 
 function player_update_face_direction() {
 	// whichever input is first is whats used and whichever unput is last is than used
-	if (item_id_used != noone) { exit; }
+	if (item_used != noone) { exit; }
 	
 	// first move input
 	if (move_direction == -1) {

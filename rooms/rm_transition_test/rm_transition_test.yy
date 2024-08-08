@@ -6,8 +6,8 @@
   "inheritCreationOrder":false,
   "inheritLayers":false,
   "instanceCreationOrder":[
-    {"name":"inst_56701919_2","path":"rooms/rm_transition_test/rm_transition_test.yy",},
     {"name":"inst_794A46DC_1","path":"rooms/rm_transition_test/rm_transition_test.yy",},
+    {"name":"inst_26C5619D","path":"rooms/rm_transition_test/rm_transition_test.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -38,12 +38,12 @@
       ],"name":"Above","properties":[],"resourceType":"GMRLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRLayer":"","%Name":"OnGround","depth":600,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[
         {"$GMRInstanceLayer":"","%Name":"Instances","depth":700,"effectEnabled":true,"effectType":null,"gridX":8,"gridY":8,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":false,"instances":[
-            {"$GMRInstance":"","%Name":"inst_56701919_2","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_56701919_2","objectId":{"name":"obj_con_menu_level","path":"objects/obj_con_menu_level/obj_con_menu_level.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":64.0,"y":0.0,},
             {"$GMRInstance":"","%Name":"inst_794A46DC_1","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_794A46DC_1","objectId":{"name":"obj_transition","path":"objects/obj_transition/obj_transition.yy",},"properties":[
                 {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_transition","path":"objects/obj_transition/obj_transition.yy",},"propertyId":{"name":"transfer_x","path":"objects/obj_transition/obj_transition.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"8",},
                 {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_transition","path":"objects/obj_transition/obj_transition.yy",},"propertyId":{"name":"transfer_y","path":"objects/obj_transition/obj_transition.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"304",},
                 {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_transition","path":"objects/obj_transition/obj_transition.yy",},"propertyId":{"name":"transition_type","path":"objects/obj_transition/obj_transition.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"out-right\"",},
               ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":4.0,"x":640.0,"y":160.0,},
+            {"$GMRInstance":"","%Name":"inst_26C5619D","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_26C5619D","objectId":{"name":"obj_enemy_goblin1","path":"objects/obj_enemy_goblin1/obj_enemy_goblin1.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":472.0,"y":176.0,},
           ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
         {"$GMRTileLayer":"","%Name":"onGround_modifiers","depth":800,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"onGround_modifiers","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":23,"SerialiseWidth":40,"TileCompressedData":[
               -20,0,-20,-2147483648,-20,0,-20,-2147483648,-20,0,-20,-2147483648,-20,0,-20,-2147483648,-20,0,-20,-2147483648,

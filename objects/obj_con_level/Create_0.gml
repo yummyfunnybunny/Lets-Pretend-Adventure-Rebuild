@@ -2,6 +2,8 @@
 
 #region CREATE LEVEL ESSENTIALS
 
+
+
 // create the HUD Controller
 if (!instance_exists(obj_con_hud_level)) {
 	global.level_hud = instance_create_layer(0, 0, layer, obj_con_hud_level);
@@ -22,6 +24,11 @@ if (!instance_exists(obj_con_camera)) {
 	global.camera = instance_create_depth(obj_player.x,obj_player.y,INSTANCE_DEPTH,obj_con_camera);	
 }
 
+// create quest tracker
+//if (!instance_exists(obj_con_quests)) {
+//	global.quest_tracker = instance_create_layer(x,y,INSTANCE_LAYER,obj_con_quests);	
+//}
+
 #endregion
 
 
@@ -29,12 +36,14 @@ if (!instance_exists(obj_con_camera)) {
 
 function level_pause_game() {
 	with (all) {
+		if (object_index == obj_parent_item) { exit; }
 		image_speed = 0;	
 	}
 }
 
 function level_resume_game() {
 	with (all) {
+		if (object_index == obj_parent_item) { exit; }
 		image_speed = 1;	
 	}
 }

@@ -14,7 +14,7 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"wander_weight","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"patrol_path","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"pth_farmerbob",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"patrol_end_action","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"path_action_restart",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"interact_type","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"INTERACT.TALK",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_npc","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"propertyId":{"name":"interact_type","path":"objects/obj_parent_npc/obj_parent_npc.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"INTERACT_TYPE.TALK",},
   ],
   "parent":{
     "name":"4 - NPCs",

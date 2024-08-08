@@ -1,4 +1,4 @@
-﻿ID,NAME,DESC,CATEGORY,DROP_IMG_IDX,INV_IMG_IDX,EFFECT
-0,0,0,0,0,0,0
-1,Health Potion,use to fully recover your hp!,weapon,1,0,0
-2,Mana Potion,use to fully recover your mp!,weapon,2,0,0
+﻿ID,NAME,DESC,CATEGORY,RARITY,DROP_IMG_IDX,INV_IMG_IDX,EFFECT
+0,0,0,0,0,0,0,0
+1,Health Potion,use to fully recover your hp!,weapon,0,1,1,0
+2,Mana Potion,use to fully recover your mp!,weapon,0,2,2,0

@@ -1,9 +1,6 @@
 
 function damage_check_modifiers(_damage_type, _element_type, _dmg_array, _elmt_array) {
 	
-	// check that the array has anything in it
-	//if (array_length(_array) == 0) { return false; }
-	
 	// check damage type
 	if (_damage_type && array_length(_dmg_array) > 0) {
 		for (var _i = 0; _i < array_length(_dmg_array); _i++;){

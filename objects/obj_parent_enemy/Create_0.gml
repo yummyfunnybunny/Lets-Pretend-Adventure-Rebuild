@@ -9,7 +9,7 @@ do not need to be changed once set.
 variables that need to be set an a per-enemy basis are all in the VARIABLE DEFINITIONS
 */
 
-faction					= FACTION.ENEMY;		// set the faction of the instance
+faction					= FACTION_TYPE.ENEMY;		// set the faction of the instance
 hp						= max_hp;				// set hp to max hp
 mp						= max_mp;				// set mp to max mp
 armor					= max_armor;			// set armor to max armor
@@ -30,21 +30,23 @@ item_drops = {
 	],
 	
 	// categories - first chance roll is to see which category we're going to drop from
-	categories: [
-		{ "none": 1 },
-		{ "ammo": 1 },
-		{ "powerup": 1 },
-		{ "consumable": 1 },
-		{ "collectible": 1 },
-		{ "weapon": 1 },
-	],
+	//categories: [
+	//	{ "none": 1 },
+	//	{ "ammo": 1 },
+	//	{ "powerup": 1 },
+	//	{ "consumable": 1 },
+	//	{ "collectible": 1 },
+	//	{ "mainhand": 1 },
+	//	{ "offhand": 1 },
+	//],
 	categories2: {
 		none: 1,
 		ammo: 1,
 		powerup: 1,
 		consumable: 1,
 		collectible: 1,
-		weapon: 1,
+		mainhand: 1,
+		offhand: 1,
 	},
 	// whichever category was chosen will be rolled on from the arrays below
 	ammo: [
@@ -58,7 +60,8 @@ item_drops = {
 	powerup: [],
 	consumable: [],
 	collectible: [],
-	weapon: [],
+	mainhand: [],
+	offhand: [],
 }
 
 #endregion
@@ -98,6 +101,7 @@ main_state_death			= function(){
 	// there are many ways an enemy can die, but some of the functionality is always the same
 	// the nest state will control the different ways an enemy can die (normal, pitfall, water, etc.);
 	if (alarm[ALARM.DEATH] == -1) {
+		global.enemy_count--;
 		x_speed = 0;
 		y_speed = 0;
 		move_speed = 0;
@@ -140,7 +144,7 @@ nest_state_return_origin	= function(){
 	// aggro range & attack range checks are not performed here
 	// create pather
 	if (!pather_object) {
-		pather_object = instance_create_depth(x,y,INSTANCE_DEPTH,obj_con_pather,{
+		pather_object = instance_create_layer(x,y,INSTANCE_LAYER,obj_con_pather,{
 			creator: id,
 			path: noone,
 			move_speed: run_speed,
@@ -274,17 +278,14 @@ function enemy_drop_items() {
 			"powerup", item_drops.categories2.powerup,
 			"consumable", item_drops.categories2.consumable,
 			"collectible", item_drops.categories2.collectible,
-			"weapon", item_drops.categories2.weapon);
+			"mainhand", item_drops.categories2.mainhand,
+			"offhand", item_drops.categories2.offhand);
 		
 		// randomly choose the item id
 		var _item_drop = 0;
-		switch (_chosen_category) {
-			case "none":		_item_drop = 0;																break;
-			case "ammo":		_item_drop = irandom_range(1, ds_grid_height(global.ammo_data)-1);			break;
-			case "powerup":		_item_drop = irandom_range(1, ds_grid_height(global.powerup_data)-1);		break;
-			case "consumable":	_item_drop = irandom_range(1, ds_grid_height(global.consumable_data)-1);	break;
-			case "collectible": _item_drop = irandom_range(1, ds_grid_height(global.collectible_data)-1);	break;
-			case "weapon":		_item_drop = irandom_range(1, ds_grid_height(global.weapon_data)-1);		break;
+		var _dataset = get_dataset(_chosen_category);
+		if (_dataset) {
+			_item_drop = irandom_range(1, ds_grid_height(_dataset)-1);
 		}
 		
 		// drop the item
@@ -471,45 +472,45 @@ function enemy_update_terrain_state(){
 	// Shallow Water
 	if (_terrain == 2) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.SHALLOW_WATER; }
+		if (terrain_state != TERRAIN_TYPE.SHALLOW_WATER) { terrain_state = TERRAIN_TYPE.SHALLOW_WATER; }
 	} else { 
-		if (terrain_state == TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER) { terrain_state = TERRAIN_TYPE.NONE }
 		
 	}
 	
 	// Deep Water
 	if (_terrain == 3) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.DEEP_WATER; }
+		if (terrain_state != TERRAIN_TYPE.DEEP_WATER) { terrain_state = TERRAIN_TYPE.DEEP_WATER; }
 	} else { 
-		if (terrain_state == TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.NONE } 
+		if (terrain_state == TERRAIN_TYPE.DEEP_WATER) { terrain_state = TERRAIN_TYPE.NONE } 
 		
 	}
 	
 	// ladder
 	if (_terrain == 4) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.LADDER) { terrain_state = TERRAIN.LADDER; }
+		if (terrain_state != TERRAIN_TYPE.LADDER) { terrain_state = TERRAIN_TYPE.LADDER; }
 	} else {
-		if (terrain_state == TERRAIN.LADDER) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.LADDER) { terrain_state = TERRAIN_TYPE.NONE }
 		
 	}
 	
 	// Tall Grass
 	if (_terrain == 5) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.TALL_GRASS; }
+		if (terrain_state != TERRAIN_TYPE.TALL_GRASS) { terrain_state = TERRAIN_TYPE.TALL_GRASS; }
 	} else { 
-		if (terrain_state == TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.NONE } 
+		if (terrain_state == TERRAIN_TYPE.TALL_GRASS) { terrain_state = TERRAIN_TYPE.NONE } 
 		
 	}
 
 	// PitFall
 	if (_terrain == 6) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.PITFALL) { terrain_state = TERRAIN.PITFALL; }
+		if (terrain_state != TERRAIN_TYPE.PITFALL) { terrain_state = TERRAIN_TYPE.PITFALL; }
 	} else { 
-		if (terrain_state == TERRAIN.PITFALL) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.PITFALL) { terrain_state = TERRAIN_TYPE.NONE }
 		
 	}
 	
@@ -554,11 +555,11 @@ function enemy_update_terrain_state(){
 
 function enemy_terrain_effect() {
 	switch (terrain_state) {
-		case TERRAIN.SHALLOW_WATER: enemy_terrain_shallow_water();	break;
-		case TERRAIN.DEEP_WATER:	enemy_terrain_deep_water();		break;
-		case TERRAIN.LADDER:		enemy_terrain_ladder();			break;
-		case TERRAIN.TALL_GRASS:	enemy_terrain_tall_grass();		break;
-		case TERRAIN.PITFALL:		enemy_terrain_pitfall();		break;
+		case TERRAIN_TYPE.SHALLOW_WATER: enemy_terrain_shallow_water();	break;
+		case TERRAIN_TYPE.DEEP_WATER:	enemy_terrain_deep_water();		break;
+		case TERRAIN_TYPE.LADDER:		enemy_terrain_ladder();			break;
+		case TERRAIN_TYPE.TALL_GRASS:	enemy_terrain_tall_grass();		break;
+		case TERRAIN_TYPE.PITFALL:		enemy_terrain_pitfall();		break;
 		default: /* nothing */										break;
 	}
 }

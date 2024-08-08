@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"GUI",
-    "path":"folders/Sprites/GUI.yy",
+    "name":"Beastiary",
+    "path":"folders/Sprites/GUI/Level Menu/Beastiary.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

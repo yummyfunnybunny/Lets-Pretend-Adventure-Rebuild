@@ -8,7 +8,7 @@ draw_sprite_ext(spr_dimmer,0,0,0,40,23,0,c_white,.5);
 // set text
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
-draw_set_font(fnt_main_menu);
+draw_set_font(fnt_text_24);
 
 // draw quit button
 if (button_selected == 0) {
@@ -51,5 +51,4 @@ if (button_selected == 3) {
 }
 
 // reset text
-draw_set_halign(fa_left);
-draw_set_valign(fa_top);
+reset_text();

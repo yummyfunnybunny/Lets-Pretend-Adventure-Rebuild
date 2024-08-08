@@ -1,6 +1,6 @@
 ﻿ID,NAME,DESCRIPTION,TYPE,INV_SPR_IDX,INV_IMG_IDX,DMG_TYPE,DMG_AMT,KNOCKBACK,WEP_START,WEP_CD,WEP_TYPE,DMG_OBJ_SPR,ELEMENT_TYPE,EFFECT
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-1,Sword,attack enemies at close range,weapon,spr_inv_weapon,1,1,1,6,3,0.1,sword,0,1,0
+1,Sword,attack enemies at close range,weapon,spr_inv_weapon,1,1,1,6,3,0.1,sword,0,0,0
 2,Shield,block incoming attacks,weapon,spr_inv_weapon,2,3,0,6,0,0,shield,0,0,0
 3,boom stick,throw at long range. Explodes on impact.,weapon,spr_inv_weapon,3,4,2,6,0.1,0.5,boomstock,0,0,0
 4,Flail,swing in a wide arc to damage enemies at close or medium range,weapon,spr_inv_weapon,4,3,1,6,0.1,0.5,flail,0,0,0

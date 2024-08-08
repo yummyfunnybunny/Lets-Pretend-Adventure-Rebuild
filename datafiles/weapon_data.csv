@@ -1,8 +1,0 @@
-﻿ID,NAME,DESC,CATEGORY,DMG_TYPE,WEP_TYPE,ELMT_TYPE,DROP_IMG_IDX,INV_IMG_IDX,DMG_IMG_IDX,DMG_AMT,KNOCKBACK,WEP_START,WEP_CD,EFFECT
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-1,Sword 1,attack enemies at close range,weapon,slash,sword,none,1,1,0,1,6,3,0.1,0
-2,Shield 1,block incoming attacks,weapon,blunt,shield,none,2,2,0,0,6,0,0,0
-3,boom stick 1,throw at long range. Explodes on impact.,weapon,explosive,boomstock,none,3,3,0,2,6,0,0.5,0
-4,Flail 1,swing in a wide arc to damage enemies at close or medium range,weapon,blunt,flail,none,4,4,0,1,6,0,0.5,0
-5,Crossbow 1,attack enemies at long range.,weapon,pierce,crossbow,none,5,5,0,1,6,0,0.1,0
-6,Throwing Axe 1,do heavy damage at long range.,weapon,slash,tomahawk,none,6,6,0,2,6,0,0.5,0

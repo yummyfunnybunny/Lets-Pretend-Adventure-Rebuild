@@ -11,22 +11,23 @@ function player_update_input(){
 	// letter inputs
 	a_input_pressed		= keyboard_check_pressed(ord("V"));
 	
-	b_input_pressed		= keyboard_check_pressed(ord("Z"));
-	b_input_held		= keyboard_check(ord("Z"));
-	b_input_released	= keyboard_check_released(ord("Z"));
+	b_input_pressed		= keyboard_check_pressed(ord("C"));
+	b_input_held		= keyboard_check(ord("C"));
+	b_input_released	= keyboard_check_released(ord("C"));
 	
 	x_input_pressed		= keyboard_check_pressed(ord("X"));
 	x_input_held		= keyboard_check(ord("X"));
 	x_input_released	= keyboard_check_released(ord("X"));
 	
-	y_input_pressed		= keyboard_check_pressed(ord("C"));
-	y_input_held		= keyboard_check(ord("C"));
-	y_input_released	= keyboard_check_released(ord("C"));
+	y_input_pressed		= keyboard_check_pressed(ord("Z"));
+	y_input_held		= keyboard_check(ord("Z"));
+	y_input_released	= keyboard_check_released(ord("Z"));
 }
 
 function player_input_jump_check() {
+	if (instance_exists(obj_con_textbox)) { exit; }
 	if (!on_ground) { exit; }
-	if (terrain_state == TERRAIN.SHALLOW_WATER || terrain_state == TERRAIN.TALL_GRASS) { exit; }
+	if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER || terrain_state == TERRAIN_TYPE.TALL_GRASS) { exit; }
 	if (nest_state == nest_state_climb) { exit; }
 	if (nest_state == nest_state_hurt) { exit; }
 	if (jump_input) {
@@ -38,49 +39,55 @@ function player_input_jump_check() {
 
 function player_input_a_check() {
 	// keyboard = V
-	if (!interact_target) { exit; }
+	if (instance_exists(obj_con_textbox)) { exit; }
+	if (item_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
+	if (!on_ground) { exit; }
+	if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER || terrain_state == TERRAIN_TYPE.TALL_GRASS) { exit; }
+	if (nest_state == nest_state_climb) { exit; }
+	if (nest_state == nest_state_hurt) { exit; }
 	if (a_input_pressed) {
-		// will need to dynamically choose what to do here later...
-		with (interact_target) {
-			npc_interact_input_progress()
-			//nest_state = nest_state_interact;
-		}
+		player_use_mainhand(global.player.equipped[0][0]);
+		//player_use_equip_slot(equip_slots[EQUIP.B]);
 	}
 }
 
 function player_input_b_check() {
-	// keyboard = Z
-	if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
+	// keyboard = C
+	if (instance_exists(obj_con_textbox)) { exit; }
+	if (item_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
 	if (!on_ground) { exit; }
-	if (terrain_state == TERRAIN.SHALLOW_WATER || terrain_state == TERRAIN.TALL_GRASS) { exit; }
+	if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER || terrain_state == TERRAIN_TYPE.TALL_GRASS) { exit; }
 	if (nest_state == nest_state_climb) { exit; }
 	if (nest_state == nest_state_hurt) { exit; }
 	if (b_input_pressed) {
-		player_use_equip_slot(equip_slots[EQUIP.B]);
+		player_use_offhand(global.player.equipped[0][1]);
 	}
 }
 
 function player_input_x_check() {
 	// keyboard = X
-	if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
-	if (!on_ground) { exit; }
-	if (terrain_state == TERRAIN.SHALLOW_WATER || terrain_state == TERRAIN.TALL_GRASS) { exit; }
-	if (nest_state == nest_state_climb) { exit; }
-	if (nest_state == nest_state_hurt) { exit; }
+	if (!interact_target) { exit; }
 	if (x_input_pressed) {
-		player_use_equip_slot(equip_slots[EQUIP.X]);
+		// will need to dynamically choose what to do here later...
+		with (interact_target) {
+			if (object_is_ancestor(object_index,obj_parent_npc)) {
+				npc_interact_input_progression();
+			} else if (object_index == obj_parent_item) {
+				item_interact_input_progression();
+			}
+			//nest_state = nest_state_interact;
+		}
 	}
 }
 
 function player_input_y_check() {
-	// keyboard = C	
+	// keyboard = Z
+	if (instance_exists(obj_con_textbox)) { exit; }
 	if (nest_state == nest_state_hurt) { exit; }
-	if (terrain_state == TERRAIN.SHALLOW_WATER || terrain_state == TERRAIN.TALL_GRASS) { exit; }
+	if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER || terrain_state == TERRAIN_TYPE.TALL_GRASS) { exit; }
 	if (nest_state == nest_state_climb) { exit; }
 	if (!on_ground) { exit; }
-	if (item_id_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
+	if (item_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
 	if (y_input_pressed) {
-		
-		player_use_equip_slot(equip_slots[EQUIP.Y]);
 	}
 }

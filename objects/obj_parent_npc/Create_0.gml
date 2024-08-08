@@ -1,8 +1,8 @@
 event_inherited();
 
-#region DEFAULT SET VARIABLES
+#region SET VARIABLES
 
-faction					= FACTION.NPC;			// set the faction of the instance
+faction					= FACTION_TYPE.NPC;		// set the faction of the instance
 hp						= max_hp;				// set hp to max hp
 mp						= max_mp;				// set mp to max mp
 armor					= max_armor;			// set armor to max armor
@@ -14,37 +14,85 @@ extra_damage_check		= noone;				// use this to store a function to perform addit
 interact_target			= noone;				// sets the id of the player the npc is set to interact with when player presses A
 interact_prev_state		= noone;				// stores the state npc was in before interaction to back to once interaction is ends
 
+
 // quest
-quest = {
-	// store all quest data for the NPC in this struct	
-}
+quest = noone;
+//quest = {
+//	// if npc is related to a quest, store the quest data here for them to use
+//	quest_id: noone,				// stores the quest id
+//	stage: QUEST_STAGE.UNAVAILABLE,	// stores the stage of the quest
+//	update_script: noone,			// use this to run whatever updating function the quest system provides it with
+//	start_object: noone,			// stores the object that starts the quest
+//	end_object: noone,				// stores the object that ends the quest
+//	follow_target: noone,
+//}
 
 // dialogue
 dialogue = {
-	//active: false,				// turn true if currently talking - CAN JUST CHECK THE TEXTBOX_ID
 	textbox_id: noone,				//stores the id of the current textbox object
 	title: "textbox title",			// title displayed in textbox
-	stage: 0,
+	//quest_id: 0,					// stores the id of the quest this NPC connects to. 0 = no quest
+	//stage: QUEST_STAGE.UNAVAILABLE,	// stores the current stage of the quest
 	text: [
 		[
+			// stage 0: quest = inactive, prerequisites = incomplete
+			"stage 0 - text 1",
+			"stage 0 - text 2",
+			"stage 0 - text 3",
+		],
+		[
+			// stage 1: - quest = inactive, prerequisites = complete || 0
 			"stage 1 - text 1",
 			"stage 1 - text 2",
 			"stage 1 - text 3",
 		],
 		[
+			// stage 2: quest = active, tasks = incomplete
 			"stage 2 - text 1",
 			"stage 2 - text 2",
 			"stage 2 - text 3",
 		],
 		[
+			// stage 3: quest = active, teasks = complete
 			"stage 3 - text 1",
 			"stage 3 - text 2",
 			"stage 3 - text 3",
 		],
+		[
+			// stage 4: quest = completed
+			"stage 4 - text 1",
+			"stage 4 - text 2",
+			"stage 4 - text 3",
+		],
 	]
 }
-// WE CAN CHECK THE CURRENT INDEX OF THE  TEXT ARRAY TO DETERMINE IF WE NEED TO TURN THE PAGE OR END THE INTERACTION
-// IF A QUEST OR SOME KIND OF PROGRESSION EXISTS, THE STAGE OF THE QUEST WILL DETERNINE THE ARRAY INDEX TO RUN
+
+dialogue2 = {
+	textbox_id: noone,
+	title: "textbox title",
+	quest_id: 0,
+	stage: QUEST_STAGE.UNAVAILABLE,
+	text: [
+		{
+			quest_id: 0,
+			quest_stage: QUEST_STAGE.UNAVAILABLE,
+			quest_text: [
+				["","",""],
+				["","",""],
+				["","",""],
+			]
+		},
+		{
+			quest_id: 1,
+			quest_stage: QUEST_STAGE.UNAVAILABLE,
+			quest_text: [
+				["","",""],
+				["","",""],
+				["","",""],
+			]
+		}
+	]
+}
 
 #endregion
 
@@ -69,6 +117,7 @@ enum NPC_ALARM {
 main_state_unaware = function() {
 	npc_aggro_range_check();
 	npc_origin_distance_check();
+	npc_follow_reset_check();
 }
 main_state_aware = function() {
 	npc_attack_range_check();
@@ -138,7 +187,6 @@ nest_state_patrol = function() {
 
 	// begin patrol - create pather
 	if (alarm[NPC_ALARM.STATE] == -1) {
-		//show_debug_message(patrol_path);
 		if (!pather_object) {
 			pather_object = instance_create_depth(x,y,INSTANCE_DEPTH,obj_con_pather,{
 				creator: id,
@@ -172,8 +220,61 @@ nest_state_patrol = function() {
 		}
 	}
 }
+nest_state_follow = function() {
+	if (!quest.follow_target) { exit; }
+	// begin follow
+	if (alarm[NPC_ALARM.STATE] == -1) {
+		direction = point_direction(x,y,quest.follow_target.x,quest.follow_target.y);
+		alarm[NPC_ALARM.STATE] = -2;
+	}
+	
+	// during follow
+	if (alarm[NPC_ALARM.STATE] == -2) {
+		
+		var _dis = point_distance(x,y,quest.follow_target.x,quest.follow_target.y);
+		if (_dis > 2*COL_TILES_SIZE) {
+			if (move_speed != run_speed) { move_speed = run_speed; }
+			if (sprite_index != sprite_move) { sprite_index = sprite_move; }
+			direction = point_direction(x,y,quest.follow_target.x,quest.follow_target.y);
+		} else {
+			if (move_speed != 0) { move_speed = 0; }
+			if (sprite_index != sprite_idle) { sprite_index = sprite_idle; }
+		}
+		
+	}
+	
+	// stop when close to player
+}
 nest_state_sleep = function() {}
-nest_state_return_origin = function() {}
+nest_state_return_origin = function() {
+	// create pather
+	if (!pather_object) {
+		pather_object = instance_create_layer(x,y,INSTANCE_LAYER,obj_con_pather,{
+			creator: id,
+			path: noone,
+			move_speed: run_speed,
+			target_x: origin_x,
+			target_y: origin_y,
+			path_end_action: path_action_stop,
+		});
+	}
+	
+	// follow pather
+	if (pather_object) {
+		if (move_speed != run_speed) { move_speed = run_speed; }
+		direction = point_direction(x,y,pather_object.x,pather_object.y);
+	}
+	
+	// end once origin is reached
+	if (point_distance(x,y,origin_x,origin_y) <= COL_TILES_SIZE) {
+		alarm[NPC_ALARM.STATE] = -1;
+		quest.update_script = npc_quest_follow_start_check;
+		instance_destroy(pather_object);
+		pather_object = noone;
+		main_state = main_state_unaware;
+		nest_state = nest_state_wait;
+	}
+}
 nest_state_interact = function() {
 	// stop npc movement
 	if (move_speed != 0) { move_speed = 0; }
@@ -183,8 +284,8 @@ nest_state_interact = function() {
 	
 	// figure out what type of interaction to run
 	switch(interact_type) {
-		case INTERACT.TALK: npc_interact_talk();	break;
-		case INTERACT.SHOP: npc_interact_shop();	break;
+		case INTERACT_TYPE.TALK: npc_interact_talk();	break;
+		case INTERACT_TYPE.SHOP: npc_interact_shop();	break;
 	}
 }
 
@@ -318,6 +419,17 @@ function npc_origin_distance_check(_main_state = main_state_unaware, _nest_state
 	}
 }
 
+function npc_follow_reset_check(_main_state = main_state_unaware, _nest_state = nest_state_return_origin) {
+	if (nest_state != nest_state_follow) { exit; }
+	show_debug_message("follow_reset_check");
+	var _following = quest.follow_target;
+	var _dis = point_distance(x,y,_following.x, _following.y);
+	if (_dis >= 5*COL_TILES_SIZE) {
+		main_state = _main_state;
+		nest_state = _nest_state;
+	}
+}
+
 function npc_attack_range_check(_main_state = main_state_aware, _nest_state = nest_state_attack) {
 	if (target == noone) { exit; }
 	if (nest_state == nest_state_sleep) { exit; }
@@ -338,45 +450,45 @@ function npc_update_terrain_state(){
 	// Shallow Water
 	if (_terrain == 2) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.SHALLOW_WATER; }
+		if (terrain_state != TERRAIN_TYPE.SHALLOW_WATER) { terrain_state = TERRAIN_TYPE.SHALLOW_WATER; }
 	} else { 
-		if (terrain_state == TERRAIN.SHALLOW_WATER) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER) { terrain_state = TERRAIN_TYPE.NONE }
 		
 	}
 	
 	// Deep Water
 	if (_terrain == 3) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.DEEP_WATER; }
+		if (terrain_state != TERRAIN_TYPE.DEEP_WATER) { terrain_state = TERRAIN_TYPE.DEEP_WATER; }
 	} else { 
-		if (terrain_state == TERRAIN.DEEP_WATER) { terrain_state = TERRAIN.NONE } 
+		if (terrain_state == TERRAIN_TYPE.DEEP_WATER) { terrain_state = TERRAIN_TYPE.NONE } 
 		
 	}
 	
 	// ladder
 	if (_terrain == 4) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.LADDER) { terrain_state = TERRAIN.LADDER; }
+		if (terrain_state != TERRAIN_TYPE.LADDER) { terrain_state = TERRAIN_TYPE.LADDER; }
 	} else {
-		if (terrain_state == TERRAIN.LADDER) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.LADDER) { terrain_state = TERRAIN_TYPE.NONE }
 		
 	}
 	
 	// Tall Grass
 	if (_terrain == 5) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.TALL_GRASS; }
+		if (terrain_state != TERRAIN_TYPE.TALL_GRASS) { terrain_state = TERRAIN_TYPE.TALL_GRASS; }
 	} else { 
-		if (terrain_state == TERRAIN.TALL_GRASS) { terrain_state = TERRAIN.NONE } 
+		if (terrain_state == TERRAIN_TYPE.TALL_GRASS) { terrain_state = TERRAIN_TYPE.NONE } 
 		
 	}
 
 	// PitFall
 	if (_terrain == 6) {
 		if (!on_ground) { exit; }
-		if (terrain_state != TERRAIN.PITFALL) { terrain_state = TERRAIN.PITFALL; }
+		if (terrain_state != TERRAIN_TYPE.PITFALL) { terrain_state = TERRAIN_TYPE.PITFALL; }
 	} else { 
-		if (terrain_state == TERRAIN.PITFALL) { terrain_state = TERRAIN.NONE }
+		if (terrain_state == TERRAIN_TYPE.PITFALL) { terrain_state = TERRAIN_TYPE.NONE }
 		
 	}
 	
@@ -421,11 +533,11 @@ function npc_update_terrain_state(){
 
 function npc_terrain_effect() {
 	switch (terrain_state) {
-		case TERRAIN.SHALLOW_WATER: npc_terrain_shallow_water();	break;
-		case TERRAIN.DEEP_WATER:	npc_terrain_deep_water();		break;
-		case TERRAIN.LADDER:		npc_terrain_ladder();			break;
-		case TERRAIN.TALL_GRASS:	npc_terrain_tall_grass();		break;
-		case TERRAIN.PITFALL:		npc_terrain_pitfall();			break;
+		case TERRAIN_TYPE.SHALLOW_WATER: npc_terrain_shallow_water();	break;
+		case TERRAIN_TYPE.DEEP_WATER:	npc_terrain_deep_water();		break;
+		case TERRAIN_TYPE.LADDER:		npc_terrain_ladder();			break;
+		case TERRAIN_TYPE.TALL_GRASS:	npc_terrain_tall_grass();		break;
+		case TERRAIN_TYPE.PITFALL:		npc_terrain_pitfall();			break;
 		default: /* nothing */										break;
 	}
 }
@@ -434,12 +546,16 @@ npc_terrain_shallow_water = function(){
 	main_state = main_state_death;
 	nest_state = nest_state_death_drown;
 }
+
 npc_terrain_deep_water = function(){
 	main_state = main_state_death;
 	nest_state = nest_state_death_drown;
 }
+
 npc_terrain_ladder = function(){}
+
 npc_terrain_tall_grass = function(){}
+
 npc_terrain_pitfall = function(){
 	main_state = main_state_death;
 	nest_state = nest_state_death_pitfall;
@@ -447,7 +563,7 @@ npc_terrain_pitfall = function(){
 
 // Interact Functions
 function npc_interact_set_target() {
-	if (interact_type == INTERACT.NONE) { exit; }
+	if (interact_type == INTERACT_TYPE.NONE) { exit; }
 	if (!instance_exists(interact_target)) {
 		if (instance_exists(obj_parent_player)){
 			interact_target = instance_nearest(x,y,obj_parent_player);	
@@ -464,7 +580,7 @@ function npc_interact_set_target() {
 }
 
 function npc_interact_check_interact_range() {
-	if (interact_type == INTERACT.NONE) { exit; }
+	if (interact_type == INTERACT_TYPE.NONE) { exit; }
 	if (!instance_exists(interact_target)) { exit; }
 	var _dis = point_distance(x,y,interact_target.x,interact_target.y);
 	if (_dis <= interact_range*COL_TILES_SIZE) {
@@ -472,7 +588,6 @@ function npc_interact_check_interact_range() {
 	} else {
 		if (interact_target.interact_target == id) { interact_target.interact_target = noone; }
 	}
-	
 }
 
 function npc_interact_draw_icon() {
@@ -482,7 +597,7 @@ function npc_interact_draw_icon() {
 	if (alarm[NPC_ALARM.INTERACT] != -1) { exit; }
 	
 	switch(interact_type) {
-		case INTERACT.TALK: draw_sprite(spr_interact_talk,-1,x,y-z_height);	break;
+		case INTERACT_TYPE.TALK: draw_sprite(spr_interact_talk,-1,x,y-z_height);	break;
 	}
 }
 
@@ -491,7 +606,7 @@ function npc_interact_talk() {
 	if (dialogue.textbox_id == noone) {
 		dialogue.textbox_id = instance_create_layer(x,y,INSTANCE_LAYER,obj_con_textbox, {
 			creator: id,
-			text_to_display: dialogue.text[dialogue.stage],
+			text_to_display: dialogue.text[quest.stage],
 			textbox_title: dialogue.title,
 		});
 	}
@@ -509,7 +624,7 @@ function npc_interact_face_target() {
 	if (sign(_x_diff) == -1) { direction = 0; } else { direction = 180; }
 }
 
-function npc_interact_input_progress() {
+function npc_interact_input_progression() {
 	// this function takes in the input from the player and progresses the interaction	
 	if (alarm[NPC_ALARM.INTERACT] != -1) { exit; }
 	
@@ -520,7 +635,7 @@ function npc_interact_input_progress() {
 	} else {
 		
 		switch (interact_type) {
-			case INTERACT.TALK:
+			case INTERACT_TYPE.TALK:
 				var _tb = dialogue.textbox_id;	// store the id of the textbox
 				if (_tb.main_state != _tb.main_state_display_text) { exit; }
 
@@ -540,7 +655,7 @@ function npc_interact_input_progress() {
 				
 			break;
 			
-			case INTERACT.SHOP:
+			case INTERACT_TYPE.SHOP:
 			
 			break;
 		}
@@ -557,6 +672,40 @@ function npc_interact_end_talk() {
 	nest_state = interact_prev_state;
 	interact_prev_state = noone;
 	alarm[NPC_ALARM.INTERACT] = FPS*1;
+}
+
+// quest helpers
+npc_quest_follow_start_check = function() {
+	if (nest_state == nest_state_idle) {
+		var _dis = point_distance(x,y,obj_player.x,obj_player.y);
+		if (_dis < 2*COL_TILES_SIZE) {
+			quest.follow_target = obj_player;
+			nest_state = nest_state_follow;
+			quest.update_script = npc_quest_follow_end_check;
+		}
+	}
+}
+
+npc_quest_follow_end_check = function() {
+	if (nest_state != nest_state_follow) { exit; }
+	if (quest.follow_target == quest.end_object) { exit; }
+	if (instance_exists(obj_con_textbox)) { exit; }
+	
+	if (!quest.end_object) { exit; }
+	var _dis = point_distance(x,y,quest.end_object.x, quest.end_object.y);
+	if (_dis <= 2*COL_TILES_SIZE) {
+		// start following the end object
+		quest.follow_target = quest.end_object;
+		
+		// send broadcast
+		show_debug_message(object_index);
+		var _broadcast = new EndFollowBroadcast(object_index);
+		array_push(global.quest_tracker.broadcast_receiver, _broadcast);
+		
+		// progress in the quest
+		//global.quest_tracker.quests[quest.quest_id].stage = QUEST_STAGE.SUCCESS;
+		//global.quest_tracker.quests[quest.quest_id].quest_end.dialogue.stage = QUEST_STAGE.SUCCESS;
+	}
 }
 
 #endregion

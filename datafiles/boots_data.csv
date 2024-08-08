@@ -1,3 +1,3 @@
-﻿ID,NAME,DESC,CATEGORY,DROP_IMG_IDX,INV_IMG_IDX,RUN_SPD,WADE_SPD,SWIM_SPD,CLIMB_SPD,EFFECT
-0,0,0,0,0,0,0,0,0,0,0
-1,Regular Boots,crappy starter boots. They don’t do anything nice :(,boots,1,1,0,0,0,0,0
+﻿ID,NAME,DESC,CATEGORY,RARITY,DROP_IMG_IDX,INV_IMG_IDX,RUN_SPD,WADE_SPD,SWIM_SPD,CLIMB_SPD,EFFECT
+0,0,0,0,0,0,0,0,0,0,0,0
+1,Regular Boots,crappy starter boots. They don’t do anything nice :(,boots,0,1,1,0,0,0,0,0

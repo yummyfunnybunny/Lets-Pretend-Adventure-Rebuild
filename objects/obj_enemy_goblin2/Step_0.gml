@@ -109,7 +109,7 @@ if (nest_state = enemy_state_attack) {
 			creator: id,
 			damage: damage,
 			knockback_amount: knockback_amount,
-			damage_type: DAMAGE.SLASH
+			damage_type: DAMAGE_TYPE.SLASH
 		});
 		alarm[ALARM.ATK_END] = FPS*.25;
 	}

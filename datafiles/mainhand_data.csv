@@ -1,0 +1,8 @@
+﻿ID,NAME,DESC,CATEGORY,RARITY,DMG_TYPE,WEP_TYPE,ELMT_TYPE,DROP_IMG_IDX,INV_IMG_IDX,DMG_SPR_IDX,DMG_IMG_IDX,DMG_AMT,KNOCKBACK,WEP_START,WEP_CD,EFFECT
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1,Sword 1,attack enemies at close range,weapon,0,1,sword,0,1,1,spr_damage_melee,0,1,6,3,0.1,0
+2,Shield 1,block incoming attacks,weapon,0,3,shield,0,2,2,spr_damage_melee,0,0,6,0,0,0
+3,boom stick 1,throw at long range. Explodes on impact.,weapon,0,4,boomstock,0,3,3,spr_damage_melee,0,2,6,0,0.5,0
+4,Flail 1,swing in a wide arc to damage enemies at close or medium range,weapon,0,3,flail,0,4,4,spr_damage_melee,0,1,6,0,0.5,0
+5,Crossbow 1,attack enemies at long range.,weapon,0,2,crossbow,0,5,5,spr_damage_melee,0,1,6,0,0.1,0
+6,Throwing Axe 1,do heavy damage at long range.,weapon,0,1,tomahawk,0,6,6,spr_damage_melee,0,2,6,0,0.5,0

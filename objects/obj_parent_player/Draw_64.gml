@@ -39,7 +39,7 @@ if (global.debugger == true) {
 	
 	
 	// set font
-	draw_set_font(fnt_debugger);
+	draw_set_font(fnt_text_10);
 	
 	// draw variables
 	for (var _i = 0; _i < array_length(_debugger); _i++) {
@@ -83,4 +83,7 @@ if (global.debugger == true) {
 	//draw_text(16,16*29,"HP: " + string(hp));
 	//draw_text(16,16*30,"po_ison alarm " + string(alarm[3]));
 	//draw_text(16,16*31,"knockback" + string(knockback_x));
+	
+	// reset text
+	reset_text();
 }

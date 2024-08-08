@@ -1,28 +1,28 @@
-﻿id,name,Category,beastiary Sprite,Spr_index,display sprite,description,defeated,locales
-0,0,0,0,0,0,0,0,0
-1,turtle 1,critters,spr_beastiary_grid_critters,1,spr_turtle1_idle,weiners,0,0
-2,bat 1,critters,spr_beastiary_grid_critters,2,spr_bat1_move,I kill you,0,0
-3,Goblin 1,goblins,spr_beastiary_grid_goblins,1,spr_goblin1_idle,blah blah blah,0,0
-4,Goblin 2,goblins,spr_beastiary_grid_goblins,2,spr_goblin2_idle,poop fart ass,0,0
-5,Goblin 3,goblins,spr_beastiary_grid_goblins,3,spr_goblin3_idle,shut your mouth,0,0
-6,Goblin 4,goblins,spr_beastiary_grid_goblins,4,none,blah blah blah,0,0
-7,Goblin 5,goblins,spr_beastiary_grid_goblins,5,none,blah blah blah,0,0
-8,Goblin 6,goblins,spr_beastiary_grid_goblins,6,none,blah blah blah,0,0
-9,Undead 1,undead,spr_beastiary_grid_undead,1,none,blah blah blah,0,0
-10,Undead 2,undead,spr_beastiary_grid_undead,2,none,blah blah blah,0,0
-11,Undead 3,undead,spr_beastiary_grid_undead,3,none,blah blah blah,0,0
-12,Undead 4,undead,spr_beastiary_grid_undead,4,none,blah blah blah,0,0
-13,Undead 5,undead,spr_beastiary_grid_undead,5,none,blah blah blah,0,0
-14,Undead 6,undead,spr_beastiary_grid_undead,6,none,blah blah blah,0,0
-15,Undead 7,undead,spr_beastiary_grid_undead,7,none,blah blah blah,0,0
-16,Undead 8,undead,spr_beastiary_grid_undead,8,none,blah blah blah,0,0
-17,Undead 9,undead,spr_beastiary_grid_undead,9,none,blah blah blah,0,0
-18,Undead 10,undead,spr_beastiary_grid_undead,10,none,blah blah blah,0,0
-19,Boss 1,bosses,spr_beastiary_grid_bosses,1,none,blah blah blah,0,0
-20,Boss 2,bosses,spr_beastiary_grid_bosses,2,none,blah blah blah,0,0
-21,Boss 3,bosses,spr_beastiary_grid_bosses,3,none,blah blah blah,0,0
-22,Boss 4,bosses,spr_beastiary_grid_bosses,4,none,blah blah blah,0,0
-23,Boss 5,bosses,spr_beastiary_grid_bosses,5,none,blah blah blah,0,0
-24,Boss 6,bosses,spr_beastiary_grid_bosses,6,none,blah blah blah,0,0
-25,Boss 7,bosses,spr_beastiary_grid_bosses,7,none,blah blah blah,0,0
-26,Boss 8,bosses,spr_beastiary_grid_bosses,8,none,blah blah blah,0,0
+﻿ID,NAME,CATEGORY,RARITY,BEASTIARY_SPRITE,Spr_index,display sprite,description,defeated,locales
+0,0,0,0,0,0,0,0,0,0
+1,turtle 1,critters,0,spr_beastiary_grid_critters,1,spr_turtle1_idle,weiners,0,0
+2,bat 1,critters,0,spr_beastiary_grid_critters,2,spr_bat1_move,I kill you,0,0
+3,Goblin 1,goblins,0,spr_beastiary_grid_goblins,1,spr_goblin1_idle,blah blah blah,0,0
+4,Goblin 2,goblins,0,spr_beastiary_grid_goblins,2,spr_goblin2_idle,poop fart ass,0,0
+5,Goblin 3,goblins,0,spr_beastiary_grid_goblins,3,spr_goblin3_idle,shut your mouth,0,0
+6,Goblin 4,goblins,0,spr_beastiary_grid_goblins,4,none,blah blah blah,0,0
+7,Goblin 5,goblins,0,spr_beastiary_grid_goblins,5,none,blah blah blah,0,0
+8,Goblin 6,goblins,0,spr_beastiary_grid_goblins,6,none,blah blah blah,0,0
+9,Undead 1,undead,0,spr_beastiary_grid_undead,1,none,blah blah blah,0,0
+10,Undead 2,undead,0,spr_beastiary_grid_undead,2,none,blah blah blah,0,0
+11,Undead 3,undead,0,spr_beastiary_grid_undead,3,none,blah blah blah,0,0
+12,Undead 4,undead,0,spr_beastiary_grid_undead,4,none,blah blah blah,0,0
+13,Undead 5,undead,0,spr_beastiary_grid_undead,5,none,blah blah blah,0,0
+14,Undead 6,undead,0,spr_beastiary_grid_undead,6,none,blah blah blah,0,0
+15,Undead 7,undead,0,spr_beastiary_grid_undead,7,none,blah blah blah,0,0
+16,Undead 8,undead,0,spr_beastiary_grid_undead,8,none,blah blah blah,0,0
+17,Undead 9,undead,0,spr_beastiary_grid_undead,9,none,blah blah blah,0,0
+18,Undead 10,undead,0,spr_beastiary_grid_undead,10,none,blah blah blah,0,0
+19,Boss 1,bosses,0,spr_beastiary_grid_bosses,1,none,blah blah blah,0,0
+20,Boss 2,bosses,0,spr_beastiary_grid_bosses,2,none,blah blah blah,0,0
+21,Boss 3,bosses,0,spr_beastiary_grid_bosses,3,none,blah blah blah,0,0
+22,Boss 4,bosses,0,spr_beastiary_grid_bosses,4,none,blah blah blah,0,0
+23,Boss 5,bosses,0,spr_beastiary_grid_bosses,5,none,blah blah blah,0,0
+24,Boss 6,bosses,0,spr_beastiary_grid_bosses,6,none,blah blah blah,0,0
+25,Boss 7,bosses,0,spr_beastiary_grid_bosses,7,none,blah blah blah,0,0
+26,Boss 8,bosses,0,spr_beastiary_grid_bosses,8,none,blah blah blah,0,0
