@@ -421,10 +421,11 @@ function npc_origin_distance_check(_main_state = main_state_unaware, _nest_state
 
 function npc_follow_reset_check(_main_state = main_state_unaware, _nest_state = nest_state_return_origin) {
 	if (nest_state != nest_state_follow) { exit; }
+	if (follow_reset_range == 0) { exit; }
 	show_debug_message("follow_reset_check");
 	var _following = quest.follow_target;
 	var _dis = point_distance(x,y,_following.x, _following.y);
-	if (_dis >= 5*COL_TILES_SIZE) {
+	if (_dis >= follow_reset_range*COL_TILES_SIZE) {
 		main_state = _main_state;
 		nest_state = _nest_state;
 	}
@@ -696,15 +697,12 @@ npc_quest_follow_end_check = function() {
 	if (_dis <= 2*COL_TILES_SIZE) {
 		// start following the end object
 		quest.follow_target = quest.end_object;
+		follow_reset_range = 0;
 		
 		// send broadcast
 		show_debug_message(object_index);
 		var _broadcast = new EndFollowBroadcast(object_index);
 		array_push(global.quest_tracker.broadcast_receiver, _broadcast);
-		
-		// progress in the quest
-		//global.quest_tracker.quests[quest.quest_id].stage = QUEST_STAGE.SUCCESS;
-		//global.quest_tracker.quests[quest.quest_id].quest_end.dialogue.stage = QUEST_STAGE.SUCCESS;
 	}
 }
 

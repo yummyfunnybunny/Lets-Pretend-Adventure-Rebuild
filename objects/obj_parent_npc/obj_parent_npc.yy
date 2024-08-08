@@ -77,6 +77,7 @@
     {"$GMObjectProperty":"v1","%Name":"patrol_end_action","filters":[],"listItems":[],"multiselect":false,"name":"patrol_end_action","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"interact_type","filters":[],"listItems":[],"multiselect":false,"name":"interact_type","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"INTERACT_TYPE.NONE","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"interact_range","filters":[],"listItems":[],"multiselect":false,"name":"interact_range","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"follow_reset_range","filters":[],"listItems":[],"multiselect":false,"name":"follow_reset_range","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"5","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

@@ -9,7 +9,7 @@ event_inherited();
 move_speed				= 0;
 float_curve				= animcurve_get_channel(ac_curve_item_idle,"curve1");
 float_percent			= 0;
-float_change			= (1/120);
+float_change			= float_amount;
 image_speed				= 0;
 interact_target			= noone;
 interact_range			= 1;
@@ -26,7 +26,7 @@ main_state_spawn = function() {
 	// set random movement, distance, bounce, etc.
 	if (alarm[1] == -1) {
 		direction = random(259);
-		move_speed = .5;
+		move_speed = run_speed;
 		//z_bottom = -2;
 		on_ground = false;
 		z_speed = -z_jump_speed;
@@ -91,15 +91,24 @@ function item_check_for_empty_bag_slot() {
 }
 
 function item_interact_input_progression() {
-	// check if you can pick up the item
+	// search bag for empty slot
 	var _empty_slot = item_check_for_empty_bag_slot();
 	
-	// if yes, pick up the item
+	// if there is an empty slot, add item to bag
 	if (_empty_slot != false) {
+		// set bag slot to item picked up
 		_empty_slot.category = category;
 		_empty_slot.item_id = item_id;
+		
+		// send broadcast
+		var _broadcast = new ItemPickupBroadcast(category, item_id, "gather");
+		array_push(global.quest_tracker.broadcast_receiver, _broadcast);
+	
+		// TODO - play sound
+	
+		// destroy item
 		instance_destroy();
-		// play sound effect
+		
 	} else {
 		// no empty slots, can't pick up
 		// - play sound effect?
@@ -129,6 +138,7 @@ function item_check_despawn() {
 }
 
 function item_float() {
+	if (float_change == 0) { exit; }
 	// float item up and down
 	float_percent += float_change;
 	if (float_percent >= 1) {

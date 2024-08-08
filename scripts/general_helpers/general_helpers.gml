@@ -182,4 +182,26 @@ function enum_get_dmg_spr_idx(_category) {
 	}
 }
 
+function enum_get_item_name(_category) {
+	switch(_category) {
+		case "mainhand":		return MAINHAND_DATA.NAME;
+		case "offhand":			return OFFHAND_DATA.NAME;
+		case "armor":			return ARMOR_DATA.NAME;
+		case "boots":			return BOOTS_DATA.NAME;
+		case "collectible":		return COLLECTIBLE_DATA.NAME;
+		case "consumable":		return CONSUMABLE_DATA.NAME;
+		case "trinket":			return TRINKET_DATA.NAME;
+	}
+}
 
+function enum_get_item_id(_category) {
+	switch(_category) {
+		case "mainhand":		return MAINHAND_DATA.ID;
+		case "offhand":			return OFFHAND_DATA.ID;
+		case "armor":			return ARMOR_DATA.ID;
+		case "boots":			return BOOTS_DATA.ID;
+		case "collectible":		return COLLECTIBLE_DATA.ID;
+		case "consumable":		return CONSUMABLE_DATA.ID;
+		case "trinket":			return TRINKET_DATA.ID;
+	}
+}

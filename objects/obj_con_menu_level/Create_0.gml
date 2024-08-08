@@ -231,9 +231,9 @@ function menu_drop_item(_slot_item) {
 		despawn_time: 0,
 	});
 	
-	// send quest update broadcast
-	var _broadcast = new ItemDropBroadcast("gather", _slot_item.category, _slot_item.item_id);
-	array_push(global.quest_tracker.braodcast_receiver, _broadcast);
+	// send broadcast
+	var _broadcast = new ItemDropBroadcast(_slot_item.category, _slot_item.item_id, "gather");
+	array_push(global.quest_tracker.broadcast_receiver, _broadcast);
 	
 	// empty the slot
 	_slot_item.item_id = 0;
