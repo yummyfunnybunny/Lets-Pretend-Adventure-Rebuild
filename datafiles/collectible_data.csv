@@ -1,4 +1,5 @@
-﻿ID,NAME,DESC,CATEGORY,COLLECTIBLE_TYPE,DROP_IMG_IDX,INV_IMG_IDX,EFFECT
-0,0,0,0,0,0,0,0
-1,Iron Ore,could be used to make something!,collectible,bag,1,1,0
-2,Wood,could be used to make something!,collectible,bag,2,2,0
+﻿ID,NAME,DESC,CATEGORY,RARITY,COLLECTIBLE_TYPE,DROP_IMG_IDX,INV_IMG_IDX,EFFECT
+0,0,0,0,0,0,0,0,0
+1,Iron Ore,could be used to make something!,collectible,0,bag,1,1,0
+2,Wood,could be used to make something!,collectible,0,bag,2,2,0
+3,Glowing Lotus,Someone may want this…,collectible,1,bag,3,3,0
