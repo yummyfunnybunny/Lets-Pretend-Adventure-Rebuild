@@ -14,8 +14,8 @@ display_set_gui_size(640,360);
 
 #macro COL_TILES_SIZE 16
 #macro FPS game_get_speed(gamespeed_fps)
-#macro PLAYER_START_X 385
-#macro PLAYER_START_Y 255
+#macro PLAYER_START_X 507
+#macro PLAYER_START_Y 501
 #macro INSTANCE_DEPTH 700
 #macro INSTANCE_LAYER "Instances"
 #macro PATH_GRID_CELL_SIZE 8
@@ -29,6 +29,7 @@ global.game_paused = false;
 global.debugger = false;
 global.main_layer = "Instances";
 global.ui_type = UI_TYPE.MAIN_MENU;
+global.enemy_count = 0;					// tracks the number of enemies in the room. used for eradicate quest tracking
 
 display_set_gui_size(640,360);
 global.gui_width = display_get_gui_width();
@@ -621,16 +622,27 @@ enum QUEST_TYPE {
 	GATHER,		// 4 - collect a certain set of items at a certain quanitity
 	DISCOVER,	// 5 - travel to a certain room or area
 	DEFEND,		// 6 - survive a certain amount of time in a room or area
-	ESCORT,		// 7 - keep an NPC or set of NPCs alive while going to an area/room
+	ESCORT,		// 7 - keep NPCs alive while they follow a path
+	FOLLOW,		// 8 - an NPC will follow you to a certain point
 }
 
-enum QUEST_START {
+enum QUEST_TRIGGER {
 	NONE,		// 0
 	NPC,		// 1 - talk to an npc to start the quest
 	ROOM,		// 2 - enter a room to start the quest
-	TRIGGER,	// 3 - step on a trigger to start the quest
+	TRIGGER,	// 3 - step on a trigger object to start the quest
 	KILL,		// 4 - kill an enemy to start the quest
-	ITEM		// 5 - pickup an item to start the quest
+	ITEM,		// 5 - pickup an item to start the quest
+	COLLIDE,	// 6 - collide with an object to start the quest
+}
+
+enum QUEST_STAGE {
+	UNAVAILABLE,	// stage 0: prerequisites = incomplete
+	AVAILABLE,		// stage 1: prerequisites = complete || no prerequisites
+	ACTIVE,			// stage 2: quest accepted, tasks = incomplete
+	SUCCESS,		// stage 3: tasks = complete
+	COMPLETED,		// stage 4: quest = completed
+	FAILED,			// stage 5: tasks = failed
 }
 
 // quest data fields
@@ -639,10 +651,10 @@ enum QUEST_DATA {
 	NAME,			// string
 	DESC,			// string
 	TYPE,			// string
-	TRACK_ID,		// array
+	TRACKERS,		// array
 	TRACK_QTY,		// array
-	REWARD,			// array
-	START_TYPE,		// string - see QUEST_START enum for reference
+	REWARDS,		// array
+	START_TYPE,		// string - see QUEST_TRIGGER enum for reference
 	START,			// string - stores name of NPC who starts the quest
 	END,			// string - stores name of NPC who ends the quest
 	ACTIVE,			// string - stores whether the quest starts active or not
@@ -661,12 +673,13 @@ for (var _i = 1; _i < ds_grid_height(global.quest_data); _i ++) {
 	//ds_grid_set(global.quest_data,QUEST_DATA.ACTIVE,_i,real(global.quest_data[# QUEST_DATA.ACTIVE,_i]));
 	
 	// 2 - convert arrays
-	// track_id
-	var _track_id_array = string_split(ds_grid_get(global.quest_data,QUEST_DATA.TRACK_ID,_i),",");
-	//for (var _j = 0; _j < array_length(_dmg_imn_array); _j++) {
-	//		_dmg_imn_array[_j] = real(_dmg_imn_array[_j]);
-	//}
-	ds_grid_set(global.quest_data,QUEST_DATA.TRACK_ID,_i, _track_id_array);
+	// TRACKERS
+	var _trackers_array = string_split(ds_grid_get(global.quest_data,QUEST_DATA.TRACKERS,_i),",");
+	ds_grid_set(global.quest_data,QUEST_DATA.TRACKERS,_i, _trackers_array);
+	
+	// rewards
+	var _rewards_array = string_split(ds_grid_get(global.quest_data,QUEST_DATA.REWARDS,_i),",");
+	ds_grid_set(global.quest_data,QUEST_DATA.REWARDS,_i, _rewards_array);
 	
 	// track_qty
 	var _track_qty_array = string_split(ds_grid_get(global.quest_data,QUEST_DATA.TRACK_QTY,_i),",");

@@ -14,4 +14,5 @@ if (!global.game_paused) {
 	npc_set_enemy_target();
 	npc_interact_set_target();
 	npc_interact_check_interact_range();
+	if (quest && quest.update_script != noone) { script_execute(quest.update_script); }
 }

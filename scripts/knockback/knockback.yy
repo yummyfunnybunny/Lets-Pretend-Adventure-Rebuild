@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"knockback",
   "parent":{
-    "name":"Utilities",
-    "path":"folders/Scripts/Utilities.yy",
+    "name":"Global Utilities",
+    "path":"folders/Scripts/Global Utilities.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

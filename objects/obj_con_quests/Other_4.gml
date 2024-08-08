@@ -1,5 +1,4 @@
-/// @desc
 
 eradicate_room_cleared = false;
+quest_init_npc();
 
-show_debug_message(quests[1].reward);

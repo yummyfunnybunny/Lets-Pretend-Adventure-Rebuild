@@ -101,6 +101,7 @@ main_state_death			= function(){
 	// there are many ways an enemy can die, but some of the functionality is always the same
 	// the nest state will control the different ways an enemy can die (normal, pitfall, water, etc.);
 	if (alarm[ALARM.DEATH] == -1) {
+		global.enemy_count--;
 		x_speed = 0;
 		y_speed = 0;
 		move_speed = 0;
@@ -143,7 +144,7 @@ nest_state_return_origin	= function(){
 	// aggro range & attack range checks are not performed here
 	// create pather
 	if (!pather_object) {
-		pather_object = instance_create_depth(x,y,INSTANCE_DEPTH,obj_con_pather,{
+		pather_object = instance_create_layer(x,y,INSTANCE_LAYER,obj_con_pather,{
 			creator: id,
 			path: noone,
 			move_speed: run_speed,

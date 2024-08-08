@@ -71,6 +71,7 @@ global.player = {
 			{ category: 0, item_id: 0 },
 		],
 	],
+	keys: [],
 }
 
 #endregion

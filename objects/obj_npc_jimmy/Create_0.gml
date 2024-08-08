@@ -12,24 +12,24 @@ dialogue = {
 		],
 		[
 			// stage 1: - quest = inactive, prerequisites = complete || 0
-			"Why hello there, young traveler! As you can see, I'm tending to my very small garden. There's lots of work to do!",
-			"Trouble is, those pesky goblins to the West have been raiding my crops at night! I can't stop them on my own. My bones are just too brittle...",
-			"Would you care to aid this old man and DESTROY THOSE NASTY CRITTERS FOR ME!!!!? I would be eternally gratefull...",
+			"Hey there duuuuuude.",
+			"I could really use your help right now. You see, my awesome cat Mittons ran off a little while ago, and I can't find him anywhere!",
+			"I know he didn't go far. He likes to hide in the tall grass. Can you help me find him? PLEEEAAAAAASE!",
+			
 		],
 		[
 			// stage 2: quest = active, tasks = incomplete
-			"Did you take care of the those little devils yet?",
-			"Head west to the plains and slay them all! Come back to me once you've done that and I'll reward you!",
+			"Did you find Mittons yet?!",
+			"He's gotta be around here somewhere hiding in the tall grass.",
 		],
 		[
 			// stage 3: quest = active, teasks = complete
-			"You exterminated all of the golbins in the plains?! MAGNIFICANT I SAYYYY!!!!",
-			"I bet you gave 'em the ol' one-two-three! Back in my hay-day I would have taken care of them myself.",
-			"Anyhoo, Thank you so much for aiding this old feller. Here, have this!",
+			"You found him! Thanks duuuuuuude!",
+			"I found this while I was snooping around. My mom won't let me keep it, so you can have it!",
 		],
 		[
 			// stage 4: quest = complete
-			"Thanks again for helping me out with those goblins! Now my crops are looking better than ever!",
+			"Mittons really likes to chase bugs!",
 		]
 	]
 }

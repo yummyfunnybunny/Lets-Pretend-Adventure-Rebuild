@@ -1,3 +1,5 @@
-﻿ID,NAME,DESC,TYPE,TRACK_ID,TRACK_QTY,REWARD,START_TYPE,START,END,ACTIVE,PREREQS
-0,0,0,0,0,0,0-0-0,0,0,0,0,0
-1,farmer bobs disturbance,"Farmer bob is having a goblin problem in his crops, and has asked you to take care of it for him. Venture west to the fields of grass and slay all of the goblins there! Return to Farmer Bob once this task is completed for a nice reward.",eradicate,rm_transition_test,0,"mainhand-1-1,ammo-3-10",npc,farmerbob,farmerbob,FALSE,0
+﻿ID,NAME,DESC,TYPE,TRACKERS,TRACK_QTY,REWARDS,START_TYPE,START,END,ACTIVE,PREREQS,PROGRESSION
+0,0,0,0,0-0-0,0,0-0-0,0,0,0,0,0,0
+1,farmer bobs disturbance,"Farmer bob is having a goblin problem in his crops, and has asked you to take care of it for him. Venture west to the fields of grass and slay all of the goblins there! Return to Farmer Bob once this task is completed for a nice reward.",eradicate,rm_transition_test-1-noone,0,ammo-3-20,npc,obj_npc_farmerbob,obj_npc_farmerbob,FALSE,0,npc
+2,Jimmy's Mitton,Jimmy can't find his precious cat Mittons. Help him find Mittons!,follow,obj_npc_mittons-1-noone,0,mainhand-1-1,npc,obj_npc_jimmy,obj_npc_jimmy,FALSE,0,npc
+3,The Glowing Lotus,Peach wants you to help her find a glowling lotus from deep in the Shady Woods.,gather,Glowing Lotus-1-collectible,0,ammo-3-20,npc,obj_npc_peach,obj_npc_peach,FALSE,0,npc

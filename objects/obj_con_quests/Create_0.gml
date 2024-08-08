@@ -1,27 +1,9 @@
 
 #region SET VARIABLES
 
-eradicate_room_cleared = false;			// sets to false on room start - gets set to true once room is designated as cleared so we only run our room clear check once
-
-
-// create global quest tracker struct
-// store all quests from the DB as their own objects in this array
-quests = [
-	//{
-	//	quest_id: 0,
-	//	active: false,
-	//	completed: false,
-	//	name: ds_grid_get(global.quest_data, QUEST_DATA.NAME, _i),
-	//	type: ds_grid_get(global.quest_data, QUEST_DATA.TYPE, _i),
-	//	track_id: ds_grid_get(global.quest_data, QUEST_DATA.TRACK_ID, _i),
-	//	track_qty: ds_grid_get(global.quest_data, QUEST_DATA.TRACK_QTY, _i),
-	//	progress_qty: [0],
-	//	reward: [
-	//		{category: 1, item_id: 1, qty: 1},
-	//		{category: 2, item_id: 2, qty: 1},
-	//	],	
-	//},
-]
+eradicate_room_cleared = false;		// sets to false on room start - gets set to true once room is designated as cleared so we only run our room clear check once
+broadcast_receiver = [];
+quests = [];						// store all quests from the DB as their own objects in this array
 
 // fill the quests array
 for (var _i = 0; _i < ds_grid_height(global.quest_data); _i++) {
@@ -29,17 +11,17 @@ for (var _i = 0; _i < ds_grid_height(global.quest_data); _i++) {
 	// set active
 	var _active = ds_grid_get(global.quest_data, QUEST_DATA.ACTIVE, _i);
 	switch (_active) {
-		case "FALSE":	_active = false;	break;	
-		case "TRUE":	_active = true;		break;	
+		case "FALSE":	_active = false;	break;
+		case "TRUE":	_active = true;		break;
 	}
 	
 	// set stage
-	var _stage = 0;
+	var _stage = QUEST_STAGE.UNAVAILABLE;
 	var _prereqs = ds_grid_get(global.quest_data, QUEST_DATA.PREREQS, _i);
 	
 	// if the quest does not have any pre-requisites, set stage to 1
 	if (_prereqs[0] == 0) {
-		_stage = 1;
+		_stage = QUEST_STAGE.AVAILABLE;
 	}
 	
 	// set quest type
@@ -52,21 +34,29 @@ for (var _i = 0; _i < ds_grid_height(global.quest_data); _i++) {
 		case "discover":	_quest_type = QUEST_TYPE.DISCOVER;		break;	
 		case "defend":		_quest_type = QUEST_TYPE.DEFEND;		break;	
 		case "escort":		_quest_type = QUEST_TYPE.ESCORT;		break;
+		case "follow":		_quest_type = QUEST_TYPE.FOLLOW;		break;
 	}
 	
-	// set progress quantity
-	var _progress_qty = [];
-	repeat(array_length(ds_grid_get(global.quest_data, QUEST_DATA.TRACK_QTY, _i))) {
-		array_push(_progress_qty, 0);
+	// set trackers
+	var _trackers = [];
+	var _all_trackers = ds_grid_get(global.quest_data, QUEST_DATA.TRACKERS, _i);
+	var _trackers_length = array_length(_all_trackers);
+	for (var _j = 0; _j < _trackers_length; _j++) {
+		var _one_tracker = string_split(_all_trackers[_j], "-");
+		var _tracker = {
+			tracker_id: _one_tracker[0],
+			amount_needed: real(_one_tracker[1]),
+			detail: _one_tracker[2],
+			amount_gotten: 0,
+		}
+		array_push(_trackers, _tracker);
 	}
 	
 	// set rewards
 	var _rewards = [];
-	var _all_rewards = string_split(ds_grid_get(global.quest_data,QUEST_DATA.REWARD, _i),",");
-	//show_debug_message($"_all_rewards: {_all_rewards}");
+	var _all_rewards = ds_grid_get(global.quest_data,QUEST_DATA.REWARDS, _i);
 	for (var _j = 0; _j < array_length(_all_rewards); _j++) {
 		var _one_reward = string_split(_all_rewards[_j],"-");
-		//show_debug_message($"_one_reward: {_one_reward}");
 		var _reward = {
 			category: _one_reward[0],
 			item_id: real(_one_reward[1]),
@@ -74,40 +64,38 @@ for (var _i = 0; _i < ds_grid_height(global.quest_data); _i++) {
 		}
 		array_push(_rewards,_reward);
 	}
-	//show_debug_message($"_rewards: {_rewards}");
 	
 	// start type
 	var _start_type = ds_grid_get(global.quest_data, QUEST_DATA.START_TYPE, _i);
 	switch (_start_type) {
-		case "npc":		_start_type = QUEST_START.NPC;			break;	
-		case "room":	_start_type = QUEST_START.ROOM;			break;	
-		case "trigger":	_start_type = QUEST_START.TRIGGER;		break;	
-		case "kill":	_start_type = QUEST_START.KILL;			break;	
-		case "item":	_start_type = QUEST_START.ITEM;			break;	
+		case "npc":		_start_type = QUEST_TRIGGER.NPC;			break;	
+		case "room":	_start_type = QUEST_TRIGGER.ROOM;			break;	
+		case "trigger":	_start_type = QUEST_TRIGGER.TRIGGER;		break;	
+		case "kill":	_start_type = QUEST_TRIGGER.KILL;			break;	
+		case "item":	_start_type = QUEST_TRIGGER.ITEM;			break;
+		case "collide":	_start_type = QUEST_TRIGGER.COLLIDE;		break;
 	}
 	
 	// set start
 	var _quest_start = ds_grid_get(global.quest_data,QUEST_DATA.START, _i);
-	_quest_start = asset_get_index($"obj_npc_{_quest_start}");
+	_quest_start = asset_get_index($"{_quest_start}");
+	
 	
 	// set end
 	var _quest_end = ds_grid_get(global.quest_data,QUEST_DATA.END, _i);
-	_quest_end = asset_get_index($"obj_npc_{_quest_end}");
+	_quest_end = asset_get_index($"{_quest_end}");
 	
 	// create the quest object
 	var _quest = {
 		quest_id: _i,
 		active: _active,
 		completed: false,
-		prerequisites: _prereqs, 
+		prerequisites: _prereqs,
 		stage: _stage,
 		name: ds_grid_get(global.quest_data, QUEST_DATA.NAME, _i),
-		type: _quest_type,
-		track_id: ds_grid_get(global.quest_data, QUEST_DATA.TRACK_ID, _i),
-		track_qty: ds_grid_get(global.quest_data, QUEST_DATA.TRACK_QTY, _i),
-		progress_qty: _progress_qty,
-		reward: _rewards,
-		start_type: _start_type,
+		quest_type: _quest_type,
+		trackers: _trackers,
+		rewards: _rewards,
 		quest_start: _quest_start,
 		quest_end: _quest_end,
 	}
@@ -115,131 +103,84 @@ for (var _i = 0; _i < ds_grid_height(global.quest_data); _i++) {
 	// push the created quest object to the quest array
 	array_push(quests, _quest);
 }
-
-//show_debug_message($"quests: {quests}");
-
-#endregion
-
-#region ALARMS
-
-
-
-#endregion
-
-#region STATES
-
-
+total_quests = array_length(quests);
 
 #endregion
 
 #region HELPER FUNCTIONS
 
-
-
-function quest_check_npc_interact_end() {
-	// checks if there is a textbox in despawn state - if so, get its creator info and check for a possible
-	// progression with a quest
-	if (!instance_exists(obj_con_textbox)) { exit; }
-	if (obj_con_textbox.main_state == obj_con_textbox.main_state_despawn) {
-		var _npc = obj_con_textbox.creator;
-		var _quest_id = _npc.dialogue.quest_id;
-		var _stage = _npc.dialogue.stage;
+// Initialize
+function quest_init_npc() {
+	for (var _i = 0; _i < total_quests; _i++) {
+		var _q  = quests[_i];
 		
-		// check for an inactive quest that we can start
-		if (quests[_quest_id].active == false && quests[_quest_id].stage == 1) {
-			quests[_quest_id].active = true;
-			quests[_quest_id].stage++;
-			_npc.dialogue.stage++;
-		}
-		
-		// check for an active quest that we can complete
-		if (quests[_quest_id].active == true && quests[_quest_id].stage == 3) {
-			quests[_quest_id].completed = true;
-			quests[_quest_id].stage++;
-			_npc.dialogue.stage++;
-			// call reward function here?
-			quest_complete(_quest_id, _npc);
-		}
-	}
-}
-
-function quest_complete(_quest_id, _npc) {
-	// provide reward
-	for (var _i = 0; _i < array_length(quests[_quest_id].reward); _i++) {
-		repeat(quests[_quest_id].reward[_i].qty) {
-			var _item = instance_create_layer(_npc.x,_npc.y,INSTANCE_LAYER,obj_parent_item, {
-				category: quests[_quest_id].reward[_i].category,
-				item_id: quests[_quest_id].reward[_i].item_id,
-				despawn_time: 0,
-			});	
-		}
-	}
-	// check pre-requisites?
-	quest_check_prerequisites();
-	// play sound?
-	// play animation?
-}
-
-function quest_check_prerequisites() {
-	// after a quest is completed, check if any other quests had the completed quest as a prereq and set it to true
-	
-	// drill into quests array
-	for (var _i = 0; _i < array_length(quests); _i++) {
-		if (quests[_i].stage != 0) { continue; }
-		var _prereqs_completed = true;
-		
-		// drill into quest prerequisites array
-		for (var _j = 0; _j < array_length(quests[_i].prerequisites); _j++) {
-		
-			// loop through prereqs and check if they are all complete
-			if (quests[_j].completed == false) {
-				_prereqs_completed = false;
-				break;
+		// setup quest starters
+		var _quest_start = _q.quest_start;
+		if (_quest_start != -1 && instance_exists(_quest_start)) {
+			if (!_quest_start.quest) {
+				_quest_start.quest = new Quest(_q);
 			}
 		}
 		
-		// increment the quest stage from 0 to 1
-		if (_prereqs_completed == true) {
-			quests[_i].stage = 1;	
+		// setup quest enders
+		var _quest_end = _q.quest_end;
+		if (_quest_end != -1 && instance_exists(_quest_end)) {
+			if (!_quest_end.quest) {
+				_quest_end.quest = new Quest(_q);
+			}
 		}
+		
+		// setup followers
+		if (_q.quest_type == QUEST_TYPE.FOLLOW) {
+			var _followers = [];
+			var _trackers_length = array_length(_q.trackers);
+			for (var _j = 0; _j < _trackers_length; _j++) {
+				var _follower = asset_get_index(_q.trackers[_j].tracker_id);
+				if (_follower != -1 && instance_exists(_follower)) {
+					if (!_follower.quest) {
+						_follower.quest = new Quest(_q);
+					}
+					with (_follower) {
+						quest.follow_target = obj_player;
+						quest.update_script = npc_quest_follow_start_check;
+					}
+				}
+			}
+		}
+		// setup escortees
 	}
 }
 
-// talk quests
+// Updating
+function quest_update_broadcast() {
+	if (array_length(broadcast_receiver) == 0) { exit; }
+	if (instance_exists(obj_con_textbox)) { exit; }
 	
-// dispatch quests
-	
-// eradicate quests
-function quest_check_room_cleared() {
+	var _message = broadcast_receiver[0];
+	_message.process(_message.arg0);
+	//delete_broadcast();
+	array_shift(global.quest_tracker.broadcast_receiver);
+}
+
+function quest_update_eradicate_room_cleared() {
 	if (eradicate_room_cleared == true) { exit; }
-	if (!instance_exists(obj_parent_enemy)) {
-		//var _room_id = asset_get_id;
+	
+	if (global.enemy_count == 0) {
+		// get room name
 		var _room_name = room_get_name(room);
-		//show_debug_message($"_room_name: {_room_name}");
 		
-		// look for a quest with type eradicate and the current rooms name
-		for (var _i = 0; _i < array_length(quests); _i++) {
-			//show_debug_message($"quest[_i].track_id: {quests[_i].track_id[0]}");
-			if (quests[_i].type == QUEST_TYPE.ERADICATE && quests[_i].track_id[0] == _room_name && quests[_i].track_qty[0] == 0) {
-				show_debug_message("FOUND MATCH!!");
-				show_debug_message(typeof(quests[_i].track_qty[0]));
-				quests[_i].track_qty[0]++;
-				quests[_i].stage = 3;
-				quests[_i].active = true;
-				// THIS WONT WORK IF YOU SET MULTIPLE ROOMS THAT NEEED TO BE CLEARED. WILL NEED TO ITERATE THROUGH TRACK_ID
-			}
-		}
+		// send broadcast
+		var _broadcast = new RoomClearedBroadcast(_room_name);
+		array_push(global.quest_tracker.broadcast_receiver, _broadcast);
 		
 		// set room cleared to true
-		eradicate_room_cleared = true;
+		eradicate_room_cleared = true;	
 	}
 }
-// gather quests
-	
-// discover quests
-	
-// defend quests
-	
-// escort quests
+
+#endregion
+
+#region Archived Code
+
 
 #endregion

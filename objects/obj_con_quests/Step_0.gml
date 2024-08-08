@@ -1,6 +1,8 @@
-/// @desc
 
-if (!global.game_paused) {
-	quest_check_npc_interact_end();	
-	quest_check_room_cleared();
-}
+if (global.game_paused) { exit; }
+
+quest_update_eradicate_room_cleared();
+quest_update_broadcast();
+
+
+

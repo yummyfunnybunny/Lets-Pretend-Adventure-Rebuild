@@ -25,6 +25,7 @@ function player_update_input(){
 }
 
 function player_input_jump_check() {
+	if (instance_exists(obj_con_textbox)) { exit; }
 	if (!on_ground) { exit; }
 	if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER || terrain_state == TERRAIN_TYPE.TALL_GRASS) { exit; }
 	if (nest_state == nest_state_climb) { exit; }
@@ -38,6 +39,7 @@ function player_input_jump_check() {
 
 function player_input_a_check() {
 	// keyboard = V
+	if (instance_exists(obj_con_textbox)) { exit; }
 	if (item_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
 	if (!on_ground) { exit; }
 	if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER || terrain_state == TERRAIN_TYPE.TALL_GRASS) { exit; }
@@ -51,6 +53,7 @@ function player_input_a_check() {
 
 function player_input_b_check() {
 	// keyboard = C
+	if (instance_exists(obj_con_textbox)) { exit; }
 	if (item_used != noone) { exit; }		// exit if another item is already being used (MIGHT DELETE)
 	if (!on_ground) { exit; }
 	if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER || terrain_state == TERRAIN_TYPE.TALL_GRASS) { exit; }
@@ -79,6 +82,7 @@ function player_input_x_check() {
 
 function player_input_y_check() {
 	// keyboard = Z
+	if (instance_exists(obj_con_textbox)) { exit; }
 	if (nest_state == nest_state_hurt) { exit; }
 	if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER || terrain_state == TERRAIN_TYPE.TALL_GRASS) { exit; }
 	if (nest_state == nest_state_climb) { exit; }

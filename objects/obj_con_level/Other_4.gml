@@ -1,8 +1,8 @@
-/// @desc Collision Map
 
+global.enemy_count = instance_number(obj_parent_enemy);
 global.ui_type = UI_TYPE.LEVEL;
 
-/// Set the collision map
+#region collision map
 global.collision_map = layer_tilemap_get_id(layer_get_id("CollisionMap"));
 
 
@@ -41,3 +41,5 @@ for (var _i = 0; _i < instance_number(obj_parent_entity); _i++){
 		mp_grid_add_instances(global.path_grid,_entity,1);
 	}
 }
+
+#endregion

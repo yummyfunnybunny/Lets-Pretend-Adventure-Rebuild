@@ -33,5 +33,5 @@ dialogue = {
 			// stage 4: quest = complete
 			"Thanks again for helping me out with those goblins! Now my crops are looking better than ever!",
 		]
-	]
-}
+	],
+}	

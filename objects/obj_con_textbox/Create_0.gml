@@ -54,8 +54,12 @@ main_state_despawn = function() {
 	
 	// end despawn
 	if (textbox_percent <= 0) {
-		// may have to run other things here
-		// - update quests?
+		
+		// send quest update broadcast
+		var _broadcast = new EndDialogueBroadcast(creator.object_index);
+		array_push(global.quest_tracker.broadcast_receiver, _broadcast);
+		
+		// destroy textbox
 		instance_destroy();
 	}
 }

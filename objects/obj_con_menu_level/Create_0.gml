@@ -222,7 +222,6 @@ function menu_unequip_item(_equipped_slot, _equip_new_item) {
 }
 
 function menu_drop_item(_slot_item) {
-				
 	// drop item to level
 	var _x = obj_player.x;
 	var _y = obj_player.y;
@@ -230,7 +229,11 @@ function menu_drop_item(_slot_item) {
 		category: _slot_item.category,
 		item_id: _slot_item.item_id,
 		despawn_time: 0,
-	});	
+	});
+	
+	// send quest update broadcast
+	var _broadcast = new ItemDropBroadcast("gather", _slot_item.category, _slot_item.item_id);
+	array_push(global.quest_tracker.braodcast_receiver, _broadcast);
 	
 	// empty the slot
 	_slot_item.item_id = 0;

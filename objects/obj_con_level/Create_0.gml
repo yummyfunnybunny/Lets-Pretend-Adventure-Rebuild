@@ -2,6 +2,8 @@
 
 #region CREATE LEVEL ESSENTIALS
 
+
+
 // create the HUD Controller
 if (!instance_exists(obj_con_hud_level)) {
 	global.level_hud = instance_create_layer(0, 0, layer, obj_con_hud_level);

@@ -10,6 +10,7 @@ function player_update_max_speed() {
 }
 
 function player_update_move_direction() {
+	if (instance_exists(obj_con_textbox)) { exit; }
 	var _x_spd = right_input - left_input;
 	var _y_spd = down_input - up_input;
 	if (_x_spd == 1 && _y_spd = 0)		{ move_direction = 0; }
