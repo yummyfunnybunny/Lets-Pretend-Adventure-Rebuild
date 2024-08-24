@@ -2,7 +2,7 @@
   "$GMSprite":"",
   "%Name":"spr_collisionMap",
   "bboxMode":0,
-  "bbox_bottom":39,
+  "bbox_bottom":55,
   "bbox_left":0,
   "bbox_right":31,
   "bbox_top":0,
@@ -16,7 +16,7 @@
   ],
   "gridX":1,
   "gridY":1,
-  "height":40,
+  "height":56,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"9e640c38-7f95-44a9-8dd8-11126bb5ed14","blendMode":0,"displayName":"default","isLocked":false,"name":"9e640c38-7f95-44a9-8dd8-11126bb5ed14","opacity":50.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},

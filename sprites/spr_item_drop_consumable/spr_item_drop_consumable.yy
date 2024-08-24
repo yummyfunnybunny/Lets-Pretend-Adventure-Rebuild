@@ -28,7 +28,7 @@
   "origin":7,
   "parent":{
     "name":"Consumables",
-    "path":"folders/Sprites/Items/Consumables.yy",
+    "path":"folders/Sprites/6 - Items/Consumables.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

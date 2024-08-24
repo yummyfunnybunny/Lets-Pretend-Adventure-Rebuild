@@ -43,3 +43,5 @@ for (var _i = 0; _i < instance_number(obj_parent_entity); _i++){
 }
 
 #endregion
+
+level_set_overlay();

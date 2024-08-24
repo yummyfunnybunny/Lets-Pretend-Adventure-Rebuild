@@ -26,8 +26,8 @@
   "nineSlice":null,
   "origin":7,
   "parent":{
-    "name":"NPCs",
-    "path":"folders/Sprites/NPCs.yy",
+    "name":"4 - NPCs",
+    "path":"folders/Sprites/4 - NPCs.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

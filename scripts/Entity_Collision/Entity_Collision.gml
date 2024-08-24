@@ -1,91 +1,47 @@
-/// @desc ???
+
 function entity_collision(){
 	// set z limites
 	set_z_limits();		// we need this in order to check for z overlap later in the code, so update it now
 	
-	
-	
-	// === HORIZONTAL AXIS ===
-	// ISSUE HAPPENS BEFORE WE MAKE iT TO COLLiSiON CHECKING
-
-	// horizontal collision_map Check
 	var _bbox_width_half = (bbox_right-bbox_left)/2;
 	var _bbox_height_half = (bbox_bottom-bbox_top)/2;
 	var _xx = _bbox_width_half*sign(x_speed);
 	var _yy = _bbox_height_half*sign(y_speed);
 	
-	// Walls - collide with walls from the collision_map
-	if (tilemap_get_at_pixel(global.collision_map, x+_xx+x_speed, y) == 1 ||
-		tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y-_bbox_height_half) == 1 ||
-		tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y+_bbox_height_half) == 1) {
-			if (tilemap_get_at_pixel(global.collision_map, x+_xx+sign(x_speed), y) == 1 ||
-			tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y-_bbox_height_half) == 1 ||
-			tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y+_bbox_height_half) == 1) {
-				x_speed = 0;
-			} else {
-				x_speed = sign(x_speed);
-			}
+	// === HORIZONTAL AXIS ===
+	// regular Walls
+	wall_x_axis_check(1, _xx, _bbox_height_half);
+	
+	// Level 1 Walls
+	if (layer == layer_get_id(INSTANCES_1_LAYER)) {
+		wall_x_axis_check(8, _xx, _bbox_height_half);
 	}
 	
-	// -- Horizontal entities --
-	
-	// check for a collision with an entity x_speed distance away
-	if (place_meeting(x+x_speed,y,obj_parent_entity)){
-		
-		// save the object in question
-		var _entity_collided = instance_place(x+x_speed,y,obj_parent_entity);
-		
-		// check if entity is solid
-		if (_entity_collided.entity_solid) {
-			// check for z overlap with object _in quest_ion
-			if (check_z_overlap(_entity_collided) == true){
-				// perform step-up check
-				if (stepup_check(_entity_collided) == false){
-					// check for collision 1 pixel away
-					if (place_meeting(x+sign(x_speed),y,_entity_collided)){
-						// there is a collision, return 0 so there is no movement
-						x_speed = 0;
-					}else {
-						// no collision, return the sign x_speed
-						x_speed = sign(x_speed);
-					}
-				}
-			}
-		}
+	// Level 2 Walls
+	if (layer == layer_get_id(INSTANCES_2_LAYER)) {
+		wall_x_axis_check(7, _xx, _bbox_height_half);
 	}
 	
-	// Cliff
-	// collide with the cliff from the sides and stop the player from moving horizontally through it
-	if (z_floor = -1 && on_ground == true) {
-		if (tilemap_get_at_pixel(global.collision_map, x+_xx+x_speed, y) == 10 ||
-			tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y-_bbox_height_half) == 10 ||
-			tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y+_bbox_height_half) == 10) {
-			if (tilemap_get_at_pixel(global.collision_map, x+_xx+sign(x_speed), y) == 10 ||
-			tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y-_bbox_height_half) == 10 ||
-			tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y+_bbox_height_half) == 10) {
-				x_speed = 0;
-			} else {
-				x_speed = sign(x_speed);
-			}
-		}
-	}
+	// Entities
+	entity_x_axis_check(_xx);
+	
 
-	// apply the x_speed to the x coordinate
+	// Horizontal Move Commit
 	x += x_speed;
 	
 	// === VERTICAL AXIS ===
 
-	// -- Vertical collision_map Check --
-	if (tilemap_get_at_pixel(global.collision_map,x,y+_yy+y_speed) == 1 ||
-		tilemap_get_at_pixel(global.collision_map,x-_bbox_width_half,y+_yy+y_speed) == 1 ||
-		tilemap_get_at_pixel(global.collision_map,x+_bbox_width_half,y+_yy+y_speed) == 1){
-		if (tilemap_get_at_pixel(global.collision_map,x,y+_yy+sign(y_speed)) == 1 ||
-			tilemap_get_at_pixel(global.collision_map,x-_bbox_width_half,y+_yy+sign(y_speed)) == 1 ||
-			tilemap_get_at_pixel(global.collision_map,x+_bbox_width_half,y+_yy+sign(y_speed)) == 1){
-			y_speed = 0;
-		} else {
-			y_speed = sign(y_speed);	
-		}
+	// regular Walls
+	wall_y_axis_check(1, _yy, _bbox_width_half);
+	
+	// Level 1 walls
+	if (layer == layer_get_id(INSTANCES_1_LAYER)) {
+		wall_y_axis_check(8, _yy, _bbox_width_half);
+	}
+	
+	// Level 2 walls
+	if (layer == layer_get_id(INSTANCES_2_LAYER)) {
+		wall_y_axis_check(7, _yy, _bbox_width_half);
 	}
 	
 	// cant get on ladder until you are on the ground
@@ -97,140 +53,41 @@ function entity_collision(){
 		}
 	}
 	
-	// -- Handle Downward Cliffs --
-	// drop down the cliff if coming at it from above
-	if (sign(_yy) == -1) { _yy *= -1 }
-	if (tilemap_get_at_pixel(global.collision_map,x,y) == 10) {
-		for (var _i = 0; _i < room_height; _i++) {
-			if (tilemap_get_at_pixel(global.collision_map,x,y-_yy+_i) != 10) {
-				y = y + _i;
-				z_bottom -= _i;
-				break;
-			}
-		}
-		if (sign(y_speed) == -1) {
-			y_speed = 0; 
-		}
-	}
+	// Entities
+	entity_y_axis_check(_yy);
 	
-	// collide with the cliff and prevent from going up it if coming from below
-	if (tilemap_get_at_pixel(global.collision_map,x,y-_bbox_height_half+y_speed) == 10 && sign(y_speed) == -1) {
-		if (tilemap_get_at_pixel(global.collision_map,x,y-_bbox_height_half+sign(y_speed)) == 10 && sign(y_speed) == -1) {
-			y_speed = 0;	
-		} else {
-			y_speed = sign(y_speed);
-		}
-	}
-	
-	// -- Vertical entities --
-	if (place_meeting(x,y+y_speed,obj_parent_entity)){
-		
-		// save the object in question
-		var _entity_collided = instance_place(x,y+y_speed,obj_parent_entity);
-		
-		// check if entity is solid
-		if (entity_solid && _entity_collided.entity_solid) {
-			// check for z overlap with object in question
-			if (check_z_overlap(_entity_collided) == true){
-				
-				// perform step-up check
-				if (stepup_check(_entity_collided) == false){
-					
-					// check for collision 1 pixel away
-					if (place_meeting(x,y+sign(y_speed),_entity_collided)){
-						// there is a collision, return 0 so there is no movement
-						y_speed = 0;
-					}else {
-						// no collision, return the sign of either x_speed or y_speed
-						y_speed = sign(y_speed);
-					}
-				}
-			}
-		}
-	}
 	// Vertical Move Commit
 	y += y_speed;
 	
-	
-	// -- get pushed out of solid Entities if you somehow overlap --
-	// this should only get used when moving objects move over the player
-	// but never when a player is about to move onto an entity.
-	// that should all be pre-handled above before the move commit
-	if (place_meeting(x,y,obj_moving_platform)){
-		// save the object in question
-		var _entity_collided = instance_place(x,y,obj_parent_entity);
-		// check if entity is solid
-		if (_entity_collided.entity_solid) {
-			// check for z overlap with object in question
-			if (check_z_overlap(_entity_collided) == true){
-					var _dir = point_direction(_entity_collided.x,_entity_collided.y,x,y);
-					var _cardinal_dir = round(_dir/90);
-					switch(_cardinal_dir) {
-						case 0: x += (_entity_collided.bbox_right-bbox_left)+1;		break;	// right
-						case 4: x += (_entity_collided.bbox_right-bbox_left)+1;		break;	// right
-						case 1: y -= (bbox_bottom-_entity_collided.bbox_top)+1;		break;	// up
-						case 2: x -= (bbox_right-_entity_collided.bbox_left)+1;		break;	// left
-						case 3: y += (_entity_collided.bbox_bottom-bbox_top)+1;		break;	// down
-					}
-			}
-		}
-	}
+	// pushout check
+	pushout_check();	
 }
-
-// == Check For Z Overlap ==
-function check_z_overlap(_entity_collided) {
-	// returns TRUE if there IS overalp
-	// returns FALSE if there is NO overlap
-	var _z_bottom = _entity_collided.z_bottom;
-	var _z_top = _entity_collided.z_top;
-	if (_z_bottom <= z_bottom && _z_bottom >= z_top ||
-		_z_top >= z_top && _z_top <= z_bottom){
-		// there _is z overlap
-		return true;
-	}else {
-		// there _is no z overlap
-		return false;
-	}
-}
-
-
-
-// == Stepup Check ==
-function stepup_check(_entity_collided) {
-	if (state != player_state_wade) {
-		if (_entity_collided.z_top >= z_bottom-z_step_up){
-			z_bottom = _entity_collided.z_top-1;
-			return true;
-		}else {
-			return false;
-		}
-	}
-}
-
-
 
 function set_z_limits() {
 	// check if there is a collision
 	if (place_meeting(x,y,obj_parent_entity)){
-		
 		// save the _iD of the coll_id_ing _instance
 		var _entity_collided = instance_place(x,y,obj_parent_entity);
 		
 		// check if _instance _is above you
-		if (_entity_collided.z_bottom < z_top){
+		if (_entity_collided.entity_solid && _entity_collided.z_bottom < z_top){
 			if (bounding_box_check(_entity_collided) == true) {
-			// set z_roof to bottom of coll_id_ing _instance above you
-			z_roof = _entity_collided.z_bottom+1;
-			below_of = _entity_collided;
-		}else {
-			// set z_roof to ceiling
-			z_roof = -room_height;
-			below_of = noone;
-		}
+				// set z_roof to bottom of coll_id_ing _instance above you
+				z_roof = _entity_collided.z_bottom+1;
+				below_of = _entity_collided;
+			}else {
+				// set z_roof to ceiling
+				z_roof = -room_height;
+				below_of = noone;
+			}
 		
 		// check if instance is below you
-		}else if (_entity_collided.z_top > z_bottom) {
+		}
+		
+		if (_entity_collided.entity_solid && _entity_collided.z_top > z_bottom) {
+			//show_debug_message("object below you");
 			if (bounding_box_check(_entity_collided) == true) {
+				//show_debug_message("bounding box check returned true");
 				z_floor = _entity_collided.z_top-1;
 				on_top_of = _entity_collided;
 			}else {
@@ -247,7 +104,96 @@ function set_z_limits() {
 	}	
 }
 
-// == Bounding Box Check ==
+function wall_x_axis_check(_terrain,_xx, _bb_hh){
+	if (tilemap_get_at_pixel(global.collision_map, x+_xx+x_speed, y) == _terrain ||
+		tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y-_bb_hh) == _terrain ||
+		tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y+_bb_hh) == _terrain) {
+			
+		if (tilemap_get_at_pixel(global.collision_map, x+_xx+sign(x_speed), y) == _terrain ||
+		tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y-_bb_hh) == _terrain ||
+		tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y+_bb_hh) == _terrain) {
+			x_speed = 0;
+		} else {
+			x_speed = sign(x_speed);
+		}
+	}
+}
+
+function entity_x_axis_check(_xx) {
+	if (place_meeting(x+_xx+x_speed,y,obj_parent_entity)){
+		var _entity_collided = instance_place(x+_xx+x_speed,y,obj_parent_entity);	// save the object in question
+		if (_entity_collided.entity_solid) {										// check if entity is solid
+			if (check_z_overlap(_entity_collided) == true){							// check for z overlap with object _in quest_ion
+				if (stepup_check(_entity_collided) == false){						// perform step-up check
+					if (place_meeting(x+sign(x_speed),y,_entity_collided)){			// check for collision 1 pixel away
+						x_speed = 0;												// there is a collision, return 0 so there is no movement
+					}else {
+						x_speed = sign(x_speed);									// no collision, return the sign x_speed
+					}
+				}
+			}
+		}
+	}
+}
+
+function wall_y_axis_check(_terrain, _yy, _bb_wh) {
+	if (tilemap_get_at_pixel(global.collision_map,x,y+_yy+y_speed) == _terrain ||
+		tilemap_get_at_pixel(global.collision_map,x-_bb_wh,y+_yy+y_speed) == _terrain ||
+		tilemap_get_at_pixel(global.collision_map,x+_bb_wh,y+_yy+y_speed) == _terrain){
+		if (tilemap_get_at_pixel(global.collision_map,x,y+_yy+sign(y_speed)) == _terrain ||
+			tilemap_get_at_pixel(global.collision_map,x-_bb_wh,y+_yy+sign(y_speed)) == _terrain ||
+			tilemap_get_at_pixel(global.collision_map,x+_bb_wh,y+_yy+sign(y_speed)) == _terrain){
+			y_speed = 0;
+		} else {
+			y_speed = sign(y_speed);	
+		}
+	}	
+}
+
+function entity_y_axis_check(_yy) {
+	if (place_meeting(x,y+_yy+y_speed,obj_parent_entity)){
+		var _entity_collided = instance_place(x,y+_yy+y_speed,obj_parent_entity);			// save the object in question
+		if (_entity_collided.entity_solid) {												// check if entity is solid
+			if (check_z_overlap(_entity_collided) == true){									// check for z overlap with object in question
+				if (stepup_check(_entity_collided) == false){								// perform step-up check
+					if (place_meeting(x,y+sign(y_speed),_entity_collided)){					// check for collision 1 pixel away
+						y_speed = 0;														// there is a collision, return 0 so there is no movement
+					}else {
+						y_speed = sign(y_speed);											// no collision, return the sign of either x_speed or y_speed
+					}
+				}
+			}
+		}
+	}	
+}
+
+function check_z_overlap(_entity_collided) {
+	// returns TRUE if there IS overalp
+	// returns FALSE if there is NO overlap
+	var _z_bottom = _entity_collided.z_bottom;
+	var _z_top = _entity_collided.z_top;
+	if (_z_bottom <= z_bottom && _z_bottom >= z_top ||
+		_z_top >= z_top && _z_top <= z_bottom ||
+		_z_bottom >= z_bottom && _z_top <= z_top ||
+		_z_bottom <= z_bottom && _z_top >= z_top){
+		// there _is z overlap
+		return true;
+	}else {
+		// there _is no z overlap
+		return false;
+	}
+}
+
+function stepup_check(_entity_collided) {
+	if (terrain_state == TERRAIN_TYPE.SHALLOW_WATER) { exit; }
+	if (_entity_collided.z_top >= z_bottom-z_step_up){
+		z_bottom = _entity_collided.z_top-1;
+		return true;
+	}else {
+		return false;
+	}
+}
+
 function bounding_box_check(_entity_collided) {
 	
 	// save bound_ing boxes of coll_id_ing _instance
@@ -269,25 +215,81 @@ function bounding_box_check(_entity_collided) {
 	}
 }
 
-
-/*
-// == Return Correct Speed ==
-function return_speed(_x_speed,_y_speed){
-	if (_x_speed == 0) {
-		return _y_speed;
-	}else{
-		return _x_speed;
+function pushout_check() {
+	if (place_meeting(x,y,obj_parent_entity)){
+		// save the object in question
+		var _entity_collided = instance_place(x,y,obj_parent_entity);
+		// check if entity is solid
+		if (_entity_collided.entity_solid) {
+			// check for z overlap with object in question
+			if (check_z_overlap(_entity_collided) == true){
+				var _dir = point_direction(_entity_collided.x,_entity_collided.y,x,y);
+				var _cardinal_dir = round(_dir/90);
+				switch(_cardinal_dir) {
+					case 0: x += (_entity_collided.bbox_right-bbox_left)+1;		break;	// right
+					case 4: x += (_entity_collided.bbox_right-bbox_left)+1;		break;	// right
+					case 1: y -= (bbox_bottom-_entity_collided.bbox_top)+1;		break;	// up
+					case 2: x -= (bbox_right-_entity_collided.bbox_left)+1;		break;	// left
+					case 3: y += (_entity_collided.bbox_bottom-bbox_top)+1;		break;	// down
+				}
+			}
+		}
 	}
 }
+
+#region SAVE THIS CODE FOR LATER
+
+//function reset_z_limits() {	
+//}
+
+// == Check For Z Solid ==
+//function check_z_solid(__instance){
+//	if (__instance.zSolid == true){
+//		return true;
+//	}else{
+//		return false;
+//	}
+//}
+
+// Cliff
+// collide with the cliff from the sides and stop the player from moving horizontally through it
+//if (z_floor = -1 && on_ground == true) {
+//	if (tilemap_get_at_pixel(global.collision_map, x+_xx+x_speed, y) == 10 ||
+//		tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y-_bbox_height_half) == 10 ||
+//		tilemap_get_at_pixel(global.collision_map,x+_xx+x_speed,y+_bbox_height_half) == 10) {
+//		if (tilemap_get_at_pixel(global.collision_map, x+_xx+sign(x_speed), y) == 10 ||
+//		tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y-_bbox_height_half) == 10 ||
+//		tilemap_get_at_pixel(global.collision_map,x+_xx+sign(x_speed),y+_bbox_height_half) == 10) {
+//			x_speed = 0;
+//		} else {
+//			x_speed = sign(x_speed);
+//		}
+//	}
+//}
+
+// -- Handle Downward Cliffs --
+// drop down the cliff if coming at it from above
+//if (sign(_yy) == -1) { _yy *= -1 }
+//if (tilemap_get_at_pixel(global.collision_map,x,y) == 10) {
+//	for (var _i = 0; _i < room_height; _i++) {
+//		if (tilemap_get_at_pixel(global.collision_map,x,y-_yy+_i) != 10) {
+//			y = y + _i;
+//			z_bottom -= _i;
+//			break;
+//		}
+//	}
+//	if (sign(y_speed) == -1) {
+//		y_speed = 0; 
+//	}
+//}
 	
-function reset_z_limits() {	
-}
+// collide with the cliff and prevent from going up it if coming from below
+//if (tilemap_get_at_pixel(global.collision_map,x,y-_bbox_height_half+y_speed) == 10 && sign(y_speed) == -1) {
+//	if (tilemap_get_at_pixel(global.collision_map,x,y-_bbox_height_half+sign(y_speed)) == 10 && sign(y_speed) == -1) {
+//		y_speed = 0;	
+//	} else {
+//		y_speed = sign(y_speed);
+//	}
+//}
 
-// == Check For Z Sol_id ==
-function check_z_sol_id(__instance){
-	if (__instance.zSol_id == true){
-		return true;
-	}else{
-		return false;
-	}
-}
+#endregion

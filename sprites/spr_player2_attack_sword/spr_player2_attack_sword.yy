@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"archived",
-    "path":"folders/Sprites/Player/archived.yy",
+    "path":"folders/Sprites/2 - Player/archived.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

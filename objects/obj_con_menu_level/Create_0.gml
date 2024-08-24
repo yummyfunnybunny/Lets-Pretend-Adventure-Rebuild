@@ -225,7 +225,7 @@ function menu_drop_item(_slot_item) {
 	// drop item to level
 	var _x = obj_player.x;
 	var _y = obj_player.y;
-	var _dropped_item = instance_create_layer(_x, _y, INSTANCE_LAYER, obj_parent_item, {
+	var _dropped_item = instance_create_layer(_x, _y, INSTANCES_1_LAYER, obj_parent_item, {
 		category: _slot_item.category,
 		item_id: _slot_item.item_id,
 		despawn_time: 0,

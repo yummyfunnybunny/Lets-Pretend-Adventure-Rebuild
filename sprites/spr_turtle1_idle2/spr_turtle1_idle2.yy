@@ -27,7 +27,7 @@
   "origin":7,
   "parent":{
     "name":"turtles",
-    "path":"folders/Sprites/Enemies/turtles.yy",
+    "path":"folders/Sprites/3 - Enemies/turtles.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

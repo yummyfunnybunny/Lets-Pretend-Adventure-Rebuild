@@ -27,7 +27,7 @@
   "origin":7,
   "parent":{
     "name":"Goblins",
-    "path":"folders/Sprites/Enemies/Goblins.yy",
+    "path":"folders/Sprites/3 - Enemies/Goblins.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

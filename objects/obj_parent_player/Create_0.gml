@@ -62,7 +62,7 @@ global.player = {
 			// row 1
 			{ category: "collectible", item_id: 1 },
 			{ category: "consumable", item_id: 1 },
-			{ category: "mainhand", item_id: 1 },
+			{ category: "mainhand", item_id: 5 },
 		],
 		[
 			// row 2
@@ -312,10 +312,11 @@ function player_create_damage_object(_item, _x_offset, _y_offset) {
 	
 	
 	// create the damage object
-	instance_create_layer(x + _x_offset, y + _y_offset, INSTANCE_LAYER, _wep_type, {
+	instance_create_layer(x + _x_offset, y + _y_offset, layer, _wep_type, {
 		faction: _faction,
 		creator: _creator,
 		image_angle: _face_dir,
+		direction: _face_dir,
 		sprite_index: _sprite,
 		damage_type: _dmg_type,
 		element_type: _element_type,
@@ -375,6 +376,23 @@ function player_terrain_checks(){
 		main_state = main_state_death;
 		nest_state = nest_state_death_pitfall;
 	}
+	
+	// level change up
+	if (_terrain == 9){
+		if (layer == layer_get_id(INSTANCES_1_LAYER)) {
+			layer = layer_get_id(INSTANCES_2_LAYER);
+			ds_grid_clear(global.depth_sorter_1.layer_grid, 0);
+		}
+	}
+	
+	// level change down
+	if (_terrain == 10){
+		if (layer == layer_get_id(INSTANCES_2_LAYER)) {
+			layer = layer_get_id(INSTANCES_1_LAYER);
+			ds_grid_clear(global.depth_sorter_2.layer_grid, 0);
+		}
+	}
+	
 	
 	// Pitfall edges
 	if (_terrain == 12) {
@@ -514,6 +532,42 @@ nest_state_attack_sword = function() {
 	}
 }
 
+nest_state_attack_crossbow = function() {
+	
+	// begin attack
+	if (alarm[P_ALARM.ATK_START] == -1 && alarm[P_ALARM.ATK_END] == -1) {
+		x_speed = 0;
+		y_speed = 0;
+		image_index = 0;
+		image_speed = 1;
+		alarm[P_ALARM.ATK_START] = -2;
+	}
+	
+	// during attack
+	if (alarm[P_ALARM.ATK_START] == -2) {
+		if (image_index >= 3) {
+			var _x_offset = 0;
+			var _y_offset = 0;
+			if (face_direction == 0) { _x_offset = 8; }
+			if (face_direction == 90) { _y_offset = -10; }
+			if (face_direction == 180) { _x_offset = -8; }
+			if (face_direction == 270) { _y_offset = 2; }
+			player_create_damage_object(item_used, _x_offset, _y_offset);
+			alarm[P_ALARM.ATK_START] = -3;
+		}
+	}
+	
+	// end attack
+	if (alarm[P_ALARM.ATK_START] == -3) {
+		if (image_index >= image_number-1) {
+			nest_state = nest_state_free;
+			alarm[P_ALARM.ATK_START] = -1;
+			alarm[P_ALARM.ATK_END] = FPS * .1;
+			item_used = noone;
+		}
+	}
+}
+
 nest_state_attack_shield = function() {
 	
 }
@@ -526,9 +580,7 @@ nest_state_attack_flail = function() {
 	
 }
 
-nest_state_attack_crossbow = function() {
-	
-}
+
 
 nest_state_attack_tomahawk = function() {
 	

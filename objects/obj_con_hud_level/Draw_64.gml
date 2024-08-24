@@ -36,3 +36,4 @@ for (var _i = 0; _i < 2; _i++) {
 	var _idx = (_i == 0) ? 1 : 0;
 	draw_sprite_ext(spr_button_input_icons,_idx,equipped_slots_x_start-padding-(_i*equipped_slots_gap)+equipped_input_offset_x, equipped_slots_y_start+padding+equipped_input_offset_y,1.5,1.5,0,c_white,1);	// A
 }
+

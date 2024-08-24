@@ -24,3 +24,5 @@ if (pause_input) {
 	}
 }
 
+script_execute(level_update_overlay);
+

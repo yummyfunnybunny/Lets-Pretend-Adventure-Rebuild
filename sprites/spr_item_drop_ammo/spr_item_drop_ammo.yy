@@ -37,7 +37,7 @@
   "origin":7,
   "parent":{
     "name":"Ammo",
-    "path":"folders/Sprites/Items/Ammo.yy",
+    "path":"folders/Sprites/6 - Items/Ammo.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

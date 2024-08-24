@@ -16,3 +16,10 @@ if (!global.game_paused) {
 	player_death_check();					// 9 - Death Check
 	player_terrain_checks();				// 10 - check terrain
 }
+
+if (place_meeting(x,y,obj_parent_cover)) {
+	var _cover = instance_place(x,y,obj_parent_cover);
+	with (_cover) {
+		main_state = main_state_revealed;
+	}
+}

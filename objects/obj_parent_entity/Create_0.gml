@@ -2,7 +2,7 @@
 
 #region SET VARIABLES
 
-
+visible = false;
 
 // z-axis
 z_top				= z_bottom - z_height;		// gives us the top of the instance

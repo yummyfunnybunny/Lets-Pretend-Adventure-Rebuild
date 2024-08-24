@@ -249,7 +249,7 @@ nest_state_sleep = function() {}
 nest_state_return_origin = function() {
 	// create pather
 	if (!pather_object) {
-		pather_object = instance_create_layer(x,y,INSTANCE_LAYER,obj_con_pather,{
+		pather_object = instance_create_layer(x,y,INSTANCES_1_LAYER,obj_con_pather,{
 			creator: id,
 			path: noone,
 			move_speed: run_speed,
@@ -422,7 +422,6 @@ function npc_origin_distance_check(_main_state = main_state_unaware, _nest_state
 function npc_follow_reset_check(_main_state = main_state_unaware, _nest_state = nest_state_return_origin) {
 	if (nest_state != nest_state_follow) { exit; }
 	if (follow_reset_range == 0) { exit; }
-	show_debug_message("follow_reset_check");
 	var _following = quest.follow_target;
 	var _dis = point_distance(x,y,_following.x, _following.y);
 	if (_dis >= follow_reset_range*COL_TILES_SIZE) {
@@ -583,6 +582,7 @@ function npc_interact_set_target() {
 function npc_interact_check_interact_range() {
 	if (interact_type == INTERACT_TYPE.NONE) { exit; }
 	if (!instance_exists(interact_target)) { exit; }
+	if (interact_target.layer != layer) { exit; }
 	var _dis = point_distance(x,y,interact_target.x,interact_target.y);
 	if (_dis <= interact_range*COL_TILES_SIZE) {
 		interact_target.interact_target = id;
@@ -605,7 +605,7 @@ function npc_interact_draw_icon() {
 function npc_interact_talk() {
 	// create textbox object
 	if (dialogue.textbox_id == noone) {
-		dialogue.textbox_id = instance_create_layer(x,y,INSTANCE_LAYER,obj_con_textbox, {
+		dialogue.textbox_id = instance_create_layer(x,y,CONTROLLER_LAYER,obj_con_textbox, {
 			creator: id,
 			text_to_display: dialogue.text[quest.stage],
 			textbox_title: dialogue.title,
@@ -700,7 +700,6 @@ npc_quest_follow_end_check = function() {
 		follow_reset_range = 0;
 		
 		// send broadcast
-		show_debug_message(object_index);
 		var _broadcast = new EndFollowBroadcast(object_index);
 		array_push(global.quest_tracker.broadcast_receiver, _broadcast);
 	}

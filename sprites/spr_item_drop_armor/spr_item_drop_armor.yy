@@ -28,7 +28,7 @@
   "origin":7,
   "parent":{
     "name":"Collectables",
-    "path":"folders/Sprites/Items/Collectables.yy",
+    "path":"folders/Sprites/6 - Items/Collectables.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

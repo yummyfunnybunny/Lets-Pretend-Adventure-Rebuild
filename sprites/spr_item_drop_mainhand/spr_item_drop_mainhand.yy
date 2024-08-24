@@ -32,7 +32,7 @@
   "origin":7,
   "parent":{
     "name":"Mainhand",
-    "path":"folders/Sprites/Items/Mainhand.yy",
+    "path":"folders/Sprites/6 - Items/Mainhand.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

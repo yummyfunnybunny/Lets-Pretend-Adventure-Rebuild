@@ -28,7 +28,7 @@
   "origin":0,
   "parent":{
     "name":"Trinkets",
-    "path":"folders/Sprites/Items/Trinkets.yy",
+    "path":"folders/Sprites/6 - Items/Trinkets.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

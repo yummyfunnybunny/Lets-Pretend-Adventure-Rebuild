@@ -137,7 +137,7 @@ if (nest_state = enemy_state_attack) {
 		image_index = 1;
 		var _damage = instance_create_layer(x, y+z_bottom-16, global.main_layer, obj_damage_sword, {
 			creator: other.id,
-			sprite_index: spr_arrow,
+			sprite_index: spr_damage_arrow,
 			move_speed: 3,
 			aim_direction: point_direction(other.x,other.y,obj_player.x,obj_player.y),
 			damage_object_duration: 3,

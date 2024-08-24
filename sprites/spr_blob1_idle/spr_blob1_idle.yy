@@ -27,7 +27,7 @@
   "origin":7,
   "parent":{
     "name":"Blobs",
-    "path":"folders/Sprites/Enemies/Blobs.yy",
+    "path":"folders/Sprites/3 - Enemies/Blobs.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

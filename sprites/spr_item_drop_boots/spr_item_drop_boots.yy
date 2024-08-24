@@ -28,7 +28,7 @@
   "origin":7,
   "parent":{
     "name":"Armor",
-    "path":"folders/Sprites/Items/Armor.yy",
+    "path":"folders/Sprites/6 - Items/Armor.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

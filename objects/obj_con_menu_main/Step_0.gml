@@ -18,7 +18,7 @@ if (select_input) {
 		case 0:		game_end();						break;
 		case 1:		show_message("nothing yet");	break;
 		case 2:		show_message("nothing yet");	break;
-		case 3:		room_goto(rm_tileset_test);		break;
+		case 3:		room_goto(rm_shady_woods);		break;
 	}
 }
 

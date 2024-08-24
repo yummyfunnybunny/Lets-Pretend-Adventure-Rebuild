@@ -28,7 +28,7 @@
   "origin":0,
   "parent":{
     "name":"Boots",
-    "path":"folders/Sprites/Items/Boots.yy",
+    "path":"folders/Sprites/6 - Items/Boots.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

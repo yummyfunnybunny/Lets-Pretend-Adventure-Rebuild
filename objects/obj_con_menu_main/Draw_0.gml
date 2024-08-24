@@ -1,7 +1,6 @@
-/// @desc
 
 // draw background
-draw_sprite_ext(spr_main_menu_bg,0,0,0,2,2,0,c_white,1);
+//draw_sprite_ext(spr_main_menu_bg,0,0,0,2,2,0,c_white,1);
 
 draw_sprite_ext(spr_dimmer,0,0,0,40,23,0,c_white,.5);
 

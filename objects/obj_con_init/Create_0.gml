@@ -6,7 +6,8 @@ show_debug_overlay(true);
 #region GUI
 
 // set GUI size
-display_set_gui_size(640,360);
+display_set_gui_size(768,432);
+
 
 #endregion
 
@@ -14,10 +15,13 @@ display_set_gui_size(640,360);
 
 #macro COL_TILES_SIZE 16
 #macro FPS game_get_speed(gamespeed_fps)
-#macro PLAYER_START_X 507
-#macro PLAYER_START_Y 501
-#macro INSTANCE_DEPTH 700
-#macro INSTANCE_LAYER "Instances"
+#macro PLAYER_START_X 704
+#macro PLAYER_START_Y 704
+#macro INSTANCES_1_DEPTH 1900
+#macro INSTANCES_2_DEPTH 900
+#macro INSTANCES_1_LAYER "instances_1"
+#macro INSTANCES_2_LAYER "instances_2"
+#macro CONTROLLER_LAYER "controllers"
 #macro PATH_GRID_CELL_SIZE 8
 #macro DEFAULT_FONT fnt_text_12
 
@@ -27,7 +31,7 @@ display_set_gui_size(640,360);
 
 global.game_paused = false;
 global.debugger = false;
-global.main_layer = "Instances";
+global.main_layer = "instances_1";
 global.ui_type = UI_TYPE.MAIN_MENU;
 global.enemy_count = 0;					// tracks the number of enemies in the room. used for eradicate quest tracking
 
@@ -154,6 +158,8 @@ enum INTERACT_TYPE {
 	PULL,
 	CARRY,		// used for carrying other objects around
 	PICKUP,		// used for picking up items
+	OPEN,		// open chests, doors, etc.
+	INTERACT	// generic; use for any object that only has one type of interact type
 }
 
 // rarity types
@@ -705,4 +711,4 @@ remove_header_row(global.quest_data,0);
 
 
 
-global.quest_tracker = instance_create_layer(x,y,INSTANCE_LAYER,obj_con_quests);
+global.quest_tracker = instance_create_layer(x,y,CONTROLLER_LAYER,obj_con_quests);

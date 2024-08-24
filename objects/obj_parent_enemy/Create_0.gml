@@ -1,4 +1,4 @@
-/// @desc init
+
 event_inherited();
 
 #region INIT ENEMY SET VARIABLES
@@ -144,7 +144,7 @@ nest_state_return_origin	= function(){
 	// aggro range & attack range checks are not performed here
 	// create pather
 	if (!pather_object) {
-		pather_object = instance_create_layer(x,y,INSTANCE_LAYER,obj_con_pather,{
+		pather_object = instance_create_layer(x,y,INSTANCES_1_LAYER,obj_con_pather,{
 			creator: id,
 			path: noone,
 			move_speed: run_speed,
@@ -264,7 +264,7 @@ function enemy_drop_items() {
 	if (array_length(item_drops.guaranteed) > 0) {
 		for (var _i = 0; _i < item_drops.guaranteed.length; _i++) {
 			repeat(item_drops.guaranteed[_i].qty) {
-				var _item = instance_create_layer(x,y,INSTANCE_LAYER, obj_parent_item, {
+				var _item = instance_create_layer(x,y,INSTANCES_1_LAYER, obj_parent_item, {
 					category: item_drops.guaranteed[_i].category,
 					item_id: item_drops.guaranteed[_i].item_id,
 				});
@@ -290,7 +290,7 @@ function enemy_drop_items() {
 		
 		// drop the item
 		if (_item_drop > 0) {
-			var _item = instance_create_layer(x,y,INSTANCE_LAYER, obj_parent_item, {
+			var _item = instance_create_layer(x,y,INSTANCES_1_LAYER, obj_parent_item, {
 				category: _chosen_category,
 				item_id: _item_drop,
 			});
@@ -345,6 +345,7 @@ function enemy_aggro_range_check(_main_state = main_state_aware,_nest_state = ne
 	if (target == noone) exit;
 	if (nest_state = nest_state_return_origin) { exit; }
 	if (nest_state = nest_state_wait) { exit; }
+	if (target.layer != layer) { exit; }
 	if (point_distance(x,y,target.x,target.y) <= aggro_range*COL_TILES_SIZE) {
 		main_state = _main_state;
 		nest_state = _nest_state;
@@ -367,6 +368,7 @@ function enemey_attack_range_check(_main_state = main_state_aware, _nest_state =
 	if (nest_state == nest_state_sleep) { exit; }
 	if (nest_state = nest_state_return_origin) { exit; }
 	if (nest_state = nest_state_wait) { exit; }
+	if (target.layer != layer) { exit; }
 	var _dis = point_distance(x,y,target.x,target.y);
 	if (_dis <= attack_range*COL_TILES_SIZE) { 
 		main_state = _main_state;

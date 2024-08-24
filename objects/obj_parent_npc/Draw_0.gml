@@ -49,7 +49,7 @@ if (global.debugger) {
 }
 
 // Inherit the parent event
-event_inherited();
+//event_inherited();
 
 // interact target
 npc_interact_draw_icon();

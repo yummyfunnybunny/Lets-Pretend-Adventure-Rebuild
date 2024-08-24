@@ -1,9 +1,10 @@
 // INITIALIZE VARIABLES
 
 // main
-#macro CAMERA_DEFAULT_WIDTH 320
-#macro CAMERA_DEFAULT_HEIGHT 180
+#macro CAMERA_DEFAULT_WIDTH 384
+#macro CAMERA_DEFAULT_HEIGHT 216
 main_camera					= view_camera[0];
+camera_set_view_size(main_camera,CAMERA_DEFAULT_WIDTH,CAMERA_DEFAULT_HEIGHT);
 view_width					= camera_get_view_width(main_camera);
 view_height					= camera_get_view_height(main_camera);
 view_width_half				= view_width*.5;
@@ -64,10 +65,10 @@ function camera_fixed_position(_x, _y) {
 //	camera_set_size(CAMERA_DEFAULT_WIDTH * _zoom,CAMERA_DEFAULT_HEIGHT * _zoom);
 //}
 
-function camera_set_size(_length, _height) {	
-//set_camera_size: function(_length, _height) {
-	camera_set_view_size(main_camera,_length,_height);
-}
+//function camera_set_size(_length, _height) {	
+////set_camera_size: function(_length, _height) {
+//	camera_set_view_size(main_camera,_length,_height);
+//}
 
 function camera_shake_screen(){	
 //shake_screen: function() {
@@ -124,6 +125,6 @@ function camera_end_transition() {
 
 // RUN INIT FUNCTIONS
 
-camera_set_size(CAMERA_DEFAULT_WIDTH,CAMERA_DEFAULT_HEIGHT);
+
 
 camera_follow_target(obj_player);

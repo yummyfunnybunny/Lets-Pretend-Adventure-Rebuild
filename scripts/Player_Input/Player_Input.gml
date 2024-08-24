@@ -68,14 +68,14 @@ function player_input_x_check() {
 	// keyboard = X
 	if (!interact_target) { exit; }
 	if (x_input_pressed) {
-		// will need to dynamically choose what to do here later...
 		with (interact_target) {
 			if (object_is_ancestor(object_index,obj_parent_npc)) {
 				npc_interact_input_progression();
 			} else if (object_index == obj_parent_item) {
 				item_interact_input_progression();
+			} else if(object_is_ancestor(object_index, obj_parent_chest)) {
+				chest_interact_input_progression();	
 			}
-			//nest_state = nest_state_interact;
 		}
 	}
 }

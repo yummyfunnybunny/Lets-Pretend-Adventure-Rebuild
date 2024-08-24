@@ -169,13 +169,14 @@ function item_pickup() {
 function item_pickup_ammo() {
 	var _ammo_type = ds_grid_get(global.ammo_data, AMMO_DATA.AMMO_TYPE, item_id);
 	var _ammo_amt = ds_grid_get(global.ammo_data, AMMO_DATA.AMMO_AMT, item_id);
+	var _p = global.player;
 	switch (_ammo_type) {
-		case "hp":			other.hp += _ammo_amt;			break;
-		case "mo":			other.mp += _ammo_amt;			break;
-		case "coins":		other.coins += _ammo_amt;		break;
-		case "arrows":		other.arrows += _ammo_amt;		break;
-		case "axes":		other.axes += _ammo_amt;		break;
-		case "bullets":		other.bullets += _ammo_amt;		break;
+		case "hp":			_p.stats.hp += _ammo_amt;			break;
+		case "mp":			_p.stats.mp += _ammo_amt;			break;
+		case "coins":		_p.ammo.coins += _ammo_amt;			break;
+		case "arrows":		_p.ammo.arrows += _ammo_amt;		break;
+		case "axes":		_p.ammo.axes += _ammo_amt;			break;
+		case "bullets":		_p.ammo.bullets += _ammo_amt;		break;
 	}
 }
 

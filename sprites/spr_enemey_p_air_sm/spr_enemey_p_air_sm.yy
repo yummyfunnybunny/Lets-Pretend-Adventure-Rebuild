@@ -26,7 +26,7 @@
   "origin":7,
   "parent":{
     "name":"placeholders",
-    "path":"folders/Sprites/Enemies/placeholders.yy",
+    "path":"folders/Sprites/3 - Enemies/placeholders.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

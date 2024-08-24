@@ -49,9 +49,6 @@ function ItemDropBroadcast(_item_category, _item_id, _quest_type = QUEST_TYPE.NO
 						_tracker.amount_gotten--;
 						quest_check_for_success(_q);
 						quest_update_npc_quest(_q);
-						
-						show_debug_message("ItemDropBroadcast processed...");
-						show_debug_message(_q);
 					}
 				}
 			}
@@ -91,9 +88,6 @@ function ItemPickupBroadcast(_item_category, _item_id, _quest_type = QUEST_TYPE.
 						_tracker.amount_gotten++;
 						quest_check_for_success(_q);
 						quest_update_npc_quest(_q);
-						
-						show_debug_message("ItemPickupBroadcast processed...");
-						show_debug_message(_q);
 					}
 				}
 			}
@@ -258,7 +252,7 @@ function quest_complete(_quest_id, _npc) {
 	for (var _i = 0; _i < _rewards_length; _i++) {
 		var _reward = _q.rewards[_i];
 		repeat(_reward.qty) {
-			var _item = instance_create_layer(_npc.x,_npc.y,INSTANCE_LAYER,obj_parent_item, {
+			var _item = instance_create_layer(_npc.x,_npc.y,INSTANCES_1_LAYER,obj_parent_item, {
 				category: _reward.category,
 				item_id: _reward.item_id,
 				despawn_time: 0,
@@ -278,7 +272,6 @@ function quest_complete(_quest_id, _npc) {
 		for (var _j = 0; _j < _bag_w; _j++) {
 			var _bag_slot = _bag[_i][_j];
 			if (_bag_slot.item_id == 0) { continue; }
-			show_debug_message(_bag_slot);
 			
 			var _dataset = get_dataset(_bag_slot.category);
 			var _col = enum_get_item_name(_bag_slot.category);
@@ -287,7 +280,6 @@ function quest_complete(_quest_id, _npc) {
 			
 			for (var _k = 0; _k < _trackers_length; _k++) {
 				var _tracker = _trackers[_k];
-				show_debug_message(_tracker);
 				
 				// if match, remove item and decrement count
 				if (_bag_slot_item_name == _tracker.tracker_id && _tracker.amount_needed > 0) {
@@ -299,8 +291,6 @@ function quest_complete(_quest_id, _npc) {
 			}
 		}	
 	}
-	show_debug_message(_q);
-	
 	
 	// check pre-requisites?
 	quest_update_prerequisites(_quest_id);
