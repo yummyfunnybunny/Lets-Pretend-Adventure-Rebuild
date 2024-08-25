@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"Entity_Collision",
   "isCompatibility":false,
   "isDnD":false,

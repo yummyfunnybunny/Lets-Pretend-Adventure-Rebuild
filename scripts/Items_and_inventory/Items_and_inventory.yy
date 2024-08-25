@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"Items_and_inventory",
   "isCompatibility":false,
   "isDnD":false,

@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"npc_image",
   "isCompatibility":false,
   "isDnD":false,

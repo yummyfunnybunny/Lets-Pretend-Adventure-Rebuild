@@ -41,6 +41,7 @@ global.player = {
 		bullets: 0,
 		axes: 0,
 		bombs: 0,
+		keys: 1,
 	},
 	equipped: [
 		[
@@ -580,8 +581,6 @@ nest_state_attack_flail = function() {
 	
 }
 
-
-
 nest_state_attack_tomahawk = function() {
 	
 }
@@ -652,6 +651,6 @@ nest_state_death_pitfall = function() {
 #region INIT PLAYER STARTING STATES
 
 main_state = main_state_alive;
-nest_state = nest_state_free
+nest_state = nest_state_free;
 
 #endregion;

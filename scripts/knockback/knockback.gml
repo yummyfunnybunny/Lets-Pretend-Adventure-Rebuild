@@ -10,6 +10,8 @@ function knockback_apply(_obj, _knockback_amount, _knockback_reduction, _knockba
 
 function knockback_update() {
 	// updates knockback on entity
+	if (knockback_x == 0 && knockback_y == 0) { exit; }
+	show_debug_message("applying knockback");
 	
 	// apply knockback to speed
 	if (knockback_x != 0) { x_speed = knockback_x; }
@@ -31,5 +33,5 @@ function knockback_update() {
 
 function knockback_check() {
 	// checks for any knockback on an entity
-	if (abs(knockback_x)	> 0 || abs(knockback_y) > 0) {return true; } else { return false; }
+	if (abs(knockback_x) > 0 || abs(knockback_y) > 0) {return true; } else { return false; }
 }

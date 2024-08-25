@@ -84,8 +84,7 @@ nest_state_chase = function() {
 }
 
 nest_state_hurt = function() {
-	if (knockback_check()) { exit; }
-	nest_state = nest_state_wait;
+	
 }
 
 nest_state_flee = function() {

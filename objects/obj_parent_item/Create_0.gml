@@ -14,7 +14,6 @@ image_speed				= 0;
 interact_target			= noone;
 interact_range			= 1;
 
-
 #endregion
 
 
@@ -27,7 +26,6 @@ main_state_spawn = function() {
 	if (alarm[1] == -1) {
 		direction = random(259);
 		move_speed = run_speed;
-		//z_bottom = -2;
 		on_ground = false;
 		z_speed = -z_jump_speed;
 		alarm[1] = -2;

@@ -239,6 +239,8 @@ nest_state_wait				= function(){
 };
 nest_state_hurt				= function(){
 	// hurt state controls what happens to an enemy when they take damage
+	if (knockback_check()) { exit; }
+	nest_state = nest_state_wait;
 };
 nest_state_react			= function(){
 	// the react state controls an enemies reaction to things
@@ -338,7 +340,6 @@ function enemy_take_damage(_damage, _damage_type, _element_type, _special_effect
 	} else {
 		// play block/resist/immune sound	
 	}
-	
 }
 
 function enemy_aggro_range_check(_main_state = main_state_aware,_nest_state = nest_state_chase){

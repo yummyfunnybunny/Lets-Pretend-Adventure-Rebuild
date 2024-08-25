@@ -2,7 +2,7 @@ event_inherited();
 
 #region SET VARIABLES
 
-lock					= noone;
+//lock					= noone;
 interact_type			= INTERACT_TYPE.INTERACT;
 interact_target			= noone;
 interact_range			= 1.5;
@@ -11,6 +11,7 @@ open_percent			= 0;
 open_change				= 1/60;
 image_speed				= 0;
 image_index				= 0;
+drop_queue				= [];
 
 #endregion
 
@@ -38,12 +39,14 @@ main_state_opening = function() {
 	// end opening
 	if (open_percent >= 1) {
 		image_index = image_number-1;
-		chest_drop_items();
+		chest_fill_drop_queue();
 		main_state = main_state_opened;
 	}
 }
 
 main_state_opened = function() {
+	// drop items
+	chest_drop_from_queue();
 }
 
 #endregion
@@ -76,12 +79,25 @@ function chest_interact_range_check() {
 	if (main_state != main_state_closed) { exit; }
 	if (!instance_exists(interact_target)) { exit; }
 	if (interact_target.layer != layer) { exit; }
+	
 	var _dis = point_distance(x,y,interact_target.x,interact_target.y);
 	if (_dis <= interact_range*COL_TILES_SIZE) {
-		interact_target.interact_target = id;
+		chest_check_target_infront(interact_target);
 	} else {
 		if (interact_target.interact_target == id) { interact_target.interact_target = noone; }
 	}
+}
+
+function chest_check_target_infront(_target) {
+	if (_target.y > y) {
+		if (_target.face_direction == 90) {
+			if (bbox_left <= _target.x && bbox_right >= _target.x) {
+				interact_target.interact_target = id;
+				return;
+			}
+		}
+	}
+	if (interact_target.interact_target == id) { interact_target.interact_target = noone; }
 }
 
 function chest_interact_draw_icon() {
@@ -101,25 +117,49 @@ function chest_interact_input_progression() {
 			// - yes -> open check
 			// - no -> don't open chest
 		// - no -> open chest
-		if (lock == noone) {
-			main_state = main_state_opening;	
+		if (locked == false) {
+			main_state = main_state_opening;
 		} else {
 			// do the check for the key	
+			if (global.player.ammo.keys > 0) {
+				locked = false;
+				global.player.ammo.keys--;
+				main_state = main_state_opening;
+			} else {
+				// player has no keys
+				// - shake the box, play a failed sound, etc...
+			}
 		}
 	}
 }
 
-function chest_drop_items() {
+function chest_fill_drop_queue() {
 	var _len = array_length(item_drops);
 	if (_len > 0) {
 		for (var _i = 0; _i < _len; _i++) {
 			repeat(item_drops[_i].qty) {
-				var _item = instance_create_layer(x,y,INSTANCES_1_LAYER, obj_parent_item, {
+				array_push(drop_queue, {
 					category: item_drops[_i].category,
 					item_id: item_drops[_i].item_id,
 				});
 			}
 		}
+	}
+}
+
+function chest_drop_from_queue() {
+	var _len = array_length(drop_queue);
+	if (_len == 0) { exit; }
+	if (alarm[0] == -1) {
+		alarm[0] = 3;
+	}
+		
+	if (alarm[0] == 0) {
+		var _item = instance_create_layer(x,y+6,INSTANCES_1_LAYER, obj_parent_item, {
+			category: drop_queue[0].category,
+			item_id: drop_queue[0].item_id,
+		});
+		array_shift(drop_queue);
 	}
 }
 

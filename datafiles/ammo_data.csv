@@ -5,3 +5,4 @@
 3,coin,1 coin,ammo,coins,3,1
 4,arrow,refills 5 arrow,ammo,arrows,4,5
 5,quiver,refills 15 arrows,ammo,arrows,5,15
+6,key,used to unlock things,ammo,keys,10,1
