@@ -5,9 +5,10 @@
   "managed":true,
   "name":"obj_crate_sm_1",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_crate","path":"objects/obj_parent_crate/obj_parent_crate.yy",},"propertyId":{"name":"max_hp","path":"objects/obj_parent_crate/obj_parent_crate.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"3",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_entity","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"propertyId":{"name":"z_height","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"6",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_entity","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"propertyId":{"name":"knockback_reduction","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.5",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_prop","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"propertyId":{"name":"max_hp","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"3",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_prop","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"propertyId":{"name":"item_drops","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"{ category: \"ammo\", item_id: 3, qty: 15, }",},
   ],
   "parent":{
     "name":"Crates",

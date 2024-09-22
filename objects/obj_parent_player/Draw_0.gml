@@ -12,7 +12,6 @@ if (global.debugger == true) {
 	
 	// draw border box
 	draw_ellipse(bbox_left,bbox_top+z_bottom,bbox_right,bbox_bottom+z_bottom, true);
-
 }
 
 // Inherit the parent event

@@ -85,9 +85,7 @@ function set_z_limits() {
 		}
 		
 		if (_entity_collided.entity_solid && _entity_collided.z_top > z_bottom) {
-			//show_debug_message("object below you");
 			if (bounding_box_check(_entity_collided) == true) {
-				//show_debug_message("bounding box check returned true");
 				z_floor = _entity_collided.z_top-1;
 				on_top_of = _entity_collided;
 			}else {

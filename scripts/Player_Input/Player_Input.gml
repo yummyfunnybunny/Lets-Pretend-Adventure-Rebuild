@@ -73,8 +73,8 @@ function player_input_x_check() {
 				npc_interact_input_progression();
 			} else if (object_index == obj_parent_item) {
 				item_interact_input_progression();
-			} else if(object_is_ancestor(object_index, obj_parent_chest)) {
-				chest_interact_input_progression();	
+			} else if(object_is_ancestor(object_index, obj_parent_prop)) {
+				prop_interact_input_progression();	
 			}
 		}
 	}

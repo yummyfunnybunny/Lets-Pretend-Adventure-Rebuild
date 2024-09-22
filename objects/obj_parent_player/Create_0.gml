@@ -45,8 +45,8 @@ global.player = {
 	},
 	equipped: [
 		[
-			{ category: "mainhand", item_id: 1 },
-			{ category: "offhand", item_id: 0 },
+			{ category: "mainhand", item_id: 6 },
+			{ category: "offhand", item_id: 1 },
 		],
 		[
 			{ category: "armor", item_id: 0 },
@@ -260,10 +260,12 @@ function player_use_offhand(_item) {
 	// get weapon type
 	var _item_id = _item.item_id;
 	var _weapon_type = ds_grid_get(global.offhand_data,OFFHAND_DATA.WEP_TYPE,_item_id);
+	item_used = _item;
 	
 	// set attack state according to weapon type
 	switch (_weapon_type) {
 		case "shield":		nest_state = nest_state_attack_shield;		break;
+		case "bomb":		nest_state = nest_state_attack_bomb;		break;
 	}
 }
 
@@ -438,7 +440,7 @@ function player_terrain_checks(){
 
 #region INIT PLAYER STATES
 
-// main states
+// MAIN STATES
 main_state_alive = function(){
 	player_update_x_speed();				// set x speed
 	player_update_y_speed();				// set y speed
@@ -485,7 +487,7 @@ main_state_death = function() {
 	}
 }
 
-// nest states
+// NEST STATES
 nest_state_free = function() {
 	// set sprite to either moving or idle
 	if (x_speed != 0 || y_speed != 0) {
@@ -495,14 +497,13 @@ nest_state_free = function() {
 	}
 }
 
+// weapon states
 nest_state_attack_sword = function() {
 
 	// begin attack
 	if (alarm[P_ALARM.ATK_START] == -1 && alarm[P_ALARM.ATK_END] == -1) {
 		x_speed = 0;
 		y_speed = 0;
-		// get weapon type
-		//var _weapon_type = ds_grid_get(global.item_data,ITEM_COLUMN.WEP_TYPE, item_used);
 		image_index = 0;
 		image_speed = 1;
 		alarm[P_ALARM.ATK_START] = -2;
@@ -510,7 +511,8 @@ nest_state_attack_sword = function() {
 	
 	// during attack
 	if (alarm[P_ALARM.ATK_START] == -2) {
-		if (image_index >= 3) {
+		var _wep_start = ds_grid_get(global.mainhand_data,MAINHAND_DATA.WEP_START, item_used.item_id);
+		if (image_index >= _wep_start) {
 			var _x_offset = 0;
 			var _y_offset = 0;
 			if (face_direction == 0) _x_offset = 8;
@@ -525,9 +527,10 @@ nest_state_attack_sword = function() {
 	// end attack
 	if (alarm[P_ALARM.ATK_START] == -3) {
 		if (image_index >= image_number-1) {
+			var _cd = ds_grid_get(global.mainhand_data, MAINHAND_DATA.WEP_CD, item_used.item_id);
 			nest_state = nest_state_free;
 			alarm[P_ALARM.ATK_START] = -1;
-			alarm[P_ALARM.ATK_END] = FPS * .1;
+			alarm[P_ALARM.ATK_END] = FPS * _cd;
 			item_used = noone;
 		}
 	}
@@ -582,7 +585,81 @@ nest_state_attack_flail = function() {
 }
 
 nest_state_attack_tomahawk = function() {
+	// begin attack
+	if (alarm[P_ALARM.ATK_START] == -1 && alarm[P_ALARM.ATK_END] == -1) {
+		x_speed = 0;
+		y_speed = 0;
+		image_index = 0;
+		image_speed = 1;
+		alarm[P_ALARM.ATK_START] = -2;
+	}
 	
+	// during attack
+	if (alarm[P_ALARM.ATK_START] == -2) {
+		var _wep_start = ds_grid_get(global.mainhand_data,MAINHAND_DATA.WEP_START, item_used.item_id);
+		if (image_index >= _wep_start) {
+			var _x_offset = 0;
+			var _y_offset = 0;
+			if (face_direction == 0) _x_offset = 8;
+			if (face_direction == 90) _y_offset = -10;
+			if (face_direction == 180) _x_offset = -8;
+			if (face_direction == 270) _y_offset = 2;
+			player_create_damage_object(item_used, _x_offset, _y_offset);
+			alarm[P_ALARM.ATK_START] = -3;
+		}
+	}
+	
+	// end attack
+	if (alarm[P_ALARM.ATK_START] == -3) {
+		if (image_index >= image_number-1) {
+			var _cd = ds_grid_get(global.mainhand_data, MAINHAND_DATA.WEP_CD, item_used.item_id);
+			nest_state = nest_state_free;
+			alarm[P_ALARM.ATK_START] = -1;
+			alarm[P_ALARM.ATK_END] = FPS * _cd;
+			item_used = noone;
+		}
+	}
+}
+
+nest_state_attack_bomb = function() {
+	// begin attack
+	if (alarm[P_ALARM.ATK_START] == -1 && alarm[P_ALARM.ATK_END] == -1) {
+		x_speed = 0;
+		y_speed = 0;
+		image_index = 0;
+		image_speed = 1;
+		alarm[P_ALARM.ATK_START] = -2;
+	}
+	
+	// during attack
+	if (alarm[P_ALARM.ATK_START] == -2) {
+		var _wep_start = ds_grid_get(global.offhand_data,OFFHAND_DATA.WEP_START, item_used.item_id);
+		if (image_index >= _wep_start) {
+			var _x_offset = 0;
+			var _y_offset = 0;
+			if (face_direction == 0) _x_offset = 8;
+			if (face_direction == 90) _y_offset = -10;
+			if (face_direction == 180) _x_offset = -8;
+			if (face_direction == 270) _y_offset = 2;
+			instance_create_layer(x+_x_offset, y+_y_offset,layer, obj_bomb, {
+				weapon_data: item_used,
+				creator: id,
+				faction: faction,
+			});
+			alarm[P_ALARM.ATK_START] = -3;
+		}
+	}
+	
+	// end attack
+	if (alarm[P_ALARM.ATK_START] == -3) {
+		if (image_index >= image_number-1) {
+			var _cd = ds_grid_get(global.offhand_data, OFFHAND_DATA.WEP_CD, item_used.item_id);
+			nest_state = nest_state_free;
+			alarm[P_ALARM.ATK_START] = -1;
+			alarm[P_ALARM.ATK_END] = FPS * _cd;
+			item_used = noone;
+		}
+	}
 }
 
 nest_state_item = function() {
@@ -597,14 +674,6 @@ nest_state_hurt = function() {
 
 }
 
-nest_state_talk = function() {
-	
-}
-
-nest_state_shop = function() {
-	
-}
-
 nest_state_climb = function() {
 	// set sprite to either moving or idle
 	if (x_speed != 0 || y_speed != 0) {
@@ -612,6 +681,15 @@ nest_state_climb = function() {
 	} else { 
 		if (image_speed != 0) { image_speed = 0; }
 	}
+}
+
+// ineract states
+nest_state_talk = function() {
+	
+}
+
+nest_state_shop = function() {
+	
 }
 
 nest_state_carry = function() {
@@ -634,6 +712,7 @@ nest_state_fall = function() {
 
 }
 
+// death states
 nest_state_death_normal = function() {
 
 }

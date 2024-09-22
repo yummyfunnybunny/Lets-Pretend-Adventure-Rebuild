@@ -1,3 +1,4 @@
 ﻿ID,NAME,DESC,CATEGORY,RARITY,DMG_TYPE,WEP_TYPE,ELMT_TYPE,DROP_IMG_IDX,INV_IMG_IDX,DMG_SPR_IDX,DMG_IMG_IDX,DMG_AMT,KNOCKBACK,WEP_START,WEP_CD,EFFECT
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-1,Sword 1,attack enemies at close range,weapon,0,1,sword,0,1,1,0,0,1,6,3,0.1,0
+1,bomb,place bombs on the ground that explode after a few seconds,weapon,1,4,bomb,0,1,1,spr_damage_explosive,0,3,6,0,1,0
+2,shield,block incoming attacks,weapon,0,3,shield,0,2,2,,0,0,6,0,0,0

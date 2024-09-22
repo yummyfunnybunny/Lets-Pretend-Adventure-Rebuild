@@ -145,6 +145,7 @@ enum MAINHAND_TYPE {
 enum OFFHAND_TYPE {
 	NONE,
 	SHIELD,
+	BOMB,
 	
 }
 

@@ -18,17 +18,17 @@ var _player_equipped_width = array_length(global.player.equipped[0]);
 var _player_equipped = global.player.equipped[0];
 
 // mainhand
-var _offhand_id = _player_equipped[1].item_id;
-if (_offhand_id != 0) {
-	var _inv_img_idx = ds_grid_get(global.offhand_data, OFFHAND_DATA.INV_IMG_IDX, _offhand_id);
-	draw_sprite_ext(spr_item_inv_mainhand, _inv_img_idx, equipped_slots_x_start-padding-(0*equipped_slots_gap), equipped_slots_y_start+padding, 2, 2, 0, c_white, 1);
-}
-
-// offhand
 var _mainhand_id = _player_equipped[0].item_id;
 if (_mainhand_id != 0) {
 	var _inv_img_idx = ds_grid_get(global.mainhand_data, MAINHAND_DATA.INV_IMG_IDX, _mainhand_id);
 	draw_sprite_ext(spr_item_inv_mainhand, _inv_img_idx,equipped_slots_x_start-padding-(1*equipped_slots_gap), equipped_slots_y_start+padding,2,2,0,c_white,1);
+}
+
+// offhand
+var _offhand_id = _player_equipped[1].item_id;
+if (_offhand_id != 0) {
+	var _inv_img_idx = ds_grid_get(global.offhand_data, OFFHAND_DATA.INV_IMG_IDX, _offhand_id);
+	draw_sprite_ext(spr_item_inv_offhand, _inv_img_idx, equipped_slots_x_start-padding-(0*equipped_slots_gap), equipped_slots_y_start+padding, 2, 2, 0, c_white, 1);
 }
 
 // input icons

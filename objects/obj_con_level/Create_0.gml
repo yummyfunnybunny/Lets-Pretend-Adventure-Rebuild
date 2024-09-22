@@ -60,6 +60,7 @@ function level_pause_game() {
 function level_resume_game() {
 	with (all) {
 		if (object_index == obj_parent_item) { exit; }
+		if (object_is_ancestor(object_index, obj_parent_prop)) { exit; }
 		image_speed = 1;	
 	}
 }
@@ -67,15 +68,12 @@ function level_resume_game() {
 function level_set_overlay() {
 	var _layer = layer_get_id("overlay");
 	var _bg_id = layer_background_get_id(_layer);
-	show_debug_message(_bg_id);
 	
 	if (_bg_id == -1) { exit; }
 	
 	var _sprite = layer_background_get_sprite(_bg_id);
 	if (_sprite == -1) { exit; }
-	show_debug_message(_sprite);
 	var _name = sprite_get_name(_sprite);
-	show_debug_message(_name);
 	var _type = string_split(_name,"_");
 	
 	switch(_type[2]) {

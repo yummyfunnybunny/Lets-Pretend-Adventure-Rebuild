@@ -1,7 +1,7 @@
 /// @desc
 
 if (global.debugger == true) {
-	
+
 	// set main state text
 	var _main_state;
 	switch (main_state) {
@@ -32,9 +32,6 @@ if (global.debugger == true) {
 	_debugger[3] = $"on_top_of: {on_top_of}";
 	_debugger[4] = $"depth: {depth}";
 	_debugger[5] = $"layer: {layer}";
-	
-	show_debug_message(layer_get_id("instances_1"));
-	show_debug_message(layer_get_name(layer));
 	
 	// set font
 	draw_set_font(fnt_text_10);

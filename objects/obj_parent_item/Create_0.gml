@@ -74,6 +74,12 @@ main_state_despawn = function() {
 
 #region HELPER FUNCTIONS
 
+function item_update_movement() {
+	if (knockback_check()) { exit; }
+	x_speed = lengthdir_x(move_speed, direction);
+	y_speed = lengthdir_y(move_speed, direction);
+}
+
 function item_check_for_empty_bag_slot() {
 	var _bag = global.player.bag;
 	var _bag_w = array_length(global.player.bag[0]);
@@ -218,6 +224,22 @@ function item_interact_draw_icon() {
 	switch(interact_type) {
 		case INTERACT_TYPE.PICKUP: draw_sprite(spr_interact_pickup,-1,x,y-z_height);	break;
 	}
+}
+
+function item_drift_to_player() {
+	if (main_state == main_state_spawn) { exit; }
+	if (interact_type != INTERACT_TYPE.NONE) { exit; }
+	
+	var _player = instance_nearest(x,y,obj_parent_player);
+	var _dis = point_distance(x,y,_player.x, _player.y);
+	if (_dis <= COL_TILES_SIZE*1.5) {
+		alarm[0] = alarm_get(0);
+		if (run_speed != 1) { run_speed = 1.5; }
+		direction = point_direction(x,y,_player.x,_player.y);
+		x_speed += lengthdir_x(run_speed, direction);
+		y_speed += lengthdir_y(run_speed, direction);
+	}
+	
 }
 
 #endregion

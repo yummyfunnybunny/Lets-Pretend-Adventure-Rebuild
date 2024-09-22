@@ -181,15 +181,16 @@ function menu_update_character() {
 }
 
 function menu_equip_item(_equipped_slot, _bag_slot) {
-	
 	if (_equipped_slot.item_id != 0) {
 		// equip new item and unequip old item
-		var _unequipped_item = _equipped_slot;
+		var _item_unequipping = {
+			category: _equipped_slot.category,
+			item_id: _equipped_slot.item_id,
+		}
 		_equipped_slot.item_id = _bag_slot.item_id;
 		_bag_slot.item_id = 0;
 		_bag_slot.category = 0;
-		//show_message(global.player.bag);
-		menu_unequip_item(_unequipped_item, true);
+		menu_unequip_item(_item_unequipping, true);
 	} else {
 		// equip new item only
 		_equipped_slot.item_id = _bag_slot.item_id;
@@ -198,7 +199,8 @@ function menu_equip_item(_equipped_slot, _bag_slot) {
 	}
 }
 
-function menu_unequip_item(_equipped_slot, _equip_new_item) {
+function menu_unequip_item(_item_unequipping, _equip_new_item) {
+	//show_debug_message(_item_unequipping);
 	var _bag = global.player.bag;
 	var _bag_w = array_length(_bag[0]);
 	var _bag_h = array_length(_bag);
@@ -208,12 +210,12 @@ function menu_unequip_item(_equipped_slot, _equip_new_item) {
 		for (var _j = 0; _j < _bag_w; _j++) {
 			var _bag_slot = _bag[_i][_j];
 			if (_bag_slot.item_id == 0) {
-				// add equipped item to bag
-				_bag_slot.item_id = _equipped_slot.item_id;
-				_bag_slot.category = _equipped_slot.category;
+				// add previously equipped item to bag
+				_bag_slot.item_id = _item_unequipping.item_id;
+				_bag_slot.category = _item_unequipping.category;
 				// empty equipped slot
 				if (!_equip_new_item) {
-					_equipped_slot.item_id = 0;
+					_item_unequipping.item_id = 0;
 				}
 				exit;
 			}
@@ -407,21 +409,27 @@ function menu_draw_character() {
 	var _char_y = 130;
 	draw_sprite_ext(spr_level_menu_character_char,0,_char_x,_char_y,1,1,0,c_white,1);
 	
+	draw_sprite_ext(spr_level_menu_icons, 0, char_equip_x_start, char_equip_y_start,1,1,0,c_white,.25);
+	draw_sprite_ext(spr_level_menu_icons, 2, char_equip_x_start, char_equip_y_start+(char_equip_y_gap*1),1,1,0,c_white,.25);
+	draw_sprite_ext(spr_level_menu_icons, 4, char_equip_x_start, char_equip_y_start+(char_equip_y_gap*2),1,1,0,c_white,.25);
+	draw_sprite_ext(spr_level_menu_icons, 1, char_equip_x_start+char_equip_x_gap, char_equip_y_start,1,1,0,c_white,.25);
+	draw_sprite_ext(spr_level_menu_icons, 3, char_equip_x_start+char_equip_x_gap, char_equip_y_start+(char_equip_y_gap*1),1,1,0,c_white,.25);
+	draw_sprite_ext(spr_level_menu_icons, 4, char_equip_x_start+char_equip_x_gap, char_equip_y_start+(char_equip_y_gap*2),1,1,0,c_white,.25);
+	
 	// equip slots
 	var _equip_width = array_length(global.player.equipped[0]);
 	var _equip_height = array_length(global.player.equipped);
 	var _player_equipped = global.player.equipped;
-	for (var _i = 0; _i < _equip_width; _i++) {
-		for (var _j = 0; _j < _equip_height; _j++) {
+	for (var _i = 0; _i < _equip_height; _i++) {
+		for (var _j = 0; _j < _equip_width; _j++) {
 			// draw frame
-			draw_sprite(spr_item_frame,0,char_equip_x_start+(char_equip_x_gap*_i), char_equip_y_start+(char_equip_y_gap*_j));
+			draw_sprite(spr_item_frame,0,char_equip_x_start+(char_equip_x_gap*_j), char_equip_y_start+(char_equip_y_gap*_i));
 			
-			var _item_id = _player_equipped[_j][_i].item_id;
+			var _item_id = _player_equipped[_i][_j].item_id;
 			if (_item_id == 0) { continue; }
+			
 			// draw rarity
-			
-			
-			var _category = _player_equipped[_j][_i].category;
+			var _category = _player_equipped[_i][_j].category;
 			var _dataset = get_dataset(_category);
 			var _rarity_col = enum_get_rarity(_category);
 			var _rarity = ds_grid_get(_dataset, _rarity_col, _item_id);
@@ -437,12 +445,7 @@ function menu_draw_character() {
 		}
 	}
 	
-	draw_sprite_ext(spr_level_menu_icons, 0, char_equip_x_start, char_equip_y_start,1,1,0,c_white,.25);
-	draw_sprite_ext(spr_level_menu_icons, 2, char_equip_x_start, char_equip_y_start+(char_equip_y_gap*1),1,1,0,c_white,.25);
-	draw_sprite_ext(spr_level_menu_icons, 4, char_equip_x_start, char_equip_y_start+(char_equip_y_gap*2),1,1,0,c_white,.25);
-	draw_sprite_ext(spr_level_menu_icons, 1, char_equip_x_start+char_equip_x_gap, char_equip_y_start,1,1,0,c_white,.25);
-	draw_sprite_ext(spr_level_menu_icons, 3, char_equip_x_start+char_equip_x_gap, char_equip_y_start+(char_equip_y_gap*1),1,1,0,c_white,.25);
-	draw_sprite_ext(spr_level_menu_icons, 4, char_equip_x_start+char_equip_x_gap, char_equip_y_start+(char_equip_y_gap*2),1,1,0,c_white,.25);
+	
 	
 	draw_set_font(fnt_text_10);
 	draw_set_halign(fa_left);

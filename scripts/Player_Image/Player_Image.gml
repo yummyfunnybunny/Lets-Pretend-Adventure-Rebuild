@@ -35,8 +35,9 @@ function player_image_state() {
 		case nest_state_attack_crossbow:	_state = "_attack_crossbow";	break;
 		case nest_state_attack_shield:		_state = "_attack_shield";		break;
 		case nest_state_attack_boomstick:	_state = "_attack_boomstick";	break;
-		case nest_state_attack_flial:		_state = "_attack_flail";		break;
-		case nest_state_attack_tomahawk:	_state = "_attack_tomahawk";	break;
+		case nest_state_attack_flail:		_state = "_attack_flail";		break;
+		case nest_state_attack_tomahawk:	_state = "";					break;
+		case nest_state_attack_bomb:		_state = "";					break;
 	}
 	return _state;
 }
@@ -57,13 +58,13 @@ function player_image_speed(_state) {
 function player_image_terrain(_state, _speed) {
 	var _terrain;
 	switch(terrain_state){
-		case TERRAIN_TYPE.NONE:			_terrain = "";		break;
-		case TERRAIN_TYPE.WALL:			_terrain = "";		break;
+		case TERRAIN_TYPE.NONE:				_terrain = "";		break;
+		case TERRAIN_TYPE.WALL:				_terrain = "";		break;
 		case TERRAIN_TYPE.SHALLOW_WATER:	_terrain = "_wade";	break;
-		case TERRAIN_TYPE.DEEP_WATER:	_terrain = "";		break;
-		case TERRAIN_TYPE.LADDER:		_terrain = "";		break;
-		case TERRAIN_TYPE.TALL_GRASS:	_terrain = "_wade";	break;
-		case TERRAIN_TYPE.PITFALL:		_terrain = "";		break;
+		case TERRAIN_TYPE.DEEP_WATER:		_terrain = "";		break;
+		case TERRAIN_TYPE.LADDER:			_terrain = "";		break;
+		case TERRAIN_TYPE.TALL_GRASS:		_terrain = "_wade";	break;
+		case TERRAIN_TYPE.PITFALL:			_terrain = "";		break;
 	}
 	return _terrain;
 }

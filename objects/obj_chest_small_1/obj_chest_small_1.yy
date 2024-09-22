@@ -4,7 +4,10 @@
   "eventList":[],
   "managed":true,
   "name":"obj_chest_small_1",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_prop","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"propertyId":{"name":"locked","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_prop","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"propertyId":{"name":"item_drops","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"{ category: \"ammo\", item_id: 3, qty: 15, }",},
+  ],
   "parent":{
     "name":"Chests",
     "path":"folders/Objects/7 - Props/Chests.yy",
