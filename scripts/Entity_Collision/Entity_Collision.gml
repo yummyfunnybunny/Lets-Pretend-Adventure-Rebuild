@@ -71,7 +71,7 @@ function set_z_limits() {
 		
 		// check if _instance _is above you
 		if (_entity_collided.entity_solid && _entity_collided.z_bottom < z_top){
-			if (bounding_box_check(_entity_collided) == true) {
+			if (bounding_box_overlap_check("xy", id, _entity_collided) == true) {
 				// set z_roof to bottom of coll_id_ing _instance above you
 				z_roof = _entity_collided.z_bottom+1;
 				below_of = _entity_collided;
@@ -85,7 +85,7 @@ function set_z_limits() {
 		}
 		
 		if (_entity_collided.entity_solid && _entity_collided.z_top > z_bottom) {
-			if (bounding_box_check(_entity_collided) == true) {
+			if (bounding_box_overlap_check("xy", id, _entity_collided) == true) {
 				z_floor = _entity_collided.z_top-1;
 				on_top_of = _entity_collided;
 			}else {
@@ -192,26 +192,26 @@ function stepup_check(_entity_collided) {
 	}
 }
 
-function bounding_box_check(_entity_collided) {
+//function bounding_box_check(_entity_collided) {
 	
-	// save bound_ing boxes of coll_id_ing _instance
-	var _bbox_right = _entity_collided.bbox_right;
-	var _bbox_left = _entity_collided.bbox_left;
-	var _bbox_bottom = _entity_collided.bbox_bottom;
-	var _bbox_top = _entity_collided.bbox_top;
+//	// save bound_ing boxes of coll_id_ing _instance
+//	var _bbox_right = _entity_collided.bbox_right;
+//	var _bbox_left = _entity_collided.bbox_left;
+//	var _bbox_bottom = _entity_collided.bbox_bottom;
+//	var _bbox_top = _entity_collided.bbox_top;
 	
-	// perform the check
-	if (bbox_left <= _bbox_right && bbox_left >= _bbox_left ||
-		bbox_right >= _bbox_left && bbox_right <= _bbox_right ||
-		bbox_bottom <= _bbox_bottom && bbox_bottom >= _bbox_top ||
-		bbox_top >= _bbox_top  && bbox_top <= _bbox_bottom) {
-		// there _is overlap, so return true
-		return true;
-	}else {
-		// there _is NO overlap, so return false
-		return false;	
-	}
-}
+//	// perform the check
+//	if (bbox_left <= _bbox_right && bbox_left >= _bbox_left ||
+//		bbox_right >= _bbox_left && bbox_right <= _bbox_right ||
+//		bbox_bottom <= _bbox_bottom && bbox_bottom >= _bbox_top ||
+//		bbox_top >= _bbox_top  && bbox_top <= _bbox_bottom) {
+//		// there _is overlap, so return true
+//		return true;
+//	}else {
+//		// there _is NO overlap, so return false
+//		return false;	
+//	}
+//}
 
 function pushout_check() {
 	if (place_meeting(x,y,obj_parent_entity)){

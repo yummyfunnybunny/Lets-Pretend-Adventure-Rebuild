@@ -11,7 +11,6 @@ image_rotation = 0;
 
 function damage_pre_damage_check() {
 	if (!check_z_overlap(other)) { return false; }		// no z-overlap
-	show_debug_message("passed z overlap");
 	if (other.id == creator) { return false; }			// player created this damage object
 	if (other.faction == faction && other.faction != FACTION_TYPE.NONE) { return false; }		// damage object belongs to same faction
 	if (object_is_ancestor(other.object_index, obj_parent_prop)) {

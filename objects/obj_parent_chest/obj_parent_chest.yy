@@ -11,6 +11,7 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_entity","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"propertyId":{"name":"z_height","path":"objects/obj_parent_entity/obj_parent_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"6",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_prop","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"propertyId":{"name":"can_drop_items","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_prop","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"propertyId":{"name":"can_interact","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_parent_prop","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"propertyId":{"name":"interact_type","path":"objects/obj_parent_prop/obj_parent_prop.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"INTERACT_TYPE.OPEN",},
   ],
   "parent":{
     "name":"Chests",

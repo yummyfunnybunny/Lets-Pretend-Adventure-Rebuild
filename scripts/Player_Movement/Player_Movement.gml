@@ -1,12 +1,19 @@
 
 function player_update_max_speed() {
 	switch(terrain_state) {
-		case TERRAIN_TYPE.NONE:			if (max_speed != run_speed)		max_speed = run_speed;		break;
-		case TERRAIN_TYPE.SHALLOW_WATER: if (max_speed != wade_speed)	max_speed = wade_speed;		break;
-		case TERRAIN_TYPE.TALL_GRASS:	if (max_speed != wade_speed)	max_speed = wade_speed;		break;
-		case TERRAIN_TYPE.LADDER:		if (max_speed != climb_speed)	max_speed = climb_speed;	break;
-		default:					if (max_speed != run_speed)		max_speed = run_speed;		break;
+		case TERRAIN_TYPE.NONE:				if (max_speed != run_speed)		max_speed = run_speed;		break;
+		case TERRAIN_TYPE.SHALLOW_WATER:	if (max_speed != wade_speed)	max_speed = wade_speed;		break;
+		case TERRAIN_TYPE.TALL_GRASS:		if (max_speed != wade_speed)	max_speed = wade_speed;		break;
+		case TERRAIN_TYPE.LADDER:			if (max_speed != climb_speed)	max_speed = climb_speed;	break;
+		default:							if (max_speed != run_speed)		max_speed = run_speed;	 	break;
 	}
+	
+	switch(nest_state) {
+		case nest_state_push:
+			if (max_speed != push_speed) { max_speed = push_speed; }
+		break;
+	}
+	
 }
 
 function player_update_move_direction() {
@@ -33,15 +40,15 @@ function player_update_face_direction() {
 		var _move_dir_prev = 0;
 		switch(move_direction) {
 			case 0: 
-				face_direction = 0; 
-				_move_dir_prev = 0; 
+				face_direction = 0;
+				_move_dir_prev = 0;
 			break;
 			
-			case 45: 
-				if (_move_dir_prev == 0) { 
-					face_direction = 0; 
-				} else { 
-					face_direction = 90; 
+			case 45:
+				if (_move_dir_prev == 0) {
+					face_direction = 0;
+				} else {
+					face_direction = 90;
 				} 
 			break;
 			

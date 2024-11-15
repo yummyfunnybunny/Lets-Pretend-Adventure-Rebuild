@@ -41,7 +41,7 @@ function prop_create_explosion() {
 	var _dmg_amt_data = enum_get_dmg_amt(_category);
 	var _kb_data = enum_get_knockback(_category);
 	var _effect_data = enum_get_effect(_category);
-	var _wep_type_date = enum_get_wep_type(_category);
+	var _wep_type_data = enum_get_wep_type(_category);
 	var _dmg_obj_spr_data = enum_get_dmg_obj_spr(_category);
 	var _dmg_spr_idx_data = enum_get_dmg_spr_idx(_category);
 	
@@ -56,7 +56,7 @@ function prop_create_explosion() {
 	var _special_effect = ds_grid_get(_dataset, _effect_data, _weapon_id);
 	
 	// determine which damage object to create
-	var _wep_type = ds_grid_get(_dataset, _wep_type_date, _weapon_id);
+	var _wep_type = ds_grid_get(_dataset, _wep_type_data, _weapon_id);
 	_wep_type = asset_get_index("obj_damage_" + string(_wep_type));
 	
 	// get the sprite to set for the damage object

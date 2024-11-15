@@ -155,11 +155,11 @@ enum INTERACT_TYPE {
 	TALK,
 	SHOP,
 	QUEST,
-	PUSH,
-	PULL,
-	CARRY,		// used for carrying other objects around
+	PUSH,		// push/pull objects
+	//PULL,
+	CARRY,		// carry/throw objects
 	PICKUP,		// used for picking up items
-	OPEN,		// open chests, doors, etc.
+	OPEN,		// open/close chests, doors, etc.
 	INTERACT	// generic; use for any object that only has one type of interact type
 }
 

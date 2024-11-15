@@ -18,9 +18,14 @@ just_got_damaged		= false;
 move_speed = 0;
 
 // can_interact
-interact_type			= INTERACT_TYPE.INTERACT;
+//interact_type			= INTERACT_TYPE.INTERACT;
 interact_target			= noone;
-interact_range			= 1.5;
+interact_prev_state		= noone;				// stores the state npc was in before interaction, to back to, once interaction ends
+//interact_range			= 1.5;
+pushing = {
+	x_lock: 0,
+	y_lock: 0,
+}
 
 // can_drop_items
 drop_queue				= [];
@@ -39,6 +44,7 @@ enum PROP_ALARM {
 	DEATH,
 	DAMAGED,
 	DROP_QUEUE,
+	INTERACT,
 }
 
 #endregion
@@ -106,6 +112,29 @@ nest_state_death_normal = function(){}
 nest_state_death_drown = function(){}
 
 nest_state_death_pitfall = function(){}
+
+nest_state_push = function(){
+	if (interact_target == noone) { nest_state = nest_state_idle; }
+	
+	x = interact_target.x - pushing.x_dis;
+	y = interact_target.y - pushing.y_dis;
+	
+	
+	// lock xy position relative to player
+	//if (interact_target.x_speed != 0) {
+		//show_debug_message(lengthdir_x(interact_target.x_speed, interact_target.move_direction)*sin(interact_target.x_speed));	
+	//}
+	//if (interact_target.y_speed != 0) {
+		//show_debug_message(lengthdir_y(interact_target.y_speed, interact_target.move_direction)*sin(interact_target.y_speed));	
+	//}
+	
+	//x += lengthdir_x(interact_target.x_speed, interact_target.move_direction)*sin(interact_target.x_speed);
+	//y += lengthdir_y(interact_target.y_speed, interact_target.move_direction)*sin(interact_target.y_speed);
+	
+	//obj_player.x += lengthdir_x(move_speed, direction);
+	//obj_player.y += lengthdir_y(move_speed, direction);
+	
+}
 
 #endregion
 
@@ -300,7 +329,7 @@ function prop_terrain_effect() {
 function prop_interact_set_target() {
 	if (can_interact == false) { exit; }
 	if (interact_type == INTERACT_TYPE.NONE) { exit; }
-	if (main_state != main_state_closed) { exit; }
+	if (interact_type == INTERACT_TYPE.OPEN && main_state != main_state_closed) { exit; }
 	
 	if (!instance_exists(interact_target)) {
 		if (instance_exists(obj_parent_player)){
@@ -317,69 +346,68 @@ function prop_interact_set_target() {
 	}
 }
 
-function prop_interact_range_check() {
-	if (can_interact == false) { exit; }
-	if (interact_type == INTERACT_TYPE.NONE) { exit; }
-	if (main_state != main_state_closed) { exit; }
-	if (!instance_exists(interact_target)) { exit; }
-	if (interact_target.layer != layer) { exit; }
+prop_interact_range_check = function() {}
+
+prop_check_target_infront = function() {}
+
+prop_remove_interact_target_target_check = function() {
+	if (interact_target == noone) { exit; }
+	if (interact_target.interact_target != id) { exit; }
 	
-	var _dis = point_distance(x,y,interact_target.x,interact_target.y);
-	if (_dis <= interact_range*COL_TILES_SIZE) {
-		prop_check_target_infront(interact_target);
-	} else {
-		if (interact_target.interact_target == id) { interact_target.interact_target = noone; }
-	}
+	if (interact_target.on_top_of == id) { interact_target.interact_target = noone; }
+	if (interact_target.on_ground == false) { interact_target.interact_target = noone; }
 }
 
-function prop_check_target_infront(_target) {
-	if (can_interact == false) { exit; }
-	
-	if (_target.y > y) {
-		if (_target.face_direction == 90) {
-			if (bbox_left <= _target.x && bbox_right >= _target.x) {
-				interact_target.interact_target = id;
-				return;
-			}
-		}
-	}
-	if (interact_target.interact_target == id) { interact_target.interact_target = noone; }
-}
 
 function prop_interact_draw_icon() {
 	if (can_interact == false) { exit; }
 	if (!instance_exists(interact_target)) { exit; }
 	if (interact_target.interact_target != id) { exit; }
-	if (main_state != main_state_closed) { exit; }
+	if (interact_type == INTERACT_TYPE.OPEN && main_state != main_state_closed) { exit; }
+	if (interact_type == INTERACT_TYPE.PUSH && nest_state == nest_state_push) { exit; }
 	
 	draw_sprite(spr_interact_pickup,0,x,y-z_height - 8);
 }
 
-function prop_interact_input_progression() {
-	if (can_interact == false) { exit; }
-	if (main_state != main_state_closed) { exit; }
-	
-	if (main_state == main_state_closed) {
-		// check if a key is needed
-		// - yes -> check if player has key
-			// - yes -> open check
-			// - no -> don't open chest
-		// - no -> open chest
-		if (locked == false) {
-			main_state = main_state_opening;
-		} else {
-			// do the check for the key	
-			if (global.player.ammo.keys > 0) {
-				locked = false;
-				global.player.ammo.keys--;
-				main_state = main_state_opening;
-			} else {
-				// player has no keys
-				// - shake the box, play a failed sound, etc...
-			}
-		}
-	}
+function prop_interact_end_push() {
+		
 }
+
+
+//function prop_interact_input_progression() {
+//	if (can_interact == false) { exit; }
+//	if (main_state != main_state_closed) { exit; }
+	
+//	//var _prop_type = object_index;
+//	//show_debug_message(_prop_type);
+//	//var _parent_type = object_is_ancestor(object_index, obj_parent_chest);
+//	//show_debug_message(_parent_type);
+//	show_debug_message($"object_index: {object_index}");
+//	show_debug_message($"chest parent: {object_is_ancestor(object_index, obj_parent_chest)}");
+//	show_debug_message($"crate parent: {object_is_ancestor(object_index, obj_parent_crate)}");
+//	show_debug_message($"prop grand_parent: {object_is_ancestor(object_index, obj_parent_prop)}");
+	
+//	if (main_state == main_state_closed) {
+//		// check if a key is needed
+//		// - yes -> check if player has key
+//			// - yes -> open check
+//			// - no -> don't open chest
+//		// - no -> open chest
+//		if (locked == false) {
+//			main_state = main_state_opening;
+//		} else {
+//			// do the check for the key	
+//			if (global.player.ammo.keys > 0) {
+//				locked = false;
+//				global.player.ammo.keys--;
+//				main_state = main_state_opening;
+//			} else {
+//				// player has no keys
+//				// - shake the box, play a failed sound, etc...
+//			}
+//		}
+//	}
+//}
 
 #endregion
 

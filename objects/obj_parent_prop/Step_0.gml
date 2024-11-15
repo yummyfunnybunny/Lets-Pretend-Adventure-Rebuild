@@ -14,6 +14,7 @@ script_execute(nest_state);
 //if (can_interact) {
 	prop_interact_set_target();
 	prop_interact_range_check();
+	prop_remove_interact_target_target_check();
 //}
 
 //// can move

@@ -27,7 +27,7 @@ function player_image_state() {
 		case nest_state_climb:				_state = "_climb";				break;
 		case nest_state_carry:				_state = "_carry";				break;
 		case nest_state_push:				_state = "_push";				break;
-		case nest_state_pull:				_state = "_pull";				break;
+		//case nest_state_pull:				_state = "_pull";				break;
 		case nest_state_death_drown:		_state = "_death_drown";		break;
 		case nest_state_death_normal:		_state = "_death_normal";		break;
 		case nest_state_death_pitfall:		_state = "_death_pitfall";		break;
@@ -46,7 +46,7 @@ function player_image_speed(_state) {
 	var _speed = "";
 	
 	// skip for instances where move and idle are the same for the given state
-	if (_state != "" && _state != "_carry" && _state != "_push" && _state != "_pull") { return _speed; }
+	if (_state != "" && _state != "_carry" && _state != "_pull") { return _speed; }
 	
 	if (x_speed != 0 || y_speed != 0) {
 		return "_move";

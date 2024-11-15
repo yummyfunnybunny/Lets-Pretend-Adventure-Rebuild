@@ -12,7 +12,7 @@ align_x					= 0;					// sets x-position to for aligning a certain way to target 
 align_y					= 0;					// sets y-position for aligning a certain way to target for attacks
 extra_damage_check		= noone;				// use this to store a function to perform additional checks for unique enemies when taking damage
 interact_target			= noone;				// sets the id of the player the npc is set to interact with when player presses A
-interact_prev_state		= noone;				// stores the state npc was in before interaction to back to once interaction is ends
+interact_prev_state		= noone;				// stores the state npc was in before interaction, to back to, once interaction ends
 
 
 // quest
