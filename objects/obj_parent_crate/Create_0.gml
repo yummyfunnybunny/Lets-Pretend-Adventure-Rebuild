@@ -23,6 +23,7 @@ prop_interact_input_progression = function() {
 		var _dir = point_direction(x,y,interact_target.x,interact_target.y);
 		pushing.x_lock = lengthdir_x(_dis,_dir);
 		pushing.y_lock = lengthdir_y(_dis,_dir);
+		interact_prev_state = nest_state;
 		nest_state = nest_state_push;
 	}
 	

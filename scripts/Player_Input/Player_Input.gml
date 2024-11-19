@@ -57,9 +57,9 @@ function player_input_a_check() {
 	var _input_type = get_weapon_input_type(global.player.equipped[0][0]);
 
 	// check for input
-	if (player_input_handler(_input_type, a_keycode) == true) {
-		player_use_mainhand(global.player.equipped[0][0]);
-	}
+	//if (player_input_handler(_input_type, a_keycode) == true) {
+	//	player_use_mainhand(global.player.equipped[0][0]);
+	//}
 }
 
 function player_input_b_check() {
@@ -77,61 +77,54 @@ function player_input_b_check() {
 
 function player_input_x_check() {
 	// keyboard = X
+	if (!x_input_pressed && !x_input_held && !x_input_released) { exit; }
 	if (!interact_target) { exit; }
 	
-	// check the interact_target's interact type and act accordingly
-	var _input_type = get_interact_target_input_type(interact_target);
-	
-	if (player_input_handler(_input_type, x_keycode) == true) {
+	if (x_input_pressed == true || x_input_held == true || x_input_released == true) {
 		
-		// call objects input progression
-		with (interact_target) {
-			// NPCs
-			if (object_is_ancestor(object_index,obj_parent_npc)) {
-				npc_interact_input_progression();
-			// ITEMS
-			} else if (object_index == obj_parent_item) {
-				item_interact_input_progression();
-			// PROPS
-			} else if(object_is_ancestor(object_index, obj_parent_prop)) {
-				prop_interact_input_progression();
+		// check the interact_target's interact type and act accordingly
+		var _input_type = get_interact_target_input_type(interact_target);
+	
+		if (player_input_handler(_input_type, "x") == true) {
+		
+			// call objects input progression
+			with (interact_target) {
+				// NPCs
+				if (object_is_ancestor(object_index,obj_parent_npc)) {
+					npc_interact_input_progression();
+				// ITEMS
+				} else if (object_index == obj_parent_item) {
+					item_interact_input_progression();
+				// PROPS
+				} else if(object_is_ancestor(object_index, obj_parent_prop)) {
+					prop_interact_input_progression();
+				}
 			}
-		}
-		// set player state
-		switch(interact_target.interact_type) {
-			case INTERACT_TYPE.PUSH:
-				nest_state = nest_state_push;
-			break;
+			// set player state
+			switch(interact_target.interact_type) {
+				case INTERACT_TYPE.PUSH:
+					nest_state = nest_state_push;
+				break;
+			}
+		} else {
+			// reset interact target
+			with (interact_target) {
+				// NPCs
+				if (object_is_ancestor(object_index,obj_parent_npc)) {
+			
+				// ITEMS
+				} else if (object_index == obj_parent_item) {
+				
+				// PROPS
+				} else if(object_is_ancestor(object_index, obj_parent_prop)) {
+					prop_interact_end();	
+				}
+			}
+			// reset player
+			interact_target = noone;
+			nest_state = nest_state_free;
 		}
 	}
-	
-	//player_input_handler({
-	//	input_type: _input_type, 
-	//	action: function(){
-	//		with (interact_target) {
-	//			if (object_is_ancestor(object_index,obj_parent_npc)) {
-	//				npc_interact_input_progression();
-	//			} else if (object_index == obj_parent_item) {
-	//				item_interact_input_progression();
-	//			} else if(object_is_ancestor(object_index, obj_parent_prop)) {
-	//				prop_interact_input_progression();
-	//			}
-	//		}
-	//	}
-	//});
-	
-	
-	//if (x_input_pressed) {
-	//	with (interact_target) {
-	//		if (object_is_ancestor(object_index,obj_parent_npc)) {
-	//			npc_interact_input_progression();
-	//		} else if (object_index == obj_parent_item) {
-	//			item_interact_input_progression();
-	//		} else if(object_is_ancestor(object_index, obj_parent_prop)) {
-	//			prop_interact_input_progression();
-	//		}
-	//	}
-	//}
 }
 
 function player_input_y_check() {
@@ -185,57 +178,57 @@ function get_weapon_input_type(_wep){
 }
 
 function player_input_handler(_input_type, _keycode) {
-	if (keyboard_key == 0) { exit; }
+
+	// set input group being pressed (a,b,x,y)
+	var _input_pressed		= undefined; 
+	var _input_held			= undefined; 
+	var _input_released		= undefined;
+	switch(_keycode) {
+		case "a":
+			_input_pressed	= a_input_pressed;
+			_input_held		= a_input_held;
+			_input_released = a_input_released;
+		break;
+		
+		case "b":
+			_input_pressed	= b_input_pressed;
+			_input_held		= b_input_held;
+			_input_released = b_input_released;
+		break;
+		
+		case "x":
+			_input_pressed	= x_input_pressed;
+			_input_held		= x_input_held;
+			_input_released = x_input_released;
+		break;
+		
+		case "y":
+			_input_pressed	= y_input_pressed;
+			_input_held		= y_input_held;
+			_input_released = y_input_released;
+		break;
+	}
 	
-	var _input_pressed, _input_held, _input_released;
-	if (keyboard_key == _keycode && _keycode == a_keycode) {
-		// keyboard = V
-		_input_pressed	= a_input_pressed;
-		_input_held		= a_input_held;
-		_input_released = a_input_released;
-	} else if (keyboard_key == _keycode && _keycode == b_keycode) {
-		// keyboard = C
-		_input_pressed	= b_input_pressed;
-		_input_held		= b_input_held;
-		_input_released = b_input_released;
-	} else if (keyboard_key == _keycode && _keycode == x_keycode) {
-		// keyboard = X
-	 	_input_pressed	= x_input_pressed;
-		_input_held		= x_input_held;
-		_input_released = x_input_released;
-	} else if (keyboard_key == _keycode && _keycode == y_keycode) {
-		// keyboard = Z
-		_input_pressed	= y_input_pressed;
-		_input_held		= y_input_held;
-		_input_released = y_input_released;
-	} else {
+	//show_debug_message($"{_input_pressed}, {_input_held}, {_input_released}");
+	if (!_input_pressed && !_input_held && !_input_released) {
 		exit;
 	}
 	
-	//var _inputs = {
-	//	pressed: false,
-	//	held: false,
-	//	released: false,
-	//}
-	
+	// return the result of the input check based on the type
 	switch(_input_type) {
 		case "click":
 			if (_input_pressed) {
 				return true;
-				//_inputs.pressed = true;
 			} else {
 				return false;
-				//_inputs.pressed = false;	
 			}
 		break;
 		
 		case "hold":
 			if (_input_held) {
 				return true;
-				//inputs.held = true;
 			} else {
 				return false;
-				//_inputs.held = false;
 			}
 		break;
 		
@@ -252,6 +245,4 @@ function player_input_handler(_input_type, _keycode) {
 			}
 		break;
 	}
-	
-	return _inputs;
 }

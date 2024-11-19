@@ -47,7 +47,7 @@ function entity_collision(){
 	// cant get on ladder until you are on the ground
 	if (tilemap_get_at_pixel(global.collision_map,x,y + y_speed) == 4 && !on_ground){
 		if (tilemap_get_at_pixel(global.collision_map,x,y + sign(y_speed)) == 4 && !on_ground){
-			y_speed = 0;	
+			y_speed = 0;
 		} else {
 			y_speed = sign(y_speed);	
 		}
@@ -60,7 +60,7 @@ function entity_collision(){
 	y += y_speed;
 	
 	// pushout check
-	pushout_check();	
+	pushout_check();
 }
 
 function set_z_limits() {
@@ -120,6 +120,9 @@ function wall_x_axis_check(_terrain,_xx, _bb_hh){
 function entity_x_axis_check(_xx) {
 	if (place_meeting(x+_xx+x_speed,y,obj_parent_entity)){
 		var _entity_collided = instance_place(x+_xx+x_speed,y,obj_parent_entity);	// save the object in question
+		
+		if (interact_target == _entity_collided && nest_state == nest_state_push) { exit; }
+		
 		if (_entity_collided.entity_solid) {										// check if entity is solid
 			if (check_z_overlap(_entity_collided) == true){							// check for z overlap with object _in quest_ion
 				if (stepup_check(_entity_collided) == false){						// perform step-up check
@@ -151,12 +154,18 @@ function wall_y_axis_check(_terrain, _yy, _bb_wh) {
 function entity_y_axis_check(_yy) {
 	if (place_meeting(x,y+_yy+y_speed,obj_parent_entity)){
 		var _entity_collided = instance_place(x,y+_yy+y_speed,obj_parent_entity);			// save the object in question
+		
+		if (interact_target == _entity_collided && nest_state == nest_state_push) { exit; }
+		
 		if (_entity_collided.entity_solid) {												// check if entity is solid
 			if (check_z_overlap(_entity_collided) == true){									// check for z overlap with object in question
 				if (stepup_check(_entity_collided) == false){								// perform step-up check
 					if (place_meeting(x,y+sign(y_speed),_entity_collided)){					// check for collision 1 pixel away
+						//show_debug_message("y_speed = 0");
 						y_speed = 0;														// there is a collision, return 0 so there is no movement
 					}else {
+						//show_debug_message($"y_speed: {y_speed}");
+						//show_debug_message($"sin y_speed: {sin(y_speed)}");
 						y_speed = sign(y_speed);											// no collision, return the sign of either x_speed or y_speed
 					}
 				}
@@ -217,10 +226,16 @@ function pushout_check() {
 	if (place_meeting(x,y,obj_parent_entity)){
 		// save the object in question
 		var _entity_collided = instance_place(x,y,obj_parent_entity);
+		
+		
+		if (interact_target == _entity_collided && nest_state == nest_state_push) { exit; }
+		
 		// check if entity is solid
 		if (_entity_collided.entity_solid) {
+			
 			// check for z overlap with object in question
 			if (check_z_overlap(_entity_collided) == true){
+				
 				var _dir = point_direction(_entity_collided.x,_entity_collided.y,x,y);
 				var _cardinal_dir = round(_dir/90);
 				switch(_cardinal_dir) {

@@ -14,7 +14,13 @@ function player_update_image() {
 	var _face_dir = player_image_face_dir(_state, _speed, _terrain);
 	
 	// 5 - set the sprite
-	sprite_index = asset_get_index($"spr_player{_state}{_speed}{_terrain}{_face_dir}");
+	show_debug_message($"spr_player{_state}{_speed}{_terrain}{_face_dir}");
+	show_debug_message(image_speed);
+	var _sprite = asset_get_index($"spr_player{_state}{_speed}{_terrain}{_face_dir}");
+	if (sprite_index != _sprite) {
+		sprite_index = asset_get_index($"spr_player{_state}{_speed}{_terrain}{_face_dir}");
+	}
+	
 }
 
 function player_image_state() {
@@ -44,9 +50,9 @@ function player_image_state() {
 
 function player_image_speed(_state) {
 	var _speed = "";
-	
+
 	// skip for instances where move and idle are the same for the given state
-	if (_state != "" && _state != "_carry" && _state != "_pull") { return _speed; }
+	if (_state != "" && _state != "_carry" && _state != "_push") { return _speed; }
 	
 	if (x_speed != 0 || y_speed != 0) {
 		return "_move";

@@ -18,6 +18,7 @@ function player_update_max_speed() {
 
 function player_update_move_direction() {
 	if (instance_exists(obj_con_textbox)) { exit; }
+
 	var _x_spd = right_input - left_input;
 	var _y_spd = down_input - up_input;
 	if (_x_spd == 1 && _y_spd = 0)		{ move_direction = 0; }
@@ -34,6 +35,7 @@ function player_update_move_direction() {
 function player_update_face_direction() {
 	// whichever input is first is whats used and whichever unput is last is than used
 	if (item_used != noone) { exit; }
+	if (nest_state = nest_state_push) { exit; }
 	
 	// first move input
 	if (move_direction == -1) {
@@ -178,6 +180,11 @@ function player_update_x_speed() {
 	// set x_speed to 0 if no input and x_speed is low enough
 	if (!left_input && !right_input) {
 		if (abs(x_speed <= .2)) x_speed = 0;
+	}
+	
+	// check pushing/carrying objects for stoppage
+	if (nest_state == nest_state_push || nest_state == nest_state_carry) {
+			
 	}
 }
 

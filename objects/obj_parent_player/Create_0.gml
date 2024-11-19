@@ -698,13 +698,12 @@ nest_state_carry = function() {
 
 nest_state_push = function() {
 	
-	// set speed
-	//if (max_speed != push_speed) {
-	//	max_speed = push_speed;
-	//	show_debug_message(max_speed);
-	//}
-	
-	// lock direction
+	// set image speed
+	if (x_speed != 0 || y_speed != 0) {
+		if (image_speed != 1) { image_speed = 1; }
+	} else { 
+		if (image_speed != 0) { image_speed = 0; }
+	}
 }
 
 nest_state_pull = function() {

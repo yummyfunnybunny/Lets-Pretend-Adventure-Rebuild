@@ -116,24 +116,9 @@ nest_state_death_pitfall = function(){}
 nest_state_push = function(){
 	if (interact_target == noone) { nest_state = nest_state_idle; }
 	
-	x = interact_target.x - pushing.x_dis;
-	y = interact_target.y - pushing.y_dis;
-	
-	
-	// lock xy position relative to player
-	//if (interact_target.x_speed != 0) {
-		//show_debug_message(lengthdir_x(interact_target.x_speed, interact_target.move_direction)*sin(interact_target.x_speed));	
-	//}
-	//if (interact_target.y_speed != 0) {
-		//show_debug_message(lengthdir_y(interact_target.y_speed, interact_target.move_direction)*sin(interact_target.y_speed));	
-	//}
-	
-	//x += lengthdir_x(interact_target.x_speed, interact_target.move_direction)*sin(interact_target.x_speed);
-	//y += lengthdir_y(interact_target.y_speed, interact_target.move_direction)*sin(interact_target.y_speed);
-	
-	//obj_player.x += lengthdir_x(move_speed, direction);
-	//obj_player.y += lengthdir_y(move_speed, direction);
-	
+	// move object relative to lock coords
+	x = interact_target.x - pushing.x_lock;
+	y = interact_target.y - pushing.y_lock;
 }
 
 #endregion
@@ -333,6 +318,7 @@ function prop_interact_set_target() {
 	
 	if (!instance_exists(interact_target)) {
 		if (instance_exists(obj_parent_player)){
+			show_debug_message("setting prop interact target");
 			interact_target = instance_nearest(x,y,obj_parent_player);
 		} else if (interact_target != noone) {
 			interact_target = noone;
@@ -369,9 +355,35 @@ function prop_interact_draw_icon() {
 	draw_sprite(spr_interact_pickup,0,x,y-z_height - 8);
 }
 
-function prop_interact_end_push() {
+function prop_interact_end() {
+	switch (interact_type) {
+		case INTERACT_TYPE.PUSH:
+			prop_interact_end_push();
+		break;
 		
+		case INTERACT_TYPE.CARRY:
+			prop_interact_end_carry();
+		break;
+		
+		case INTERACT_TYPE.OPEN:
+			prop_interact_end_open();
+		break;
+	}
 }
+
+function prop_interact_end_push() {
+	if (interact_prev_state != noone) {
+		show_debug_message("resetting push");
+		nest_state = interact_prev_state;
+		interact_prev_state = noone;
+		interact_target = noone;
+	}
+}
+
+function prop_interact_end_open() {}
+
+function prop_interact_end_carry() {}
+
 
 
 //function prop_interact_input_progression() {
