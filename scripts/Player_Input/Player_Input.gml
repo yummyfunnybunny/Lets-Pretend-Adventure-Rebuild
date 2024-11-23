@@ -107,24 +107,31 @@ function player_input_x_check() {
 				break;
 			}
 		} else {
-			// reset interact target
-			with (interact_target) {
-				// NPCs
-				if (object_is_ancestor(object_index,obj_parent_npc)) {
-			
-				// ITEMS
-				} else if (object_index == obj_parent_item) {
-				
-				// PROPS
-				} else if(object_is_ancestor(object_index, obj_parent_prop)) {
-					prop_interact_end();	
-				}
-			}
-			// reset player
-			interact_target = noone;
-			nest_state = nest_state_free;
+			player_interact_end(nest_state_free);
 		}
 	}
+}
+
+function player_interact_end(_goto_state) {
+	
+	// reset interact target
+	if (interact_target) {
+		with (interact_target) {
+			// NPCs
+			if (object_is_ancestor(object_index,obj_parent_npc)) {
+			
+			// ITEMS
+			} else if (object_index == obj_parent_item) {
+				
+			// PROPS
+			} else if(object_is_ancestor(object_index, obj_parent_prop)) {
+				prop_interact_end();	
+			}
+		}
+	}
+	// reset player
+	interact_target = noone;
+	nest_state = _goto_state;
 }
 
 function player_input_y_check() {

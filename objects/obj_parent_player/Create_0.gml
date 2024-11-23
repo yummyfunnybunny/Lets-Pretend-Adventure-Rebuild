@@ -232,12 +232,16 @@ function player_take_damage(_damage, _damage_type, _element_type, _special_effec
 		item_used = noone;
 		alarm[ALARM.ATK_START] = -1;		// cancels an attack if one was underway
 		alarm[ALARM.DAMAGED] = FPS*0.5;
-		nest_state = nest_state_hurt;
+		
+		//nest_state = nest_state_hurt;
 		
 		// play damage sound
 	} else {
 		// play block/resist/immune sound	
 	}
+	
+	// enter hurt state
+	player_interact_end(nest_state_hurt);
 }
 
 function player_use_mainhand(_item) {

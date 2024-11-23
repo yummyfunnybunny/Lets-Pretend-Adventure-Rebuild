@@ -134,6 +134,7 @@
     {"name":"rm_tileset_test","order":1,"path":"rooms/rm_tileset_test/rm_tileset_test.yy",},
     {"name":"rm_transition_test","order":2,"path":"rooms/rm_transition_test/rm_transition_test.yy",},
     {"name":"Attacking_and_Damage","order":5,"path":"scripts/Attacking_and_Damage/Attacking_and_Damage.yy",},
+    {"name":"Debugging","order":9,"path":"scripts/Debugging/Debugging.yy",},
     {"name":"Drawing","order":3,"path":"scripts/Drawing/Drawing.yy",},
     {"name":"enemy_collisions","order":2,"path":"scripts/enemy_collisions/enemy_collisions.yy",},
     {"name":"enemy_image","order":1,"path":"scripts/enemy_image/enemy_image.yy",},

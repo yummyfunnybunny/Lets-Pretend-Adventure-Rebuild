@@ -119,6 +119,9 @@ nest_state_push = function(){
 	// move object relative to lock coords
 	x = interact_target.x - pushing.x_lock;
 	y = interact_target.y - pushing.y_lock;
+	
+	//print("object_index:",object_index);
+	//print("object name:", object_get_name(object_index));
 }
 
 #endregion
@@ -318,7 +321,6 @@ function prop_interact_set_target() {
 	
 	if (!instance_exists(interact_target)) {
 		if (instance_exists(obj_parent_player)){
-			show_debug_message("setting prop interact target");
 			interact_target = instance_nearest(x,y,obj_parent_player);
 		} else if (interact_target != noone) {
 			interact_target = noone;
@@ -373,7 +375,6 @@ function prop_interact_end() {
 
 function prop_interact_end_push() {
 	if (interact_prev_state != noone) {
-		show_debug_message("resetting push");
 		nest_state = interact_prev_state;
 		interact_prev_state = noone;
 		interact_target = noone;

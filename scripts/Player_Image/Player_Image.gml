@@ -14,8 +14,8 @@ function player_update_image() {
 	var _face_dir = player_image_face_dir(_state, _speed, _terrain);
 	
 	// 5 - set the sprite
-	show_debug_message($"spr_player{_state}{_speed}{_terrain}{_face_dir}");
-	show_debug_message(image_speed);
+	//show_debug_message($"spr_player{_state}{_speed}{_terrain}{_face_dir}");
+	//show_debug_message(image_speed);
 	var _sprite = asset_get_index($"spr_player{_state}{_speed}{_terrain}{_face_dir}");
 	if (sprite_index != _sprite) {
 		sprite_index = asset_get_index($"spr_player{_state}{_speed}{_terrain}{_face_dir}");

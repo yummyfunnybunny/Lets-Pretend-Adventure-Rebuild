@@ -210,6 +210,7 @@
     {"id":{"name":"rm_tileset_test","path":"rooms/rm_tileset_test/rm_tileset_test.yy",},},
     {"id":{"name":"rm_transition_test","path":"rooms/rm_transition_test/rm_transition_test.yy",},},
     {"id":{"name":"Attacking_and_Damage","path":"scripts/Attacking_and_Damage/Attacking_and_Damage.yy",},},
+    {"id":{"name":"Debugging","path":"scripts/Debugging/Debugging.yy",},},
     {"id":{"name":"Drawing","path":"scripts/Drawing/Drawing.yy",},},
     {"id":{"name":"enemy_collisions","path":"scripts/enemy_collisions/enemy_collisions.yy",},},
     {"id":{"name":"enemy_image","path":"scripts/enemy_image/enemy_image.yy",},},
