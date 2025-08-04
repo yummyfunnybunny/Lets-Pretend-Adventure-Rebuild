@@ -188,14 +188,13 @@ nest_state_patrol = function() {
 	// begin patrol - create pather
 	if (alarm[NPC_ALARM.STATE] == -1) {
 		if (!pather_object) {
-			pather_object = instance_create_depth(x,y,INSTANCE_DEPTH,obj_con_pather,{
+			pather_object = instance_create_depth(x,y,INSTANCES_1_DEPTH,obj_con_pather,{
 				creator: id,
 				path: patrol_path,
 				move_speed: walk_speed,
 				target_x: origin_x,
 				target_y: origin_y,
 				path_end_action: patrol_end_action,
-				
 			});
 		}
 		alarm[NPC_ALARM.STATE] = -2;

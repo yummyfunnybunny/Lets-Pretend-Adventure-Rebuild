@@ -1,5 +1,7 @@
 /// @desc
 
+
+
 if (global.debugger == true) {
 	// draw x/y marker
 	//draw_sprite(spr_marker,0,x,y);
@@ -17,7 +19,9 @@ if (global.debugger == true) {
 // Inherit the parent event
 event_inherited();
 
-
+if (nest_state == nest_state_carry) {
+	player_draw_carry_object();
+}
 
 
 

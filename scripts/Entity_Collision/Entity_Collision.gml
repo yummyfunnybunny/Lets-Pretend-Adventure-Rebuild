@@ -24,17 +24,18 @@ function entity_collision(){
 		x_speed = entity_x_axis_check(id, x_speed);
 		
 		// interacting checks
-		if (interact_target != noone) {
+		print("my interact target:", interact_target);
+		if (interact_target != noone && instance_exists(interact_target)) {
+			if (!object_is_ancestor(id.object_index, obj_parent_player)) { exit; }
+			print(id);
 			// player must be interacting in such a way that the other entity can interfer with movement
-			if (nest_state == nest_state_push || nest_state == nest_state_carry) {
-				x_speed = interacting_x_collision_check(interact_target);
-			}
+			
+			//if (nest_state == nest_state_push || nest_state == nest_state_carry) {
+			//	x_speed = interacting_x_collision_check(interact_target);
+			//}
 		}
 
 		// Horizontal Move Commit
-		//print("x_speed:", x_speed);
-		//print("sign x_speed: ",sign(x_speed));
-		//print("x_speed * sign x_speed: ",x_speed * sign(x_speed));
 		x += x_speed;
 	}
 	
@@ -60,7 +61,7 @@ function entity_collision(){
 		y_speed = entity_y_axis_check(id, y_speed);
 		
 		// interacting checks
-		if (interact_target != noone) {
+		if (interact_target != noone && instance_exists(interact_target)) {
 			// player must be interacting in such a way that the other entity can interfer with movement
 			if (nest_state == nest_state_push || nest_state == nest_state_carry) {
 				y_speed = interacting_y_collision_check(interact_target);
@@ -211,8 +212,13 @@ function entity_x_axis_check(_e, _xspeed) {
 		// save colliding entity
 		var _e_collided = instance_place(_ex + _xx + _xspeed, _ey, obj_parent_entity);
 		if (_e_collided && _e_collided != _e) {
-			// interact + push state check
-			if (_e.interact_target == _e_collided && _e.nest_state == nest_state_push) { return _xspeed; }
+			// interact + push/carry state check
+			if (_e.interact_target == _e_collided) { 
+				if (_e.nest_state == nest_state_push ||
+					_e.nest_state == nest_state_carry) {
+					return _xspeed; 
+				}
+			}
 			// check if entity is solid
 			if (_e_collided.entity_solid) {
 				// check for z overlap with object _in quest_ion
@@ -283,8 +289,13 @@ function entity_y_axis_check(_e, _yspeed) {
 		// save the object in question
 		var _e_collided = instance_place(_ex, _ey + _yy + _yspeed, obj_parent_entity);
 		if (_e_collided && _e_collided != _e) {
-			// return if the colliding object is interacting with the entity and the entity is in the push state
-			if (_e.interact_target == _e_collided && _e.nest_state == nest_state_push) { return _yspeed; }
+			// interact + push/carry state check
+			if (_e.interact_target == _e_collided) { 
+				if (_e.nest_state == nest_state_push ||
+					_e.nest_state == nest_state_carry) {
+					return _yspeed;
+				}
+			}
 			// check if entity is solid
 			if (_e_collided.entity_solid) {
 				// check for z overlap with object in question

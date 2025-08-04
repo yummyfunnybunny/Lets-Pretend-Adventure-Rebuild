@@ -76,6 +76,7 @@
     {"$GMObjectProperty":"v1","%Name":"locked","filters":[],"listItems":[],"multiselect":false,"name":"locked","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"interact_type","filters":[],"listItems":[],"multiselect":false,"name":"interact_type","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"INTERACT_TYPE.NONE","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"interact_range","filters":[],"listItems":[],"multiselect":false,"name":"interact_range","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1.5","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"interact_change","filters":[],"listItems":[],"multiselect":false,"name":"interact_change","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1/60","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

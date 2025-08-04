@@ -23,3 +23,5 @@ if (place_meeting(x,y,obj_parent_cover)) {
 		main_state = main_state_revealed;
 	}
 }
+
+//print("my interact_target:", interact_target);

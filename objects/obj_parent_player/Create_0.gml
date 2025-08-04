@@ -6,8 +6,9 @@ event_inherited();
 #region INIT PLAYER SET VARIABLES
 
 // meta
-faction				= FACTION_TYPE.PLAYER;			// tells the game which faction the player belongs to
-interact_target		= noone;					// stores the entity that will be intereacted with when A is pressed
+faction					= FACTION_TYPE.PLAYER;		// tells the game which faction the player belongs to
+interact_target			= noone;					// stores the entity that will be intereacted with when A is pressed
+carry_object			= noone;
 // stats
 hp						= max_hp;				// set hp to max hp
 mp						= max_mp;				// set mp to max mp
@@ -21,7 +22,7 @@ last_safe_x			= x;						// saves the last safe x-position the player was on for 
 last_safe_y			= y;						// saves the last safe y-position the player was on for respawning
 
 // inventory, items, abilities
-item_used			= noone;						// stores the item object from the equipped struct being used to pass into use_weapon/item/consumable functions
+item_used			= noone;					// stores the item object from the equipped struct being used to pass into use_weapon/item/consumable functions
 equip_slots			= [0,0,0];					// array for storying id of currently equipped items
 
 coins = 0;
@@ -73,6 +74,15 @@ global.player = {
 		],
 	],
 	keys: [],
+	input_controls: {
+		all_inputs: true,
+		a_input: true,
+		b_input: true,
+		x_input: true,
+		y_input: true,
+		jump_input: true,
+		move_input: true,
+	}
 }
 
 #endregion
@@ -440,6 +450,10 @@ function player_terrain_checks(){
 	}
 }
 
+function player_draw_carry_object() {
+	draw_sprite(spr_pot_1, 0, x, y-z_height-2);
+}
+
 #endregion
 
 #region INIT PLAYER STATES
@@ -494,11 +508,7 @@ main_state_death = function() {
 // NEST STATES
 nest_state_free = function() {
 	// set sprite to either moving or idle
-	if (x_speed != 0 || y_speed != 0) {
-		if (image_speed != 1) { image_speed = 1; }
-	} else { 
-		if (image_speed != 0) { image_speed = 0; }
-	}
+	player_image_speed();
 }
 
 // weapon states
@@ -680,11 +690,7 @@ nest_state_hurt = function() {
 
 nest_state_climb = function() {
 	// set sprite to either moving or idle
-	if (x_speed != 0 || y_speed != 0) {
-		if (image_speed != 1) { image_speed = 1; }
-	} else { 
-		if (image_speed != 0) { image_speed = 0; }
-	}
+	player_image_speed();
 }
 
 // ineract states
@@ -698,16 +704,14 @@ nest_state_shop = function() {
 
 nest_state_carry = function() {
 	
+	// set image speed
+	player_image_speed();
 }
 
 nest_state_push = function() {
 	
 	// set image speed
-	if (x_speed != 0 || y_speed != 0) {
-		if (image_speed != 1) { image_speed = 1; }
-	} else { 
-		if (image_speed != 0) { image_speed = 0; }
-	}
+	player_image_speed();
 }
 
 nest_state_pull = function() {

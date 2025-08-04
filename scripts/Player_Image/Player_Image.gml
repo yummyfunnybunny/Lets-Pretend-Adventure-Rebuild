@@ -5,7 +5,7 @@ function player_update_image() {
 	var _state = player_image_state();
 	
 	// 2 - determine current speed
-	var _speed = player_image_speed(_state);
+	var _speed = player_image_moving(_state);
 	
 	// 3 - determine terrain state
 	var _terrain = player_image_terrain(_state, _speed);
@@ -48,7 +48,7 @@ function player_image_state() {
 	return _state;
 }
 
-function player_image_speed(_state) {
+function player_image_moving(_state) {
 	var _speed = "";
 
 	// skip for instances where move and idle are the same for the given state
@@ -86,4 +86,10 @@ function player_image_face_dir(_state, _speed, _terrain) {
 	return _face_dir;
 }
 
-
+function player_image_speed() {
+	if (x_speed != 0 || y_speed != 0) {
+		if (image_speed != 1) { image_speed = 1; }
+	} else { 
+		if (image_speed != 0) { image_speed = 0; }
+	}
+}

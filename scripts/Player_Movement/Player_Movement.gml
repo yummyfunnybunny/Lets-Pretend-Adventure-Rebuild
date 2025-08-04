@@ -12,8 +12,11 @@ function player_update_max_speed() {
 		case nest_state_push:
 			if (max_speed != push_speed) { max_speed = push_speed; }
 		break;
+		
+		case nest_state_carry: {
+			if (max_speed != walk_speed) { max_speed = walk_speed; }
+		}
 	}
-	
 }
 
 function player_update_move_direction() {

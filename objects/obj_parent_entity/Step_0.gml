@@ -14,6 +14,9 @@ if (z_speed != 0){
 	z_bottom += z_speed;
 }
 
+
+
+
 // Apply Gravity
 if (z_bottom < z_floor){
 	if (z_gravity != 0) {

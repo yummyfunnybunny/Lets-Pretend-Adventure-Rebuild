@@ -45,7 +45,7 @@ zoom						= 1;		// 1 = normal
 zooming						= false;
 zoom_percent				= 0;
 zoom_type					= noone;
-zoom_curve			= animcurve_get_channel(ac_curve_camera_zoom,"curve1");
+zoom_curve					= animcurve_get_channel(ac_curve_camera_zoom,"curve1");
 
 	
 // INITIALIZE METHODS

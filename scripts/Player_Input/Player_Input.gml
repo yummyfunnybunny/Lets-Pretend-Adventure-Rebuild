@@ -1,34 +1,88 @@
 
 function player_update_input(){
-	// moving
-	left_input			= keyboard_check(vk_left);
-	right_input			= keyboard_check(vk_right);
-	up_input			= keyboard_check(vk_up);
-	down_input			= keyboard_check(vk_down);
+	if (global.player.input_controls.all_inputs == false) { 
+		player_cancel_input("all");
+		exit; 
+	}
 	
-	jump_input			= keyboard_check_pressed(vk_space);
+	// moving
+	if (global.player.input_controls.move_input == true) {
+		left_input			= keyboard_check(vk_left);
+		right_input			= keyboard_check(vk_right);
+		up_input			= keyboard_check(vk_up);
+		down_input			= keyboard_check(vk_down);
+	}
+	
+	if (global.player.input_controls.jump_input == true) {
+		jump_input			= keyboard_check_pressed(vk_space);
+	}
 	
 	// letter inputs
-	a_keycode			= 86
-	a_input_pressed		= keyboard_check_pressed(ord("V"));
-	a_input_held		= keyboard_check(ord("V"));
-	a_input_released	= keyboard_check_released(ord("V"));
+	if (global.player.input_controls.a_input == true) {
+		a_keycode			= 86
+		a_input_pressed		= keyboard_check_pressed(ord("V"));
+		a_input_held		= keyboard_check(ord("V"));
+		a_input_released	= keyboard_check_released(ord("V"));
+	}
 	
-	b_keycode			= 67
-	b_input_pressed		= keyboard_check_pressed(ord("C"));
-	b_input_held		= keyboard_check(ord("C"));
-	b_input_released	= keyboard_check_released(ord("C"));
+	if (global.player.input_controls.b_input == true) {
+		b_keycode			= 67
+		b_input_pressed		= keyboard_check_pressed(ord("C"));
+		b_input_held		= keyboard_check(ord("C"));
+		b_input_released	= keyboard_check_released(ord("C"));
+	}
 	
-	x_keycode			= 88
-	x_input_pressed		= keyboard_check_pressed(ord("X"));
-	x_input_held		= keyboard_check(ord("X"));
-	x_input_released	= keyboard_check_released(ord("X"));
+	if (global.player.input_controls.x_input == true) {
+		x_keycode			= 88
+		x_input_pressed		= keyboard_check_pressed(ord("X"));
+		x_input_held		= keyboard_check(ord("X"));
+		x_input_released	= keyboard_check_released(ord("X"));
+	}
 	
-	y_keycode			= 90
-	y_input_pressed		= keyboard_check_pressed(ord("Z"));
-	y_input_held		= keyboard_check(ord("Z"));
-	y_input_released	= keyboard_check_released(ord("Z"));
+	if (global.player.input_controls.y_input == true) {
+		y_keycode			= 90
+		y_input_pressed		= keyboard_check_pressed(ord("Z"));
+		y_input_held		= keyboard_check(ord("Z"));
+		y_input_released	= keyboard_check_released(ord("Z"));
+	}
+}
 
+function player_cancel_input(_input) {
+	
+	if (_input == "move" || _input == "all") {
+		left_input = false;
+		right_input = false;
+		up_input = false;
+		down_input = false;
+	}
+	
+	if (_input == "a" || _input == "all") {
+		a_input_pressed = false;
+		a_input_held = false;
+		a_input_released = false;
+	}
+	
+	if (_input == "b" || _input == "all") {
+		b_input_pressed = false;
+		b_input_held = false;
+		b_input_released = false;
+	}
+	
+	if (_input == "x" || _input == "all") {
+		x_input_pressed = false;
+		x_input_held = false;
+		x_input_released = false;
+	}
+	
+	if (_input == "y" || _input == "all") {
+		y_input_pressed = false;
+		y_input_held = false;
+		y_input_released = false;
+	}
+	
+	if (_input == "jump" || _input == "all") {
+		jump_input = false;
+	}
 }
 
 function player_input_jump_check() {
@@ -105,9 +159,15 @@ function player_input_x_check() {
 				case INTERACT_TYPE.PUSH:
 					nest_state = nest_state_push;
 				break;
+				case INTERACT_TYPE.CARRY:
+				nest_state = nest_state_carry;
 			}
 		} else {
-			player_interact_end(nest_state_free);
+			// currently, click does not need to use this else statement because they are finished as soon as the click occurs anyway
+			// release: IDK we'll have to revamp the whole thing once we get a release type input made
+			if (_input_type == "hold") {
+				player_interact_end(nest_state_free);
+			}
 		}
 	}
 }
